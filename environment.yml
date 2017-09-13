@@ -1,0 +1,19 @@
+name: pyfloods
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3
+  - jupyter
+  - matplotlib
+  - numpy
+  - netCDF4
+  - pandas
+  - pip
+  - scipy
+  - xarray
+  - cartopy
+  - eofs
+  - windspharm
+  - pip:
+    - git+git://github.com/jdossgollin/paraguayfloodspy@master
