@@ -4,14 +4,18 @@ channels:
   - conda-forge
 dependencies:
   - python=3
+  - bottleneck
   - jupyter
   - matplotlib
   - numpy
   - netCDF4
   - pandas
   - pip
+  - seaborn
   - scipy
+  - scikit-learn
   - xarray
+  # THE CONDA-FORGE PACKAGES
   - cartopy
   - eofs
   - windspharm
