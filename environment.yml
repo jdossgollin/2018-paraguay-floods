@@ -1,23 +1,15 @@
 name: pyfloods
 channels:
   - defaults
-  - conda-forge
 dependencies:
-  - python=3
+  - python=3.6
   - bottleneck
   - jupyter
   - matplotlib
   - numpy
-  - netCDF4
   - pandas
   - pip
   - seaborn
   - scipy
   - scikit-learn
   - xarray
-  # THE CONDA-FORGE PACKAGES
-  - cartopy
-  - eofs
-  - windspharm
-  - pip:
-    - git+git://github.com/jdossgollin/paraguayfloodspy@master
