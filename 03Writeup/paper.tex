@@ -2,7 +2,7 @@
 % Preamble
 %-------------------------------------------------------------------------------
 
-\documentclass{ametsoc}
+\documentclass[twocol]{ametsoc}
 \journal{mwr}
 
 %Citations should be of the form ``author year''  not ``author, year''
@@ -106,37 +106,44 @@ Finally, in \cref{sec:summary} we summarize our results.
 
 \section{Data} \label{sec:data}
 
-The analysis involves observations and model forecasts. The period analyzed for diagnostics purposes is from Nov 1979 through Feb 2016. Forecasts consider the period starting in Dec 2015 until Mar 2016, paying special attention to the week of Dec 1-7, 2015, as indicated in the Introduction. Hindcasts to assess the real-time predictive skill consider the period Dec 1-7, 1995-2014. All codes used to access the data and to create the plots and results described in this paper are available at \url{https://github.com/jdossgollin}.
-
+The analysis involves observations and model forecasts.
 
 \subsection{Observations}
-Rainfall data is taken from the CPC Unified Gauge-based Analysis of Global Daily Precipitation dataset, available online at \url{http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.UNIFIED_PRCP/.GAUGE_BASED/.GLOBAL/.v1p0/}.
-%Extreme rainfall events are computed as those exceeding the 90th percentile in the observations.
-Spatial resolution is \SI{0.5}{\degree}, and temporal resolution is daily.
 
-Atmospheric circulations are diagnosed using daily data from the NCAR-NCEP Reanalysis I data set \citep{Kalnay1996}, and are referred to as observations, available online at \url{https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/}.
+The period analyzed for diagnostics purposes is from 01 Nov 1979 through 29 Feb 2016.
+
+Rainfall data is taken from the CPC Unified Gauge-based Analysis of Global Daily Precipitation dataset \citep{xie2010cpc}, available online at \url{http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NCEP/.CPC/.UNIFIED_PRCP/.GAUGE_BASED/.GLOBAL/.v1p0/}.
+Spatial resolution is \SI{0.5}{\degree}, and temporal resolution is daily.
+Both the retro and real-time datasets are used.
+
+Atmospheric circulations are diagnosed using daily data from the NCAR-NCEP Reanalysis I data set \citep{Kalnay1996}, available online at \url{https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/}.
 Spatial resolution is \SI{2.5}{\degree}, which is adequate for synoptic-scale analyses.
+
 Because the end-of-day time for the rainfall data is 12:00GMT over most of South America, we use six-hour reanalysis data, and shift by twelve hours before re-sampling to the daily time step.
 This ensures that the time steps in the reanalysis and rainfall data sets are the same, but means that a day is defined as beginning at 12:00 GMT.
 Since most summer rainfall in this region occurs overnight, this end-of-day time (which translates to approximately 8:00 AM locally depending on the exact time zone) tends to separate distinct events.
 
-Streamflow station data was collected by the Paraguayan Navy and National Administration of Navigation and Ports of Paraguay, and was processed and distributed by the Paraguayan Directorate of Meteorology and Hydrology (DINAC-DMH).
+Streamflow data was collected by the Paraguayan Navy and National Administration of Navigation and Ports of Paraguay, and was processed and distributed by the Paraguayan Directorate of Meteorology and Hydrology (DINAC-DMH).
 Locations of streamflow gauges are shown in \cref{fig:study-area}.
 
 \subsection{Model forecasts}
-This study analyzes probabilistic seasonal and sub-seasonal forecasts of extremely wet rainfall events.
-The seasonal predictions correspond to the ``flexible format" forecasts provided by the International Research Institute for Climate and Society (IRI).
-This product provides the probability of exceedance (or non-exceedance) of a user-specified percentile of the climatological distribution.
-The DJF 2015-2016 forecasts analyzed were produced in November 2015.
-Due to the short record of flexible format forecasts (i.e., 2012-2016), no verification was performed for seasonal predictions.
-These forecasts are provided at a horizontal resolution of \SI{2.5}{\degree}.
 
-Sub-seasonal forecasts used in this research correspond to those of the European Centre for Medium-Range Weather Forecasts (ECMWF) coupled model, available via the Subseasonal-to-Seasonal Prediction Project Database \citep{Vitart2016}.
+%The seasonal predictions correspond to the ``flexible format" forecasts provided by the International Research Institute for Climate and Society (IRI).
+%This product provides the probability of exceedance (or non-exceedance) of a user-specified percentile of the climatological distribution.
+%The DJF 2015-2016 forecasts analyzed were produced in November 2015.
+%Due to the short record of flexible format forecasts (i.e., 2012-2016), no verification was performed for seasonal predictions.
+%These forecasts are provided at a horizontal resolution of \SI{2.5}{\degree}.
+
+This study analyzes probabilistic sub-seasonal forecasts of extremely wet rainfall events.
+The sub-seasonal forecasts used were isseud by the European Centre for Medium-Range Weather Forecasts (ECMWF) using a coupled model, available via the Subseasonal-to-Seasonal Prediction Project Database \citep{Vitart2016}.
 The horizontal resolution is \SI{1.5}{\degree} deg.
-The rainfall forecasts and hindcasts (or re-forecasts) considered were initialized on November 12th and 16th, 2015, targeting the first week of December of 2015 (defined as Dec 1-7).
+Forecasts consider the period starting in Dec 2015 until Mar 2016 and hindcasts to assess the real-time predictive skill consider the period Dec 1-7, 1995-2014.
 There is a total of 51 ensemble members for each forecast, and 11 ensemble members for each one of the 20 hindcasts (Dec 1-7, 1995-2014).
-The hindcasts were used to define the extreme event threshold, and for probabilistic forecast verification.
-% NEED TO STATE HERE THAT ACTUALLY ALL FORECASTS WERE USED FOR THE `CHICLET' DIAGRAM
+
+Hindcasts were used to define the extreme event threshold, and for probabilistic forecast verification; forecasts were used to analyze modeled rainfall during the entire NDJF 2015-16 season and in particular the week of Dec 1-7, 2015.
+For probabilistic analysis of the rainfall during the week 1-7 December 2015, rainfall forecasts and hindcasts considered were initialized on November 12th and 16th, 2015.
+For plotting, all forecast initializations were considered.
+These steps are discussed further in subsequent sections.
 
 %-------------------------------------------------------------------------------
 % METHODS
@@ -145,82 +152,71 @@ The hindcasts were used to define the extreme event threshold, and for probabili
 \section{Methods} \label{sec:methods}
 
 Different types of analyses are used to diagnose the causes of the extreme rainfall events, and to bias-correct and verify the forecasts.
-These are summarized in the following sub-sections.
+All codes for data and analyis are available at \url{https://github.com/jdossgollin/PYFloods}.
 
-\subsection{Cluster analysis}
+\subsection{Climatology and Anomalies} \label{sec:climatology-anomalies}
+
+The climatological value of a field (rainfall or a circulation variable from reanalysis) is defined as the mean, at each grid cell, during the period $\qty[1980, 2010]$.
+The anomaly, for a particular date, is defined as the departure from this climatology for the corresponding month; the anomaly can be defined outside the range $\qty[1980, 2010]$.
+
+\subsection{Weather Typing}
 
 A cluster algorithm is used on daily data to help diagnose the mechanisms associated with the rainfall events of interest in this research.
+
+The clustering was performed on the daily NDJF $\SI{850}{\hecto\pascal}$ streamfunction field ($\psi$), calculated from the meridional and zonal wind fields using spherical harmonics as implemented in the \texttt{windspharm} python package \citep{Dawson:2016ws}, over the domain spanning \SIrange{15}{30}{\degree S} and \SIrange{65}{45}{\degree W} (\cref{fig:study-area}).
+To facilitate clustering (which tends to perform poorly in high-dimensional spaces), the anomaly field of $\psi$ (see \cref{sec:climatology-anomalies}) was projected  onto its four leading empirical orthogonal functions (EOFs), accounting for 95\% of the total observed variance (supplemental figure S1).
+The \texttt{eofs} python package was used to perform this dimension reduction \citep{Dawson:2016ge}.
+No additional time filtering was applied to the data before clustering, thus retaining the annual seasonal cycle, inter-annual, sub-seasonal and synoptic weather time scales for diagnosis.
+No latitudinal weighting was necessary as the selected domain is relatively small and it does not extend into high latitudes.
+Once the EOFs were calculated, the principal component time series were computed for each day and scaled to unit variance.
+
+Next, the $k$-means algorithm was used to assign a single cluster value to each day on record.
 The $k$-means technique is a partitioning method that classifies all days in study into a predefined number of clusters.
 It minimizes the intracluster sum of variance, $\mathcal{W}$, for a partition $\mathcal{P}$ defined as the Voronoi diagram generated by the classification process:
 \begin{equation}
-	\mathcal{W} \qty( \mathcal{P} ) = \sum_{i}^{k}\sum_{X\in p_{i}} \dd s^{2} \qty(X,\bar{p}_{i})
+	\mathcal{W} \qty( \mathcal{P} ) = \sum_{i=1}^{k}\sum_{\vb{x} \in \vb{p}_{i}} \abs{\abs{\vb{x} - \vb{p}_i}}
 \end{equation}
-with $i=1...k$,  $k$ the total number of classes in the solution, $p_i$ the different clusters in the partition and $\dd s^2(X,\bar{p}_i)$ the Euclidean distance between the cluster's maps $X$ and centroid $\bar{p}_i$.
-The algorithm is guaranteed to converge to at least a local minimum; to select the best partition, 500 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa:2012tv}, and the classifiability index of \citet{Michelangeli1995} was used to select the optimal partition.
-Calculation of the classifiability index for several values of $k$ suggests that states with $k=2,4,6$ are all reasonable; we chose the solution $k=6$ because the weather types identified are qualitatively similar to those determined over southeastern South America \citep{Munoz2015,Munoz2016} and have an intuitive physical meaning, discussed further in section \ref{sec:diag}.
+where $k$ is the total number of classes in the solution, $\abs{\abs{\cdot}}$ is the Euclidan norm, $\vb{p}_i$ the different clusters in the partition and $\vb{x}$ the maps corresponding to cluster $i$.
 
-This procedure assigns only one cluster to each day on record.
-Daily NDJF geopotential data over the box spanning \SIrange{15}{30}{\degree S} and \SIrange{65}{45}{\degree W} (\cref{fig:study-area}) was first projected onto its four leading empirical orthogonal functions, accounting for 95\% of the total observed variance.
-No additional time filtering was applied to the data before clustering, thus retaining the annual seasonal cycle, inter-annual, sub-seasonal and synoptic weather time scales for diagnosis.
-No latitudinal weighting was necessary as the selected domain is relatively small and it does not extevernd into high latitudes.
-The time series were scaled to unit variance prior to running the clustering algorithm.
+The $k$-means algorithm is guaranteed to converge to at least a local minimum; to select the best partition, 500 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa:2012tv}.
+The classifiability index of \citet{Michelangeli1995} was then used to select the optimal partition.
+Calculation of the classifiability index for several values of $k$ (supplemental figure S2) suggests that states with $k=4,5,6,7,8$ are all reasonable; we chose the solution $k=6$ because the weather types identified are qualitatively similar to those determined over southeastern South America \citep{Munoz2015,Munoz2016} and have an intuitive physical meaning, discussed further in the following sections.
 
 \subsection{Forecasts and Model Output Statistics (MOS)}
 
-Since no model is perfect, several methods --generically known as Model Output Statistics \citep[MOS;][]{Glahn:1972vt} -- have been developed to correct for different kind of biases.
-In this work, we analyze how well the rainfall events could have been predicted, both using the raw sub-seasonal forecasts and bias-corrected seasonal and sub-seasonal forecasts.
+A wide variety of methods, generically known as Model Output Statistics \citep[MOS;][]{Glahn:1972vt}, have been proposed to correct for different types of bias in model outputs.
+In this work, we analyze how well the rainfall events could have been predicted, both using the raw sub-seasonal forecasts and  MOS-adjusted sub-seasonal forecasts.
+We use apply three types of MOS models: the homoscedastic and heteroscedastic versions of the extended logistic regression (XLR and HXLR, respectively); principal component regression (PCR); and canonical correlation analysis (CCA).
 
-The IRI's seasonal predictions are already provided with bias-correction \citep{Barnston:2010ge}, and hence we did not perform any further MOS on seasonal rainfall fields.
-
-We use three different Model Output Statistics strategies in this study to correct for biases in sub-seasonal forecasts.
-The approach to perform the corrections is based on both the homoscedastic and heteroscedastic versions of the extended logistic regression (XLR and HXLR, respectively), principal component regression (PCR), and canonical correlation analysis (CCA).
-These different regression models are deemed here to be of increasing complexity, with the logistic regression models being relatively simple and the CCA one the more complex approach. More details and references on each model are given below.
-
-The original logistic regression models the conditional probability of binary events, and it has been used in MOS approaches for binary predictands \citep{Hamill:2004hk}.
+Logistic regression models the conditional probability of binary events, and it has been used in MOS approaches for binary predictands \citep{Hamill:2004hk}.
 Nonetheless, when using the logistic regression to address multiple thresholds via independent fits, the predicted probabilities are in general not mutually consistent \citep{Messner:2014gp}.
-The (homoscedastic) XLR was designed to solve this problem \citep{Wilks:2009bk}, via the consideration of a transformation of the thresholds of interest as an additional predictor variable.
+The (homoscedastic) XLR was designed to address this shortcoming \citep{Wilks:2009bk}, via the consideration of a transformation of the thresholds of interest as an additional predictor variable.
 The HXLR, a heteroscedastic generalization of the XLR, was proposed to appropriately use the ensemble spread as predictor for the dispersion of the predictive distribution \citep{Messner:2014gp}.
-In this study we explore the potential benefits and disadvantages of both versions of the extended logistic regression.
-
-In PCR, a special case of CCA, each grid box in the predictand field is regressed using a linear combination of the predictor's EOFs \citep{Mason:2008da,Wilks:2006fx}.
 
 CCA is a common statistical method frequently used to forecast rainfall using a purely empirical approach \citep{Mason:2008da,Barnston:2012ce}.
 In brief, CCA \citep{Barnston:1992gd,Wilks:2006fx} identifies modes of co-variability, called canonical variates or canonical modes, by maximizing the correlation between linear combinations of the predictor and predictand's empirical orthogonal functions (EOFs).
 The method forecasts spatial patterns of variability spanning across the region of interest rather than making forecasts for individual locations.
-Since the canonical modes describe the preferred coupled spatial patterns relating predictors and predictands, CCA has the potential to correct the model rainfall spatial patterns using statistical relationships involving the observed patterns.
-
-Because CCA and PCR involve regressions of spatial modes, their use addresses bias in both the magnitude and the spatial distribution of the modeled precipitation patterns. Conversely, because XLR and HXLR are applied uniquely to each grid cell, these procedures correct only for magnitude biases in the probability distribution.
+In PCR, a special case of CCA, each grid cell in the predictand field estimated by regression using a linear combination of the predictor's EOFs \citep{Mason:2008da,Wilks:2006fx} rather than by identifying canonical modes.
+Unlike the XLR and HXLR models, which perform bias correction independently for each grid cell, the CCA and PCR models can address both biases in the magnitude and the spatial distribution of the modeled precipitation patterns.
 
 For the purposes of MOS corrections, the predictand (or variable to forecast) is the observed rainfall for the target period of interest, and the predictor (or variable to be corrected) is the raw model rainfall for the same period.
 We use the same spatial domain [\SI{39}{\degree S}-\SI{17}{\degree S}; \SI{66}{\degree W}-\SI{49}{\degree W}] for both the predictor and the predictand, except for the PCR and CCA cases, in which a larger domain [\SI{0}{\degree S}-\SI{60}{\degree S}; \SI{80}{\degree W}-\SI{30}{\degree W}] was used to better capture the spatial patterns in the raw model field.
+A variety of approaches for modeling the output of many ensemble members was explored; a summary of the predictors found to be most skillful for each MOS model is presented in \cref{tab:mos-methods}.
 
-To avoid artificial skill when building the statistical models, we employ a cross-validation approach that uses a 5-year-out window: five continuous years are left out of the record, the regression coefficients are computed with the remaining of the time series, and the resulting model is validated comparing the prediction for the third year left out (middle of the window) against observations.
+To avoid artificial skill when building the statistical models, we employ a cross-validation approach with a 5-year-out window.
+In this framwork, five continuous years are left out of the record, the regression coefficients are computed with the remaining of the time series, and the resulting model is validated comparing the prediction for the third year left out (middle of the window) against observations.
 The 5-year-long window is redefined a year at a time, moving from the beginning of the record to its end.
 
-Due to the nature of each model used for the MOS-correction, different analyses were explored to define the best predictor(s) for each case.
-For example, for the PCR and CCA models, predictors were defined using different geographical domains and using (a) an ensemble of the members available in both initialization times (Nov 12th and 16th, 2015), and (b) computing the ensemble mean for each one of these same initializations and treating them as independent predictors.
-Since the skill was shown to be higher in option (b), this was selected as the final predictor (for the spatial domain indicated in the previous paragraph).
-A summary of the final selection for each model predictors is presented in Table \ref{t1}.
-
-Probabilistic forecasts are normally used to convey information about the uncertainties associated to the prediction of interest.
-It is a common practice to present these forecasts as probabilities for occurrence of below-normal, normal and above-normal precipitation, where the normal is defined as the long-term average of at least 20 years.
-Here we use the period 1981-2010 for seasonal forecasts, and 1995-2014 for sub-seasonal ones.
-Nonetheless, since we analyze extreme event predictions (90th percentile exceedances), rather than terciles.
-Furthermore, we present all predictions in terms of odds relative to the climatological odds:
+To visualize the probability of intense rainfall (exceedance of the 90th percentile of modeled rainfall during the 1995-2014 period) at each grid cell, we present all predictions in terms of odds relative to the climatological odds:
 \begin{equation} \label{eq:odds-ratio}
 odds_{r} \equiv \frac{\frac{p}{1-p}}{\frac{p_c}{1-p_c}}
 \end{equation}
 where $p$ and $p_c$ represent the forecast probability and the climatological probability, respectively.
-This choice helps to easily visualize in the forecast maps locations where the odds of occurring an extreme rainfall event are considerably higher than expected.
-In contrast, using probabilities in these forecasts requires that the reader compares values against the climatological probability.
-Our choice thus simplifies the comparison in a way that  also tends to be better understood by decision makers.
+This is analagous to the commonly used practice of showing probability of below-normal, normal, and above-normal precipitationand simplifies the comparison in a way that tends to be better understood by decision-makers.
 
-\subsection{Probabilistic forecast verification}
+\subsection{Probabilistic Forecast Verification}
 
-In addition to visually comparing predictions and observations to verify how well the extreme events could have been predicted, we also provide some context to the analysis of the sub-seasonal skill conducting a formal cross-validated verification.
-This is not performed for the seasonal predictions due to the prohibitively short record available in that case (see section \ref{sec:data}).
-
-The Generalized Relative Operating Characteristics (GROC), also called 2AFC score \citep{Mason:2009kr}, is used to evaluate skill of probabilistic rainfall forecasts at a local scale, via spatial maps.
+In addition to visually comparing predictions and observations to verify how well the extreme events could have been predicted, we also compute the Generalized Relative Operating Characteristics (GROC), also called 2AFC score \citep{Mason:2009kr}, to evaluate skill of probabilistic rainfall forecasts.
 This score measures the ``proportion of all available pairs of observations of differing category whose probability forecasts are discriminated in the correct direction'' \citep{Mason:2009kr}.
 It has an intuitive interpretation as an indication of how often the forecasts are correct.
 To conduct the verification in a consistent manner, we use the Climate Predictibility Tool (CPT), developed by the International Research Institute for Climate and Society \citep{Mason:2017gg}.
@@ -229,7 +225,7 @@ To conduct the verification in a consistent manner, we use the Climate Predictib
 % DIAGNOSTICS
 %-------------------------------------------------------------------------------
 
-\section{Atmospheric circulation and intense rainfall} \label{sec:diag}
+\section{Atmospheric Circulations and Intense Rainfall} \label{sec:diag}
 
 This section discusses the synoptic circulation patterns related to the intense rainfall events observed during the austral summer of 2015-2016. To provide context to the analysis of this particular season, we first characterize recurrent daily circulation types (or weather types) over the region under study, and discuss the average synoptic patterns conducive to intense rainfall events there.
 
