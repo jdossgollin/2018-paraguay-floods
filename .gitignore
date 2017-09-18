@@ -2,3 +2,10 @@
 *.csv
 *.pdf
 */.ipynb_checkpoints/*
+*.html
+*.aux
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+*.log

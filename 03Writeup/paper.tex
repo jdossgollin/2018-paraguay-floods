@@ -2,7 +2,7 @@
 % Preamble
 %-------------------------------------------------------------------------------
 
-\documentclass[twocol]{ametsoc}
+\documentclass{ametsoc}
 \journal{mwr}
 
 %Citations should be of the form ``author year''  not ``author, year''
@@ -15,15 +15,15 @@
 	physics, % better physics notation
 	url, % for URLs
 	amsmath, % for math
+	array, % for fixed-width tables
 }
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
-% TODO Notes -- DO NOT KEEP FOR FINAL
 
 %-------------------------------------------------------------------------------
 % Title and Authors
 %-------------------------------------------------------------------------------
 
-%\title{Causes and subseasonal-to-seasonal model skill of the persistent intense rainfall and flooding in Paraguay during the austral summer 2015-2016}
 \title{Extreme rainfall in Paraguay during the 2015-2016 austral summer: causes and subseasonal-to-seasonal predictive skill}
 \authors{James Doss-Gollin\correspondingauthor{James Doss-Gollin. Dept. of Earth and Environmental Engineering, Columbia University, 500 W. 120th St., New York, NY. USA.}}
 \affiliation{Dept. of Earth and Environmental Engineering, Columbia University, 500 W. 120th St., New York, NY. USA \\ Columbia Water Center, Columbia University, 500 W. 120th St., New York, NY. USA}
@@ -59,7 +59,8 @@
 
 \section{Introduction}
 
-% Why this is worthy of study -- needs some work!
+% THIS PARAGRAPH NEEDS SOME WORK
+% COME BACK TO IT LATER
 During the austral summer of 2015-16, repeated intense rainfall events led to severe flooding on the Paraguay River, displacing approximately \num{170000} people \citep{BrackenridgeDFO} and generating tremendous property damage.
 The Paraguay River (\cref{fig:study-area}) is the primary tributary of the Paran\'{a} River and an important contributor to the La Plata basin, and its flooding directly impacts the Paraguayan cities of Asunci\'{o}n, Concepci\'{o}n, and Pilar, and the Argentine cities of Formosa and Corrientes.
 Intense rainfall and flooding along the Paraguay River also has important implications for hydropower generation along the Paran\'{a} River, for agriculture, and for regional water resource management.
@@ -206,7 +207,7 @@ It is a common practice to present these forecasts as probabilities for occurren
 Here we use the period 1981-2010 for seasonal forecasts, and 1995-2014 for sub-seasonal ones.
 Nonetheless, since we analyze extreme event predictions (90th percentile exceedances), rather than terciles.
 Furthermore, we present all predictions in terms of odds relative to the climatological odds:
-\begin{equation}
+\begin{equation} \label{eq:odds-ratio}
 odds_{r} \equiv \frac{\frac{p}{1-p}}{\frac{p_c}{1-p_c}}
 \end{equation}
 where $p$ and $p_c$ represent the forecast probability and the climatological probability, respectively.
@@ -387,39 +388,33 @@ Streamflow data was collected by the Paraguayan Navy and National Administration
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{table*}[h]
 %
-\caption{Model Output Statistics (MOS) methods used to correct the ECMF sub-seasonal forecasts. Spatial domain for predictand is always the same (\SI{39}{\degree S}-\SI{17}{\degree S}; \SI{66}{\degree W}-\SI{49}{\degree W}). Two initializations are used: Nov 12th and 16th, 2015.} \label{t1}
+\caption{
+	Model Output Statistics (MOS) methods used to correct the ECMF sub-seasonal forecasts.
+	Spatial domain for predictand is always the same (\SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W}).
+	Two initializations are used: Nov 12th and 16th, 2015.} \label{tab:mos-methods}
 \begin{center}
-%
-\scalebox{0.8}{
-\begin{tabular}{ccccccccc}
-%
-\topline
-%
+\begin{tabular}{L{0.75in} L{1.15in} L{3.5in}}
+\hline\hline
 Model & Region (Predictor) & Final predictor(s) selected \\
 %
-\midline
+\hline
 %
- \emph{Raw} & (\SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W}) & \begin{tabular}{@{}c@{}}Ensemble mean, computed using members from the  \\ two initializations. No correction performed. \end{tabular} \\
+\emph{Raw} & \SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W} & Ensemble mean, computed using members from the  two initializations. No correction performed. \\
 %
+\emph{XLR} & \SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W} & Ensemble mean, computed using members from the  two initializations.  \\
 %
- \emph{XLR} & (\SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W}) & \begin{tabular}{@{}c@{}}Ensemble mean, computed using members from the  \\ two initializations. \end{tabular}  \\
+\emph{HLXR} & \SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W} & Ensemble mean and spread, computed using  members from the two initializations.\\
 %
- \emph{HLXR} & (\SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W}) & \begin{tabular}{@{}c@{}} Ensemble mean and spread, computed using  \\ members from the two initializations.\end{tabular}  \\
+\emph{PCR} & \SIrange{60}{0}{\degree S}; \SIrange{80}{30}{\degree W} & Linear combination of model's EOFs, computed using both initializations as independent predictors (10 EOFs).\\
 %
-  \emph{PCR} & (\SIrange{60}{0}{\degree S}; \SIrange{80}{30}{\degree W}) & \begin{tabular}{@{}c@{}} Linear combination of model's EOFs, computed using \\ both initializations as independent predictors (10 EOFs). \end{tabular} \\
+\emph{CCA} & \SIrange{60}{0}{\degree S}; \SIrange{80}{30}{\degree W} & Canonical modes computed using both initializations as independent predictors. (10 predictor EOFs, 4 predictand EOFs, 4 canonical modes) \\
 %
-  \emph{CCA} & (\SIrange{60}{0}{\degree S}; \SIrange{80}{30}{\degree W}) & \begin{tabular}{@{}c@{}} Canonical modes computed using \\ both initializations as independent predictors. (10 predictor EOFs, \\ 4 predictand EOFs, 4 canonical modes)\end{tabular}  \\
-%
-\botline
+\hline\hline
 %
 \end{tabular}
-}
-%
 \end{center}
-%
 \end{table*}
-%
-%
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % FIGURES
@@ -428,88 +423,99 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \begin{figure*}
 	\noindent\includegraphics[width=6.5in]{../_figs/StudyArea.pdf}
 	\caption{
-		The study area.
+		Map of the study area.
 		(L): all of South America.
-		The weather typing described in \cref{sec:methods,sec:weather-types} was calculated using geopotential height within the area indicated by the red box.
-		The ``Lower Paraguay River Basin'', over which rainfall is averaged to create plots in \cref{fig:klee,fig:chiclet} and define intense rainfall days in \cref{fig:lagged-rain}, is shown by the black box.
+		The domains of the ``Lower Paraguay River Basin'' and the domain used for weather typing are indicated in black and red, respectively.
 		(R): The Paraguay River.
-		As for (L), the ``Lower Paraguay River Basin'' over which rainfall is averaged is indicated.
-		Streamflows shown in \cref{fig:streamflow} were taken from Asunci\'on, Paraguay, shown by the black dot.
+		As for (L), the ``Lower Paraguay River Basin'' is indicated.
+		Streamflows shown in \cref{fig:streamflow} were taken from the fours stations indicated in green.
 		The Paraguay River and its tributaries, from the Natural Earth database (\texttt{www.naturalearthdata.com}), are also shown.
 	}
   \label{fig:study-area}
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in,height=9in,keepaspectratio=true]{../_figs/WTComposite.pdf}
+	\noindent\includegraphics[width=6.5in]{./Streamflow.pdf}
 	\caption{
-		Circulation anomalies associated with each weather type.
-    Weather types are separated by column.
-		Top row gives anomalies of \SI{200}{\hecto\pascal} wind; arrows indicate the direction, and both shaded contours and arrow length indicate the magnitude of the wind anomaly.
-    Second row shows circulation at \SI{850}{\hecto\pascal}; shaded contours give anomalies of geopotential height and arrows indicate the wind speed and direction.
-    Bottom row shows monthly rainfall anomalies in units of \si{\milli\meter\per\day}.
+		River stage (height; in \si{\meter}) for the Paraguay River at four gauges along the Paraguay River.
+		(a) Seasonality (orange) and time series of 2015-16 observations (black) at each stream gauge.
+			The seasonality was fit using local polynomial regression as implemented in the \texttt{locfit} package in
+			the \textbf{R} statistical programming environment \citep{Loader1999}.
+		(b) Time series of daily stage measurements from 1929 to 2016 at each station.
 	}
-	\label{fig:wt-composite}
-\end{figure*}
-
-\begin{figure*}	\noindent\includegraphics[width=6.5in]{../_figs/LaggedRain.pdf}
-	\caption{
-		Circulation anomalies associated with intense rainfall (99th percentile exceedance of area-averaged rainfall) in the Lower Paraguay River region. Lagged composites are shown, by column, for $t = $ \SIlist{-2;-1;0;1}{\day} relative to the date of intense rainfall.
-		Top row gives anomalies of \SI{200}{\hecto\pascal} wind; arrows indicate the direction, and both shaded contours and arrow length indicate the magnitude of the wind anomaly.
-    Second row shows circulation at \SI{850}{\hecto\pascal}; shaded contours give anomalies of geopotential height and arrows indicate the wind speed and direction.
-    Bottom row shows rainfall anomalies in units of \si{\milli\meter\per\day}.
-	}
-  \label{fig:lagged-rain}
-\end{figure*}
-
-\begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/RainfallWeatherType}
-	\caption{
-		Weather type occurrence during two years.
-		Time series of area-averaged rainfall (shown by the box in \cref{fig:study-area}) and weather type for each day of NDJF  2015-16.
-		Dashed lines indicate the climatological 50th, 90th, and 99th percentiles of NDJF area-averaged rain.
-	}
-  \label{fig:klee}
+  \label{fig:streamflow}
 \end{figure*}
 
 \begin{figure*}
 	\noindent\includegraphics[width=6.5in]{../_figs/NDJF201516Anomaly.pdf}
 	\caption{
-    	Monthly circulation anomalies during NDJF 2015-16.
-      Top row gives anomalies of \SI{200}{\hecto\pascal} wind; arrows indicate the direction, and both shaded contours and arrow length indicate the magnitude of the wind anomaly.
-      Second row shows circulation at \SI{850}{\hecto\pascal}; shaded contours give anomalies of geopotential height and arrows indicate the wind speed and direction.
-      Bottom row shows monthly rainfall anomalies, in unites of \si{\milli\meter\per\day}.
+    	Monthly composite anomalies observed during NDJF 2015-16.
+      Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
+      Bottom row shows monthly rainfall anomalies, in units of \si{\milli\meter\per\day}.
 	}
   \label{fig:anomalies}
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.4in]{../_figs/ForecastSkill.pdf}
+	\noindent\includegraphics[width=6.5in]{../_figs/PSI_EOF_Loadings.pdf}
 	\caption{
-		caption
+    	Leading four EOF loadings of daily NDJF \SI{850}{\hecto\pascal} streamfunction $\psi$ over chosen domain.
 	}
-  \label{fig:subsprobfcst}
+  \label{fig:eof-loading}
+\end{figure*}
+
+\begin{figure*}
+	\noindent\includegraphics[width=6.5in,height=9in,keepaspectratio=true]{../_figs/WTComposite.pdf}
+	\caption{
+		Composite anomalies associated with each weather type (column).
+    Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
+    Bottom row shows precipitation anomalies in units of \si{\milli\meter\per\day}.
+	}
+	\label{fig:wt-composite}
+\end{figure*}
+
+\begin{figure*}
+	\noindent\includegraphics[width=6.5in]{../_figs/RainfallWeatherType}
+	\caption{
+		Time series of area-averaged rainfall in the Lower Paraguay River Basin (\cref{fig:study-area}) for each day of NDJF  2015-16 (lines).
+		The weather types corresponding to each day are indicated in both color and adjacent label.
+		Dashed lines indicate the climatological 50th, 90th, and 99th percentiles of NDJF area-averaged rain over the Lower Paragauy River basin.
+	}
+  \label{fig:rain-wt}
+\end{figure*}
+
+\begin{figure*}	\noindent\includegraphics[width=6.5in]{../_figs/LaggedRain.pdf}
+	\caption{
+		Circulation anomalies associated with intense rainfall (99th percentile exceedance of area-averaged rainfall in the Lower Paraguay River Basin shown in \cref{fig:study-area}).
+		Lagged composites are shown, by column, for $t = $ \SIlist{-2;-1;0;1}{\day} relative to the date of intense rainfall.
+		Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
+    Bottom row shows precipitation anomalies in units of \si{\milli\meter\per\day}.
+	}
+  \label{fig:lagged-rain}
 \end{figure*}
 
 \begin{figure*}
 	\noindent\includegraphics[width=6.5in]{../_figs/Chiclet.pdf}
 	\caption{
-    Assessment of S2S model forecasts.
-    Forecast time series from the ECMWF S2S model are shown for several lead times (\SIlist{2;10;25;40}{\day}) of each individual ensemble member (gray), the ensemble mean (black, dashed), and the observed (blue) rainfall.
-		The observed rainfall is smoothed with a \SI{3.5}{\day} running mean in order to facilitate comparison between daily observations and the models, which are initialized every 3-4 days.
+    S2S model forecasts of area-averaged rainfall over the Lower Paraguay River Basin (\cref{fig:study-area}).
+    Forecast time series from the ECMWF S2S model are shown for several lead times (\SIlist{5;14;19;30}{\day}).
+		Each gray dot represents the forecast of a single ensemble member issued for the target date ($x$-axis) of area-averaged rainfall, in \si{\milli\meter\per\day} ($y$-axis).
+		The blue line connects the ensemble means, and the black line shows the observed rainfall.
+		Because the model is initialized twice-weekly, for a given lead time forecasts will only exist for two in seven possible target dates;  consequently the rainfall is smoothed with a 3-day running mean to facilitate visual comparison.
 	}
   \label{fig:chiclet}
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{Streamflow.pdf}
+	\noindent\includegraphics[width=6.4in]{../_figs/ForecastSkill.pdf}
 	\caption{
-		River stage (height; in \si{\meter}) for the Paraguay River at four gauges along the Paraguay River.
-		(a) Seasonality (black) and time series of 2015-16 observations (orange) at each stream gauge.
-			The seasonality was fit using local polynomial regression as implemented in the \texttt{locfit} package in
-			the \textbf{R} statistical programming environment \citep{Loader1999}.
-		(b) Time series of daily stage measurements from 1929 to 2016.
+		Model forecasts and skill scores for the methods indicated in \cref{tab:mos-methods}.
+		Top row shows the intense rainfall forecast for 1-7 December 2015 as the odds ratio of \cref{eq:odds-ratio} over the target domain.
+		A value greater than 1 indicates that the model forecast greater-than-average odds of rainfall exceeding the 90th percentile.
+		The second shows the 2AFC skill score for each grid cell; a value greater than 50 indicates that the model outperforms climatology.
 	}
-  \label{fig:streamflow}
+  \label{fig:subsprobfcst}
 \end{figure*}
+
+
 \end{document}
