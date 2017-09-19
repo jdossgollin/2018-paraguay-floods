@@ -19,7 +19,6 @@ def GetURL(x0, x1, y0, y1):
     return(url)
 
 def main():
-    print("\nWelcome to S2S.py")
     pars = GetPars('all')
     overwrite = False
 
@@ -38,7 +37,7 @@ def main():
         ds = xr.open_dataarray(url)
         ds = ds.sel(S = slice('2015-09-01', '2016-02-29'))
         ds['L'] = ds['L']
-        ds.to_netcdf(fname)
+        ds.to_netcdf(fname, format="NETCDF4")
 
 if __name__ == '__main__':
     main()

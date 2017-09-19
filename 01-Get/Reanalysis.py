@@ -23,7 +23,6 @@ from paraguayfloodspy.pars  import GetPars
 from windspharm.xarray import VectorWind
 
 def main():
-    print("\nWelcome to Reanalysis.py\n")
     # Define the Parameters
     time_pars = GetPars('time')
     syear,eyear = time_pars['syear'], time_pars['eyear']
@@ -52,9 +51,7 @@ def main():
                 W = VectorWind(U, V)
                 streamfunc = W.streamfunction()
                 # Save to file
-                U.to_netcdf(fname_u)
-                V.to_netcdf(fname_v)
-                streamfunc.to_netcdf(fname_streamfunc)
+                streamfunc.to_netcdf(fname_streamfunc, format='NETCDF4')
 
 if __name__ == '__main__':
     main()

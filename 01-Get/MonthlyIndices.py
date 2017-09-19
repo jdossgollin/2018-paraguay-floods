@@ -19,23 +19,15 @@ def read_indices(raw_url, col_name):
     return(df)
 
 def main():
-    print("\nWelcome to Monthly-Indices.py")
     time_pars = GetPars('time')
     syear,eyear = time_pars['syear'], time_pars['eyear']
     outfile = "_data/indices/monthly_indices.csv"
 
-    pdo = read_indices(
-        raw_url = 'http://iridl.ldeo.columbia.edu/SOURCES/.Indices/.PDO/.pdo/gridtable.tsv',
-        col_name = 'pdo'
-    )
-    enso = read_indices(
+    df = read_indices(
         raw_url = 'http://iridl.ldeo.columbia.edu/SOURCES/.Indices/.nino/.EXTENDED/.NINO34/gridtable.tsv',
         col_name = 'nino_34'
     )
-
-    df = pdo.join(enso,  how='outer')
     df = df['{}'.format(syear):'{}'.format(eyear)]
-    df.head(10)
 
     # Save to file
     df.to_csv(outfile)

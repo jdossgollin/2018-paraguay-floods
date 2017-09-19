@@ -15,30 +15,37 @@ The key research questions that this analysis addresses are:
 
 Please see our paper for more infomration.
 
-## Installing Dependencies
+## Dependencies
 
-All codes are written in python.
-In addition to several standard packages used, we provide a custom package just for this paper, available [on github](github.com/jdossgollin/paraguayfloodspy).
-This helps us separate the computation from the analysis.
-
-To get started use `git clone` or download the package as a `.zip` and unzip it.
-Installing all required packages is easiest using `miniconda`:
-
-```
-conda env create --file environment.yml
-source activate pyfloods
-```
-
-One of the packages (which will automatically be installed!) is the `paraguayfloodspy` package, available at [https://github.com/jdossgollin/paraguayfloodspy](https://github.com/jdossgollin/paraguayfloodspy).
-This package contains some functions for plotting (in the `visualize` submodule), for working with `xarray` objects and calculating anomalies (in the `xrutil` submodule), for performing weather typing (`weather_type` submodule) and for defining some other paramaters (`pars` submodule).
-Replication of our work or use of our codes requires the `paraguayfloodspy` package (though it is not particularly complicated -- no classes are defined.)
+You need access to `conda` and `make`.
+It is possible to install python requirements but not recommended.
 
 ## Running
 
-Once you have installed the dependencies, running is as simple as
-```
-bash run.sh
-```
+We created a `Makefile` to simplify setup and running.
+First, download this repository as a `.zip` and unzip it or use `git clone`.
+Next, and __only the first time you are working with this program__ run `make setup`.
+This will use `conda` to install all required python packages in a `conda` environment called `pyfloods`.
+_If you leave and come back later, just run `source activate pyfloods` to activate these packages_.
+Finally, to make all results, run `make output` -- this will download data, run all analysis, and convert all `jupyter` notebooks to `.html` for your browsing convenience.
+It will also put plots in `_figs`.
 
-Please note that you will not be able to reproduce the figure showing streamflow (the raw figure is included in `04Writeup/`) because we are not authorized to disseminate the underlying data.
+Note that when you run `make output`, you're likely to see a bunch of errors that look like this:
+```
+[NbConvertApp] Executing notebook with kernel: python3
+/usr/local/miniconda3/envs/pyfloods/lib/python3.6/site-packages/jupyter_client/connect.py:157: RuntimeWarning: Failed to set sticky bit on '/var/folders/fq/2rlq61px6h9dtl4qmtd7hmm00000gn/T': [Errno 1] Operation not permitted: '/var/folders/fq/2rlq61px6h9dtl4qmtd7hmm00000gn/T'
+  RuntimeWarning,
+```
+You shouldn't worry as this is a harmless warning.
+
+At this point you may want to see the figures!
+Run `make viewfigs` to open them all (if you're not on OSX or if you don't like Preview, go to `Makefile`, and edit the line that says `PDF_VIEWER = Preview` to set your favorite PDF viewer.)
+
+If you want to reproduce our paper, you need to run `make tex` which will convert the `latex` document into a `.pdf`.
+Please note that you will not be able to reproduce the figure showing streamflow (the raw figure is included in `04-Writeup/`) because we are not authorized to disseminate the underlying data.
 Please contact us directly if you are interested in obtaining this data and we will help you seek permission to use it.
+
+## Issues
+
+If you have trouble running our code, please use the `Issues` tab to let us know.
+We'll do our best to help you -- we're not software developers and don't promise to make these codes work seamlessly on every computing platform but we are scientists who are interested in ensuring (i) that our results are correct and (ii) supporting future research in the community.

@@ -49,7 +49,6 @@ def GetFileName(year):
     return(fn)
 
 def main():
-    print("\nWelcome to Rainfall.py\n")
     pars = GetPars('time')
     syear, eyear = pars['syear'], pars['eyear']
     overwrite = False

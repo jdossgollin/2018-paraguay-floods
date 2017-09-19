@@ -6,7 +6,6 @@ import pandas as pd
 from paraguayfloodspy.pars  import GetPars
 
 def main():
-    print("\nWelcome to Daily-Indices.py")
     time_pars = GetPars('time')
     syear,eyear = time_pars['syear'], time_pars['eyear']
     outfile = "_data/indices/daily_indices.csv"

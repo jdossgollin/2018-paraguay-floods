@@ -14,7 +14,6 @@ from paraguayfloodspy.xrutil import *
 from paraguayfloodspy.pars import *
 
 def main():
-    print("\nWelcome to Anomalies.py")
     pars = GetPars('all')
     syear, eyear = pars['time']['syear'], pars['time']['eyear']
     overwrite = False
@@ -44,7 +43,7 @@ def main():
         months=pars['months'],
         shift_time_h=12, return_daily=True)
 
-    for var in ['uwnd', 'vwnd', 'streamfunc']:
+    for var in ['streamfunc']:
         for level_i in [850]:
             fnames = glob.glob('_data/reanalysis/raw/{}_{}_*.nc'.format(var, level_i))
             raw_fname = "_data/reanalysis/subset/{}_{}_raw.nc".format(var, level_i)
