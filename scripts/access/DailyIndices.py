@@ -3,12 +3,18 @@ Read in daily indices (here just MJO) and save to file
 '''
 
 import pandas as pd
-from paraguayfloodspy.pars  import GetPars
+import numpy as np
+import argparse
+
+parser = argparse.ArgumentParser()
+parser.add_argument('--years', type=int, nargs=2, help = 'LONMIN, LATMAX')
+parser.add_argument('--outfile', nargs=1, help='The output file to save')
 
 def main():
-    time_pars = GetPars('time')
-    syear,eyear = time_pars['syear'], time_pars['eyear']
-    outfile = "_data/indices/daily_indices.csv"
+
+    args = parser.parse_args()
+    syear, eyear = np.min(args.years), np.max(args.years)
+    outfile=args.outfile[0]
 
     raw_url = 'http://www.bom.gov.au/climate/mjo/graphics/rmm.74toRealtime.txt'
     col_names = ['year', 'month', 'day', 'RMM1', 'RMM2', 'phase', 'amplitude', 'source']

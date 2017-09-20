@@ -168,8 +168,9 @@ Computation with multidimensional data was performed using the \texttt{xarray} \
 
 \subsection{Climatology and Anomalies} \label{sec:climatology-anomalies}
 
-The climatological value of a field (rainfall or a circulation variable from reanalysis) is defined as the mean, at each grid cell, during the period $\qty[1980, 2010]$.
-The anomaly, for a particular date, is defined as the departure from this climatology for the corresponding month; the anomaly can be defined outside the range $\qty[1980, 2010]$.
+The climatological value of a field (rainfall or a circulation variable from reanalysis) is defined as the mean, at each grid cell, during all NDJF months in the period $\qty[1980, 2010]$.
+The anomaly, for a particular date, is defined as the departure from this climatology.
+Taking climatologies against the NDJF combined climatology, rather than against monthly climatologies, is necessary for weather typing (see below) as discontinuities in the climatological field lead to discontinuities in the anomaly field which leads to inconsistent and results which are difficult to interpret.
 
 \subsection{Weather Typing}
 
@@ -265,11 +266,11 @@ However, because only river stage data (and not discharge) data are available, i
 
 To understand how circulation anomalies observed during NDJF 2015-2016 led to the observed floods it is helpful to first explore the atmospheric circulations which are typically associated with intense rainfall in the lower Paraguay River.
 
-\Cref{fig:lagged-rain} shows time-lagged anomalies up to and after days exceeding the 90th percentile of area-averaged daily rainfall in the lower Paraguay River basin (see \cref{fig:study-area}), and is consistent with the findings of \citet{Marengo2004,Salio:2007gd}.
+\Cref{fig:lagged-rain} shows time-lagged anomalies up to and after days exceeding the 95th percentile of area-averaged daily rainfall in the lower Paraguay River basin (see \cref{fig:study-area}), and is consistent with the findings of \citet{Marengo2004,Salio:2007gd}.
 At $t=-2$ and $t=-1$ a low-level northerry jet injects inflow of heat and moisture to the region, favored by a polar trough extending slightly to the east of Paraguay.
 This is in agreement with previous studies which find a close correspondence between the exit regions of the low-level jet and the observed rainfall \citep{Saulo:2007km,Salio:2007gd,Marengo2004,Velasco1987} as the moisture influx, energy influx, and strong vertical wind shear favor instability and intense convection \citep{Marengo2004,Silva2009}.
 Next, low-level convergence and upper-level divergence (not shown) associated with the eastward progression of the frontal system further favor rainfall locally.
-Similar analysis for the 85th or 95th percentiles of daily rainfall (not shown) yield highly similar results, implying that the mechanism for the most extreme events is not fundamentally distinct from the mechanism for moderate-intensity events.
+Similar analysis for the 90th or 99th percentiles of daily rainfall (not shown) yield highly similar results, implying that the mechanism for the most extreme events is not fundamentally distinct from the mechanism for moderate-intensity events.
 
 \subsection{Weather Type Analysis: Daily Circulation Patterns} \label{sec:weather-types}
 
@@ -520,7 +521,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 
 \begin{figure*}	\noindent\includegraphics[width=6.5in]{../_figs/LaggedRain.pdf}
 	\caption{
-		Circulation anomalies associated with intense rainfall (99th percentile exceedance of area-averaged rainfall in the Lower Paraguay River Basin shown in \cref{fig:study-area}).
+		Circulation anomalies associated with intense rainfall (95th percentile exceedance of area-averaged rainfall in the Lower Paraguay River Basin shown in \cref{fig:study-area}).
 		Lagged composites are shown, by column, for $t = $ \SIlist{-2;-1;0;1}{\day} relative to the date of intense rainfall.
 		Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
     Bottom row shows precipitation anomalies in units of \si{\milli\meter\per\day}.
