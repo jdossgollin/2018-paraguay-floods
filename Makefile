@@ -67,7 +67,8 @@ dirs	:
 environment	:
 	conda env create --f environment.yml
 	source activate pyfloods
-	conda install -c conda-forge cartopy eofs netcdf4 windspharm
+	conda install -c conda-forge cartopy eofs nbstripout netcdf4 windspharm
+	nbstripout --install --attributes .gitattributes
 	pip install git+git://github.com/jdossgollin/paraguayfloodspy@master
 
 ################################################################################
