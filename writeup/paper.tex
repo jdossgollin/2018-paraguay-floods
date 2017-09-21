@@ -163,6 +163,7 @@ These forecasts are provided at a horizontal resolution of \SI{2.5}{\degree}.
 \section{Methods} \label{sec:methods}
 
 Different types of analyses are used to diagnose the causes of the extreme rainfall events, and to bias-correct and verify the forecasts.
+
 All codes used for data and analyis are available at \url{https://github.com/jdossgollin/PYFloods}.
 Computation with multidimensional data was performed using the \texttt{xarray} \citep{hoyer2017xarray} and \texttt{numpy} \citep{vanderWalt:2011dp} packages of the python computing environment; computations on tabular data utilized the \texttt{pandas} \citep{McKinney:2010un} package; and plotting was performed with the \texttt{matplotlib} \citep{Hunter:2007ux} and \texttt{cartopy} \citep{Cartopy} packages.
 
@@ -191,7 +192,7 @@ It minimizes the intracluster sum of variance, $\mathcal{W}$, for a partition $\
 \end{equation}
 where $k$ is the total number of classes in the solution, $\abs{\abs{\cdot}}$ is the Euclidan norm, $\vb{p}_i$ the different clusters in the partition and $\vb{x}$ the maps corresponding to cluster $i$.
 
-The $k$-means algorithm is guaranteed to converge to at least a local minimum; to select the best partition, 500 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa:2012tv}.
+The $k$-means algorithm is guaranteed to converge to at least a local minimum; to select the best partition, 250 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa:2012tv}.
 The classifiability index of \citet{Michelangeli1995} was then used to select the optimal partition.
 Calculation of the classifiability index for several values of $k$ (supplemental figure S2) suggests that states with $k=4,5,6,7,8$ are all reasonable; we chose the solution $k=6$ because the weather types identified are qualitatively similar to those determined over southeastern South America \citep{Munoz2015,Munoz2016} and have an intuitive physical meaning, discussed further in the following sections.
 
@@ -266,15 +267,18 @@ However, because only river stage data (and not discharge) data are available, i
 
 To understand how circulation anomalies observed during NDJF 2015-2016 led to the observed floods it is helpful to first explore the atmospheric circulations which are typically associated with intense rainfall in the lower Paraguay River.
 
-\Cref{fig:lagged-rain} shows time-lagged anomalies up to and after days exceeding the 95th percentile of area-averaged daily rainfall in the lower Paraguay River basin (see \cref{fig:study-area}), and is consistent with the findings of \citet{Marengo2004,Salio:2007gd}.
-At $t=-2$ and $t=-1$ a low-level northerry jet injects inflow of heat and moisture to the region, favored by a polar trough extending slightly to the east of Paraguay.
+\Cref{fig:lagged-rain} shows time-lagged anomalies up to and after days exceeding the 95th percentile of area-averaged daily rainfall in the lower Paraguay River basin (see \cref{fig:study-area}), and is consistent with previous findings \citep{Marengo2004,Salio:2007gd}.
+At $t=-2$ a mid-latitude baroclinic system approaches the South American continent, intensifying and moving to the East at $t=-1,0,1$.
+Along the cold front associated with this system, a low-level northerly jet advects of heat and moisture to the region, favored by a polar trough extending slightly to the east of Paraguay.
 This is in agreement with previous studies which find a close correspondence between the exit regions of the low-level jet and the observed rainfall \citep{Saulo:2007km,Salio:2007gd,Marengo2004,Velasco1987} as the moisture influx, energy influx, and strong vertical wind shear favor instability and intense convection \citep{Marengo2004,Silva2009}.
-Next, low-level convergence and upper-level divergence (not shown) associated with the eastward progression of the frontal system further favor rainfall locally.
-Similar analysis for the 90th or 99th percentiles of daily rainfall (not shown) yield highly similar results, implying that the mechanism for the most extreme events is not fundamentally distinct from the mechanism for moderate-intensity events.
+Next, low-level convergence and upper-level divergence (not shown) associated with the eastward progression of the frontal system further favor rainfall over the Lower Paraguay River Basin.
+As the system progresses, the rainfall anomaly approximately follows the anomaly of the low-level wind.
+
+Similar analysis for the 90th or 99th percentiles of daily rainfall (not shown) yield similar results, implying that the synoptic mechanism for the most extreme events is not fundamentally distinct from the mechanism for moderate-intensity events.
 
 \subsection{Weather Type Analysis: Daily Circulation Patterns} \label{sec:weather-types}
 
-We next use the weather typing algorithm to understand circulations and sequences of circulations associated with intense rainfall in the Lower Paraguay River Basin.
+We next use the weather typing algorithm to understand particular circulations and sequences of circulations associated with intense rainfall in the Lower Paraguay River Basin.
 
 The first step of the weather typing algorithm is to identify leading EOFs of the \SI{850}{\hecto\pascal} streamfunction $\psi$.
 The EOF laodings are shown in \cref{fig:eof-loading}.
@@ -322,13 +326,13 @@ For the sake of concision, in this section we discuss only probabilistic seasona
 
 \subsection{Seasonal Forecast}
 
-Extreme rainfall over the region was accurately predicted by the IRI for the DJF 2015-2016 season since at least November 2015 (see \cref{fig:subs-prob-fcst}). Probabilities of 30\%-50\% for the 90th percentile, three to five times the expected climatological values, are visible over southern Paraguay and Brazil, and northern Uruguay and Argentina, mostly in agreement with observations (hashed region in \cref{fig:probfcst}).
+Extreme rainfall over the region was accurately predicted by the IRI for the DJF 2015-2016 season since at least November 2015 (see \cref{fig:seas-prob-fcst}). Probabilities of 30\%-50\% for the 90th percentile, three to five times the expected climatological values, are visible over southern Paraguay and Brazil, and northern Uruguay and Argentina, mostly in agreement with observations (hashed region in \cref{fig:seas-prob-fcst}).
 Although this seasonal prediction was not skillful over eastern Paraguay, the forecast  showed a clear signal in the neighborhood, that could have been used for disaster-preparedness weeks in advance of the events.
 
 \subsection{Sub-seasonal Forecasts}
 Sub-seasonal predictions are still too new to be used as operational tools, and their skill is normally not high enough as to be useful for decision-making [REF recent paper by Andy on s2s]. Nonetheless, the international S2S Prediction Project \citep{Vitart2016} has been providing since 2015 free access to almost-real-time sub-seasonal forecasts from multiple models, an opportunity to explore how well the extreme rainfall events of the first week of December 2015 could have been predicted.
 
-As seen in \Cref{fig:subs-prob-fcst}a, the raw (uncorrected) sub-seasonal forecast of the ECMF model for Dec 1-7 2015, indicated very high odds for occurrence of extreme rainfall but with important biases in the actual location and spatial pattern; for Paraguay, it confidently suggests occurrence of extremes to the south-southeast of the country, which was mostly not observed. Overall, the 20-year based skill of probabilistic forecasts for the first week of December --even when using multiple initializations-- is worse than using climatology for most of Paraguay (\Cref{fig:subs-prob-fcst}b), being best for the zone between that country and northern Uruguay, and for most of southern Brazil.
+As seen in \Cref{fig:subs-prob-fcst}a, the raw (uncorrected) sub-seasonal forecast of the ECMF model for Dec 1-7 2015, indicated very high odds for occurrence of extreme rainfall but with important biases in the actual location and spatial pattern; for Paraguay, it confidently suggests occurrence of extremes to the south-southeast of the country, which was mostly not observed. Overall, the 20-year based skill of probabilistic forecasts for the first week of December --even when using multiple initializations-- is worse than using climatology for most of Paraguay (\cref{fig:subs-prob-fcst}b), being best for the zone between that country and northern Uruguay, and for most of southern Brazil.
 
 Nonetheless, despite the biases, the model is capturing a signal, which suggests the use of Model Output Statistics to explore the extent to which corrections in the magnitudes and spatial patterns can improve the forecast. To the best of our knowledge, this is the first time this kind of corrections is performed for sub-seasonal forecasts in Latin America and the Caribbean, and probably in other places of the world.
 
@@ -372,7 +376,7 @@ I think the first piece of the discussion should focus on \emph{why} the observe
 	\item Compared to other El Ni\~{n}o years, there were a lot of similarities, but also some very important differences including increased upper-level divergence over Paraguay, and
 	\item \citet{Grimm2009} argues that land-surface interactions are important for the lifecycle of ENSO's impact on the region.
 	Since the 2015-16 El Ni\~no was super strong, and 2014-15 was a weak EN year, it seems likely that these land-surface interactions and land-ocean temperature gradients were different amongst EN years historically; we don't know that this *is* the mechanism, but it would be interesting to explore further. MENTION THIS BUT I SUGGEST NOT TO FURTHER EXPLORE IT HERE. WE HAVE ENOUGH.
-	\item By examining \cref{fig:klee}, we can see that some weather types tend be more likely to occur during specific parts of the 120-day season; this is consistent with \citet{Munoz2016} and with the notion that there is some structure to the nonlinear dynamical system, which could support the land-surface feedbacks that are proposed by i.e. \citep{Grimm:2009bq}.
+	\item By examining \cref{fig:rain-wt}, we can see that some weather types tend be more likely to occur during specific parts of the 120-day season; this is consistent with \citet{Munoz2016} and with the notion that there is some structure to the nonlinear dynamical system, which could support the land-surface feedbacks that are proposed by i.e. \citep{Grimm:2009bq}.
 \end{itemize}
 
 The second piece we need to discuss a bit more is the lack of model skill at S2S timescales.
@@ -456,7 +460,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/StudyArea.pdf}
+	\noindent\includegraphics[width=6.5in]{../figs/StudyArea.pdf}
 	\caption{
 		Map of the study area.
 		(L): all of South America.
@@ -482,7 +486,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/NDJF201516Anomaly.pdf}
+	\noindent\includegraphics[width=6.5in]{../figs/NDJF201516Anomaly.pdf}
 	\caption{
     	Monthly composite anomalies observed during NDJF 2015-16.
       Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
@@ -492,7 +496,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/PSI_EOF_Loadings.pdf}
+	\noindent\includegraphics[width=6.5in]{../figs/PSI_EOF_Loadings.pdf}
 	\caption{
     	Leading four EOF loadings of daily NDJF \SI{850}{\hecto\pascal} streamfunction $\psi$ over chosen domain.
 	}
@@ -500,7 +504,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in,height=9in,keepaspectratio=true]{../_figs/WTComposite.pdf}
+	\noindent\includegraphics[width=6.5in,height=9in,keepaspectratio=true]{../figs/WTComposite.pdf}
 	\caption{
 		Composite anomalies associated with each weather type (column).
     Top row shows anomalies of streamfunction $\psi$ at \SI{850}{\hecto\pascal}.
@@ -510,7 +514,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/RainfallWeatherType}
+	\noindent\includegraphics[width=6.5in]{../figs/RainfallWeatherType}
 	\caption{
 		Time series of area-averaged rainfall in the Lower Paraguay River Basin (\cref{fig:study-area}) for each day of NDJF  2015-16 (lines).
 		The weather types corresponding to each day are indicated in both color and adjacent label.
@@ -519,7 +523,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
   \label{fig:rain-wt}
 \end{figure*}
 
-\begin{figure*}	\noindent\includegraphics[width=6.5in]{../_figs/LaggedRain.pdf}
+\begin{figure*}	\noindent\includegraphics[width=6.5in]{../figs/LaggedRain.pdf}
 	\caption{
 		Circulation anomalies associated with intense rainfall (95th percentile exceedance of area-averaged rainfall in the Lower Paraguay River Basin shown in \cref{fig:study-area}).
 		Lagged composites are shown, by column, for $t = $ \SIlist{-2;-1;0;1}{\day} relative to the date of intense rainfall.
@@ -530,7 +534,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/Chiclet.pdf}
+	\noindent\includegraphics[width=6.5in]{../figs/Chiclet.pdf}
 	\caption{
     S2S model forecasts of area-averaged rainfall over the Lower Paraguay River Basin (\cref{fig:study-area}).
     Forecast time series from the ECMWF S2S model are shown for several lead times (\SIlist{5;14;19;30}{\day}).
@@ -542,7 +546,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.4in]{../_figs/ForecastSkill.pdf}
+	\noindent\includegraphics[width=6.4in]{../figs/ForecastSkill.pdf}
 	\caption{
 		MOS-adjusted S2S model forecasts and skill scores for the methods indicated in \cref{tab:mos-methods}.
 		Top row shows the intense rainfall forecast for 1-7 December 2015 as the odds ratio of \cref{eq:odds-ratio} over the target domain.
@@ -553,7 +557,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \end{figure*}
 
 \begin{figure*}
-	\noindent\includegraphics[width=6.5in]{../_figs/SeasonalForecast.pdf}
+	\noindent\includegraphics[width=6.5in]{../figs/SeasonalForecast.pdf}
 	\caption{
 	Seasonal model forecast.
 	Shading indicates the forecast probability of exceeding the 90th percentile of climatological rainfall during DJF 2015-16.

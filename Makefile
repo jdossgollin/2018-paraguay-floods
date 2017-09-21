@@ -140,7 +140,7 @@ derive	:	$(PSISUB) $(RAINSUB) $(WTYPES) $(RPYRAIN) $(WTLOG)
 
 nbs = $(wildcard $(DIR_PLT)/*.ipynb)
 nb_htmls = $(nbs:%.ipynb=%.html)
-$(DIR_PLT)/%.html	: $(DIR_PLT)/%.ipynb $(PSISUB) $(RAINSUB) $(WTYPES)
+$(DIR_PLT)/%.html	: $(DIR_PLT)/%.ipynb $(PSISUB) $(RAINSUB) $(WTYPES) $(DIR_CONFIG)/PlotParameters.py
 	$(JUP_INTERP) $<
 
 # create analysis and plots

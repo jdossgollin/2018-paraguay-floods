@@ -13,7 +13,23 @@ The key research questions that this analysis addresses are:
 3. At sub-seasonal to seasonal timescales, what factors led to the observed rainfall and how did they enhance the probability of its occurrence?
 4. What skill did models have in forecasting the rainfall?
 
-Please see our paper for more infomration.
+Please see our paper to read about our scientific ideas!
+The below documentation will focus on how the _computation_ is structured, which is only a small piece of the thinking we did.
+If you can't access our paper, please contact us!
+
+## Why Make?
+
+Although it may seem needlessly complicated, using a `Makefile` (see [this resource](http://www.jonzelner.net/statistics/make/reproducibility/2016/06/01/makefiles/) for a good overview) lets us simplify our data analysis, particularly for projects where (like this) the computation can be done on a single computer.
+We've written our codes in python, but there's no particular reason why that needs to be the case -- `make` makes it easy to combine outputs of any arbitrary programs.
+Further, we get to separate the core of our data analysis:
+
+1. Define parameters. This is done in the `config/` directory, and different files specify parameters for different parts of the analysis.
+2. **Access** data -- raw data is downloaded and put in `data/accessed`. Once there, it is read in but never modified. Consequently, we get a lot of data -- the entire globe is covered for the rainfall and reanalysis data -- and any subsetting is done later.
+3. **Process** data -- starting from the raw data and the parameters defined above, we then create subsets of the data for working with (i.e. over a region of interest) and derive some variables from these (like the weather types)
+4. **Analyze** data -- once all the processed data has been created, we're ready for analysis and visualization. This step is performed with jupyter notebooks.
+5. **Write** our results -- using a `latex` file in `writeup/`
+
+Since we're using `make`, a change in our parameters propagates up the chain and causes _only the analysis which depends on that parameter_ to be run. Similarly if we update one of our scripts.
 
 ## Dependencies
 
@@ -22,7 +38,7 @@ It is possible to install python requirements but not recommended.
 
 ## Running
 
-We created a `Makefile` to simplify setup and running.
+
 First, download this repository as a `.zip` and unzip it or use `git clone`.
 Next, and __only the first time you are working with this program__ run `make setup`.
 This will use `conda` to install all required python packages in a `conda` environment called `pyfloods`.
