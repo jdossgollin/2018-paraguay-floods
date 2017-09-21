@@ -35,7 +35,7 @@ viewfigs:
 
 ## Create a draft of the article from latex
 tex: plot
-	latexmk -cd -e -f -pdf -interaction=nonstopmode "$(WRITEDIR)/paper.tex"
+	latexmk -cd -e -f -pdf -interaction=nonstopmode "$(DIR_TEX)/paper.tex"
 
 ################################################################################
 # SETUP
