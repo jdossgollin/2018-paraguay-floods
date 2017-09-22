@@ -5,8 +5,6 @@ Data from NCAR/NCEP Reanalysis I 6-hourly
 
 import numpy as np
 import xarray as xr
-import os
-from paraguayfloodspy.pars  import GetPars
 from windspharm.xarray import VectorWind
 import argparse
 

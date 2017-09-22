@@ -8,4 +8,4 @@ WTEAST=315
 WT_NCLUS=6 # how many clusters to generate?
 WT_PROP=0.95 # what proportion of variance must be retained?
 PC_SCALE=1 # if zero PCs are unscaled if one all are rescaled
-WTNSIM=250 # number of simulations
+WTNSIM=500 # number of simulations
