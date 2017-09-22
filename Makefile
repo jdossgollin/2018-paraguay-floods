@@ -61,7 +61,7 @@ YEARS := $(shell seq $(SYEAR) 1 $(EYEAR)) # don't edit this!!
 # running make dirs will create these directories if they don't exist already
 dirs	:
 	mkdir -p $(DIR_FIG)
-	mkdir -p $(DIR_ACCESSED)/cpc $(DIR_ACCESSED)/indices $(DIR_ACCESSED)/ncar $(DIR_ACCESSED)/s2s
+	mkdir -p $(DIR_ACCESSED)/cpc $(DIR_ACCESSED)/ncar
 
 # running make environment will create the custom conda environment
 environment	:
@@ -83,9 +83,10 @@ environment	:
 PSI_RAW_850: $(patsubst %,$(DIR_ACCESSED)/ncar/streamfunc_850_%.nc,$(YEARS)) # The psi files
 PSI_RAW_200: $(patsubst %,$(DIR_ACCESSED)/ncar/streamfunc_200_%.nc,$(YEARS)) # The psi files
 RAIN_RAW: $(patsubst %,$(DIR_ACCESSED)/cpc/cpc_%.nc,$(YEARS)) # the rain files
-DAILYIDX = $(DIR_ACCESSED)/indices/daily_indices.csv # Daily MJO Indices
-MONTHLYIDX = $(DIR_ACCESSED)/indices/monthly_indices.csv # monthly ENSO indices
-S2SAA = $(DIR_ACCESSED)/s2s/AreaAvg.nc # Area-averaged S2S forecasts over target region
+DAILYIDX = $(DIR_ACCESSED)/daily_indices.csv # Daily MJO Indices
+MONTHLYIDX = $(DIR_ACCESSED)/monthly_indices.csv # monthly ENSO indices
+S2SAA = $(DIR_ACCESSED)/AreaAvg.nc # Area-averaged S2S forecasts over target region
+ELEV = $(DIR_ACCESSED)/elevation.nc
 
 $(DIR_ACCESSED)/ncar/streamfunc_850_%.nc: $(DIR_ACCESS)/StreamfuncYear.py
 	$(PY_INTERP) $< --year $* --level 850 --outfile $@
@@ -105,8 +106,11 @@ $(MONTHLYIDX)	:	$(DIR_ACCESS)/MonthlyIndices.py $(DIR_CONFIG)/Time.mk
 $(S2SAA)	:	$(DIR_ACCESS)/S2S-Data.py $(DIR_CONFIG)/RioParaguay.mk
 	$(PY_INTERP) $< --lonlim $(RPEAST) $(RPWEST) --latlim $(RPNORTH) $(RPSOUTH) --outfile $@
 
+$(ELEV)	:	$(DIR_ACCESS)/Elevation.py
+	$(PY_INTERP) $< --outfile $@
+
 # Get raw data
-get	: PSI_RAW_850 PSI_RAW_200 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA)
+get	: PSI_RAW_850 PSI_RAW_200 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV)
 
 ################################################################################
 # STEP 02: PROCESS DATA TO GET DERIVED DATA
@@ -147,7 +151,7 @@ derive	:	$(PSI_850) $(PSI_200) $(RAINSUB) $(WTYPES) $(RPYRAIN) $(WTLOG)
 
 nbs = $(wildcard $(DIR_PLT)/*.ipynb)
 nb_htmls = $(nbs:%.ipynb=%.html)
-$(DIR_PLT)/%.html	: $(DIR_PLT)/%.ipynb $(PSI_850) $(RAINSUB) $(WTYPES) $(DIR_CONFIG)/PlotParameters.py
+$(DIR_PLT)/%.html	: $(DIR_PLT)/%.ipynb $(PSI_850) $(RAINSUB) $(WTYPES) $(DIR_CONFIG)/PlotParameters.py $(RPYRAIN)
 	$(JUP_INTERP) $<
 
 # create analysis and plots
