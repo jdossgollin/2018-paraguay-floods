@@ -4,6 +4,7 @@ Data from NCAR/NCEP Reanalysis I 6-hourly
 '''
 
 import numpy as np
+import pandas as pd
 import xarray as xr
 from windspharm.xarray import VectorWind
 import argparse
@@ -13,6 +14,17 @@ parser.add_argument('--level', type=int, nargs=1, help = 'Pressure level (hPa) f
 parser.add_argument('--year', nargs=1, type=int, help='The year of data to download')
 parser.add_argument('--outfile', nargs=1, help='The output file to save!')
 
+def read_reanalysis2(url, level):
+    import xarray as xr
+    import numpy as np
+    # reading in this data is a bit strange
+    ds = xr.open_dataarray(url, decode_cf=False).sel(level=level)
+    del ds.attrs['_FillValue']
+    scale = ds.attrs['scale_factor']
+    offset = ds.attrs['add_offset']
+    ds.values = ds.values * scale + offset # this is not done automatically
+    return(ds)
+
 def main():
     # parse the arguments
     args = parser.parse_args()
@@ -21,10 +33,10 @@ def main():
     outfile = args.outfile[0]
 
     # Get the U and V wind
-    url_u = 'https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/pressure/uwnd.{}.nc'.format(year)
-    url_v = 'https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis/pressure/vwnd.{}.nc'.format(year)
-    U = xr.open_dataarray(url_u).sel(level=level).load()
-    V = xr.open_dataarray(url_v).sel(level=level).load()
+    url_u = 'https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis2/pressure/uwnd.{}.nc'.format(year)
+    url_v = 'https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis2/pressure/vwnd.{}.nc'.format(year)
+    U = read_reanalysis2(url_u, level=level)
+    V = read_reanalysis2(url_v, level=level)
 
     # Get streamfunction
     W = VectorWind(U, V)

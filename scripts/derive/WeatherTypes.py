@@ -5,7 +5,6 @@ Get the weather types using the implementation in paraguayfloodspy
 import xarray as xr
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 from paraguayfloodspy.weather_type import *
 import argparse
 
