@@ -17,11 +17,9 @@ Please see our paper to read about our scientific ideas!
 The below documentation will focus on how the _computation_ is structured, which is only a small piece of the thinking we did.
 If you can't access our paper, please contact us!
 
-## Why Make?
+## Code Layout
 
-Although it may seem needlessly complicated, using a `Makefile` (see [this resource](http://www.jonzelner.net/statistics/make/reproducibility/2016/06/01/makefiles/) for a good overview) lets us simplify our data analysis, particularly for projects where (like this) the computation can be done on a single computer.
-We've written our codes in python, but there's no particular reason why that needs to be the case -- `make` makes it easy to combine outputs of any arbitrary programs.
-Further, we get to separate the core of our data analysis:
+We use a `Makefile` (see [this resource](http://www.jonzelner.net/statistics/make/reproducibility/2016/06/01/makefiles/) to separate the key phases of our data analysis:
 
 1. Define parameters. This is done in the `config/` directory, and different files specify parameters for different parts of the analysis.
 2. **Access** data -- raw data is downloaded and put in `data/accessed`. Once there, it is read in but never modified. Consequently, we get a lot of data -- the entire globe is covered for the rainfall and reanalysis data -- and any subsetting is done later.
@@ -29,19 +27,23 @@ Further, we get to separate the core of our data analysis:
 4. **Analyze** data -- once all the processed data has been created, we're ready for analysis and visualization. This step is performed with jupyter notebooks.
 5. **Write** our results -- using a `latex` file in `writeup/`
 
-Since we're using `make`, a change in our parameters propagates up the chain and causes _only the analysis which depends on that parameter_ to be run. Similarly if we update one of our scripts.
+What `make` allows is for us to make changes to our configuration parameters (or to scripts themselves) and re-rurun _only the parts of the analysis that depend on the changed files_.
+
+We're also liberal about downloading data -- it is better to download more data than is strictly necessary, and then sub-set it, than to repeatedly re-download data (as we learned from experience).
+We download $u$ and $v$ wind globally for every year at our target levels, convert to streamfunction, and save each year and level to file.
+Thus when we change the domains we want to plot, nothing has to change.
 
 ## Dependencies
 
-You need access to `conda` and `make`.
+You need access to `conda` for python and `make`.
 It is possible to install python requirements but not recommended.
+By default dependencies are installed when you run code (next section)
 
 ## Running
 
-
 First, download this repository as a `.zip` and unzip it or use `git clone`.
 Next, and __only the first time you are working with this program__ run `make setup`.
-This will use `conda` to install all required python packages in a `conda` environment called `pyfloods`.
+This will create folders to store you data and will use `conda` to install all required python packages in a `conda` environment called `pyfloods`.
 _If you leave and come back later, just run `source activate pyfloods` to activate these packages_.
 Finally, to make all results, run `make output` -- this will download data, run all analysis, and convert all `jupyter` notebooks to `.html` for your browsing convenience.
 It will also put plots in `_figs`.
