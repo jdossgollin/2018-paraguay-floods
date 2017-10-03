@@ -14,7 +14,7 @@ def main():
     outfile = args.outfile[0]
 
     url = 'http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NGDC/.GLOBE/.topo/'
-    url += 'X/-180/0.25/180/GRID/Y/-90/0.25/90/GRID/'
+    url += 'X/-180/0.1/180/GRID/Y/-90/0.1/90/GRID/'
     url += 'dods'
     elev = xr.open_dataarray(url)
 
