@@ -82,7 +82,6 @@ environment	:
 ################################################################################
 
 PSI_RAW_850: $(patsubst %,$(DIR_ACCESSED)/ncar/streamfunc_850_%.nc,$(YEARS)) # The psi files
-PSI_RAW_200: $(patsubst %,$(DIR_ACCESSED)/ncar/streamfunc_200_%.nc,$(YEARS)) # The psi files
 RAIN_RAW: $(patsubst %,$(DIR_ACCESSED)/cpc/cpc_%.nc,$(YEARS)) # the rain files
 DAILYIDX = $(DIR_ACCESSED)/daily_indices.csv # Daily MJO Indices
 MONTHLYIDX = $(DIR_ACCESSED)/monthly_indices.csv # monthly ENSO indices
@@ -91,9 +90,6 @@ ELEV = $(DIR_ACCESSED)/elevation.nc
 
 $(DIR_ACCESSED)/ncar/streamfunc_850_%.nc: $(DIR_ACCESS)/StreamfuncYear.py
 	$(PY_INTERP) $< --year $* --level 850 --outfile $@
-
-$(DIR_ACCESSED)/ncar/streamfunc_200_%.nc: $(DIR_ACCESS)/StreamfuncYear.py
-	$(PY_INTERP) $< --year $* --level 200 --outfile $@
 
 $(DIR_ACCESSED)/cpc/cpc_%.nc: $(DIR_ACCESS)/CPCRainYear.py
 	$(PY_INTERP) $< --year $* --outfile $@
@@ -111,7 +107,7 @@ $(ELEV)	:	$(DIR_ACCESS)/Elevation.py
 	$(PY_INTERP) $< --outfile $@
 
 # Get raw data
-get	: PSI_RAW_850 PSI_RAW_200 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV)
+get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV)
 
 ################################################################################
 # STEP 02: PROCESS DATA TO GET DERIVED DATA
@@ -121,7 +117,6 @@ get	: PSI_RAW_850 PSI_RAW_200 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S
 ################################################################################
 
 PSI_850 = $(DIR_DERIVED)/psi_850.nc # 850 hPa streamfunction over Southern Hemisphere
-PSI_200 = $(DIR_DERIVED)/psi_200.nc # 850 hPa streamfunction over Southern Hemisphere
 RAINSUB = $(DIR_DERIVED)/precip.nc # Rainfall over South America
 RPYRAIN = $(DIR_DERIVED)/rainfall_rpy.csv # Area-averaged rainfall over Lower Paraguay River Basin
 WTYPES = $(DIR_DERIVED)/WeatherTypes.csv # Weather types by date
@@ -129,8 +124,6 @@ WTLOG = $(DIR_DERIVED)/wtlog.txt # output from the weather typing function (so i
 
 $(PSI_850)	:	$(DIR_DERIVE)/Anomalies.py $(DIR_ACCESSED)/ncar/streamfunc_850_*.nc $(DIR_CONFIG)/Reanalysis.mk $(DIR_CONFIG)/Time.mk
 	$(PY_INTERP) $< --mode reanalysis --pattern '$(DIR_ACCESSED)/ncar/streamfunc_850_*.nc' --lonlim $(RWEST) $(REAST) --latlim $(RSOUTH) $(RNORTH) --years $(SYEAR) $(EYEAR) --outfile $@
-$(PSI_200)	:	$(DIR_DERIVE)/Anomalies.py $(DIR_ACCESSED)/ncar/streamfunc_200_*.nc $(DIR_CONFIG)/Reanalysis.mk $(DIR_CONFIG)/Time.mk
-	$(PY_INTERP) $< --mode reanalysis --pattern '$(DIR_ACCESSED)/ncar/streamfunc_200_*.nc' --lonlim $(RWEST) $(REAST) --latlim $(RSOUTH) $(RNORTH) --years $(SYEAR) $(EYEAR) --outfile $@
 $(RAINSUB)	:	$(DIR_DERIVE)/Anomalies.py $(DIR_ACCESSED)/cpc/cpc_*.nc $(DIR_CONFIG)/Rain.mk $(DIR_CONFIG)/Time.mk
 	$(PY_INTERP) $< --mode rain --pattern '$(DIR_ACCESSED)/cpc/cpc_*.nc' --lonlim $(PWEST) $(PEAST) --latlim $(PSOUTH) $(PNORTH) --years $(SYEAR) $(EYEAR) --outfile $@
 $(WTLOG) $(WTYPES)	:	$(DIR_DERIVE)/WeatherTypes.py $(PSI_850) config/WeatherTypes.mk
@@ -140,7 +133,7 @@ $(RPYRAIN)	: $(DIR_DERIVE)/AreaAveragedRain.py	$(RAINSUB) $(DIR_CONFIG)/RioParag
 	$(PY_INTERP) $< --infile $(RAINSUB) --lonlim $(RPWEST) $(RPEAST) --latlim $(RPNORTH) $(RPSOUTH) --outfile $@
 
 # get derived variables
-derive	:	$(PSI_850) $(PSI_200) $(RAINSUB) $(WTYPES) $(RPYRAIN) $(WTLOG)
+derive	:	$(PSI_850) $(RAINSUB) $(WTYPES) $(RPYRAIN) $(WTLOG)
 
 ################################################################################
 # STEP 03: RUN ALL THE JUPYTER NOTEBOOKS in 03-Analyze-Plot

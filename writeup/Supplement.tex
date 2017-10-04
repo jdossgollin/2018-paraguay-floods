@@ -9,10 +9,12 @@
 \usepackage{
 	siunitx, % units
   graphicx, % for images
-	natbib
+	natbib,
+	booktabs
 }
 \usepackage[letterpaper]{geometry}
 \renewcommand{\thefigure}{S\arabic{figure}}
+\renewcommand{\thetable}{S\arabic{table}}
 \usepackage[breaklinks=true]{hyperref}
 
 
@@ -31,7 +33,30 @@
 
 This document contains several supplemental figures described in the main text.
 Further supporting information is available in the form of source code and \texttt{jupyter} notebooks at \url{github.com/jdossgollin/PYFloods}.
+
+\listoftables
 \listoffigures
+
+\clearpage
+
+\begin{table}
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		{} &  NDJF 2015-16 &  Climatology \\
+		WT &           &              \\
+		\midrule
+		1     &  0.266667 &     0.213306 \\
+		2     &  0.216667 &     0.177793 \\
+		3     &  0.133333 &     0.160935 \\
+		4     &  0.116667 &     0.152619 \\
+		5     &  0.191667 &     0.151944 \\
+		6     &  0.075000 &     0.143403 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Weather type (WT) occurrence fraction during NDJF 2015-16 and Climatology}
+\end{table}
+
 \clearpage
 
 \begin{figure}
@@ -56,13 +81,6 @@ Further supporting information is available in the form of source code and \text
 	\caption{
 		Classifiability index \citep[see Methods and][]{Michelangeli1995} calculated for several chosen values of $K$, representing the number of weather types produced.
 		Results are produced with only 50 simulations for each $K$.
-	}
-\end{figure}
-
-\begin{figure}
-  \includegraphics[width=\textwidth]{../figs/WT_Occurrence_Proportion.pdf}
-	\caption{
-		Occurrence fraction of NDJF weather types for all years (blue) and 2015-16 (orange).
 	}
 \end{figure}
 

@@ -16,6 +16,7 @@
 	url, % for URLs
 	amsmath, % for math
 	array, % for fixed-width tables
+	booktabs, % for nice tables
 }
 \newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
 
@@ -305,18 +306,15 @@ While weather typing requires simplifying the dynamics of daily circulation patt
 \Cref{fig:rain-wt} shows a time series of area-averaged rainfall over the Lower Paraguay River Basin for NDJF 2015-16 and the corresponding weather types.
 This plot shows that intense rainfall concentrated over a period spanning from mid-November 2015 through early January 2016, with shorter peaks in late January and mid-February.
 
-As predicted by \cref{fig:wt-composite}, the most intense rainfall occurred during weather types 1 and 4.
-In particular, many (though not all) such events occured during a transition of WT1-WT4-WT5, which is consistent with the westerlay passage of a mid-latitude system as shown in \cref{fig:lagged-rain}.
-During NDJF 2015-16 weather type 1 occurred nearly twice as often (33\% of days) as its climatology (19\% of days), weather type 4 occurred slightly more often (18\% of days) than its climatology (16\% of days), and other weather types occurred less frequently than their climatology (see Figure S3).
-During mid-January, during a sequence of persistent low rainfall, weather type 3 featured persistently, leading to intense rainfall over central Brazil (not shown) and negligible rainfall over the Lower Paraguay River Basin.
+As predicted by \cref{fig:wt-composite}, the most intense rainfall occurred during weather types 1 and 5.
+During NDJF 2015-16 weather types 1 and 5 (Chaco and No-Chaco jet extensions, respectively) occurred more frequency than their climatology (supplemental table S1); weather type 2 also occurred more frequently than its climatology, largely due to a long sequence in February 2016.
+During mid-January 2015, during a sequence of persistent low rainfall, weather type 3 featured persistently, leading to intense rainfall over central Brazil (not shown) and negligible rainfall over the Lower Paraguay River Basin.
 Thus while the intensity and persistence of intense rainfall was atypical, the causal mechanism of the intense rainfall observed during this season was consistent with climatology.
 
-Additionally, the weather types associated with different ``regimes'' in the season were different.
+Inspection of \cref{fig:rain-wt} also suggests that at time scales of days to weeks, particular sequences of weather types tend to repeat themselves, and are associated with repeated rainfall storms.
 The rainfall in late November 2015 occurred during weather type 1 and 4 days, with intermitent (and dry) weather type 5 occurrences.
-During mid to late December 2015, weather types 1 and 4 produced rainfall but the intermittent dry days were weather type 2.
+During mid to late December 2015, weather types 1 and 5 produced rainfall but the intermittent dry days were weather type 2.
 During early January 2016 weather types 3 and 6 led to persistent low rainfall.
-Interestingly, the sequence of weather type 4 days did not produce significant rainfall; this is likely because the lack of preceding weather type 1 (Chaco Jet event) days limited the moisture and energy available for severe convection.
-Finally, during February 2016 the observed sequences 1-4-4, 3-6-4, and even 1-5-2 led to intense rainfall.
 
 Transitioning from exploring the time evolution of the reduced-dimension system represented by the weather types, monthly-scale circulation anomalies (\cref{fig:anomalies}) show a weak anticyclonic circulation thta set up over central Brazil during November 2015 and strengthened into the following month.
 In January 2016 it weakened before returning in February 2016.
@@ -372,6 +370,14 @@ MAYBE I NEED TO USE THE METHOD DEVELOPED IN MUNOZ ET AL 2016. OR WE SHOULD EXCIS
 
 \section{Discussion}
 \label{sec:discussion}
+
+From the results obtained, we can see that the rainfall of NDJF 2015-16 was associated with the typical mechanisms discussed in the literature \citep{Saulo:2007km,Salio:2007gd,Marengo2004,Velasco1987}.
+In particular, the intensity and exit location of the low-level jet let to several sequences of intense rainfall during NDJF 2015-16.
+The approximately six-week period from mid-November 2015 through early January 2016 that led to the most severe flooding was exceptional primarily for the number of intense storms that directly impacted the Lower Paraguay River Basin.
+During this period a low-level cyclonic anomaly over Central Brazil, associated with hemispheric-scale circulation anomalies (\cref{fig:anomalies}) strongly favored weather type 1, associated with the greatest influx of moisture and energy to the Lower Paraguay River Basin, and weather type 5, associated with low-level wind shear and rainfall over the Lower Paraguay River Basin and Southern Brazil.
+Weather types 1 and 5 look like like EOFs 2 and 3 of the \SI{850}{\hecto\pascal} streamfunction field \cref{fig:eof-loading}; further analysis (supplemental figure S4) shows that when EOF2 is negative and EOF3 is positive, strong rainfall is expected in the Lower Paraguay River Basin, and when EOF2 is negative but EOF3 is also negative low rainfall is expected in the Lower Paraguay River Basin but substantial rainfall is expected further to the South and West.
+
+
 
 I SUGGEST TO START WITH (OR TO HAVE IT CLOSE TO THE START) RAINFALL STREAMFLOW ANALYSIS AND THE CORRESPONDING FIGURE.
 
@@ -444,10 +450,10 @@ Streamflow data was collected by the Paraguayan Navy and National Administration
 	Two initializations are used: Nov 12th and 16th, 2015.} \label{tab:mos-methods}
 \begin{center}
 \begin{tabular}{L{0.75in} L{1.15in} L{3.5in}}
-\hline\hline
+\toprule
 Model & Region (Predictor) & Final predictor(s) selected \\
 %
-\hline
+\midrule
 %
 \emph{Raw} & \SIrange{39}{17}{\degree S}; \SIrange{66}{49}{\degree W} & Ensemble mean, computed using members from the  two initializations. No correction performed. \\
 %
@@ -459,7 +465,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 %
 \emph{CCA} & \SIrange{60}{0}{\degree S}; \SIrange{80}{30}{\degree W} & Canonical modes computed using both initializations as independent predictors. (10 predictor EOFs, 4 predictand EOFs, 4 canonical modes) \\
 %
-\hline\hline
+\bottomrule
 %
 \end{tabular}
 \end{center}
@@ -481,6 +487,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 		As for (L), the ``Lower Paraguay River Basin'' is indicated.
 		Streamflows shown in \cref{fig:streamflow} were taken from the fours stations indicated.
 		The Paraguay River and its tributaries, from the Natural Earth database (\texttt{www.naturalearthdata.com}), are also shown.
+		Full station names are: Bah\'ia Negra (Bne); Concepci\'on (Conc); Asunci\'on (Asu); Pilar (Pil).
 	}
   \label{fig:study-area}
 \end{figure*}
@@ -502,8 +509,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 	\noindent\includegraphics[width=6.5in]{../figs/NDJF201516Anomaly.pdf}
 	\caption{
     	Monthly composite anomalies observed during NDJF 2015-16.
-      Top row shows absolute monthly mean values (color) and monthly-mean anomalies (contour) of streamfunction at \SI{850}{\hecto\pascal} $\psi_{850}$.
-			Contour interval for anomalies is \SI{1e6}{\meter\squared\per\second}.
+    	Top and middle rows show streamfunction anomalies at \SIlist{200;850}{\hecto\pascal}, respectively.
       Bottom row shows monthly-mean rainfall anomalies, in units of \si{\milli\meter\per\day}.
 	}
   \label{fig:anomalies}
@@ -512,7 +518,7 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 \begin{figure*}
 	\noindent\includegraphics[width=6.5in]{../figs/PSI_EOF_Loadings.pdf}
 	\caption{
-    	Leading four EOF loadings of daily NDJF \SI{850}{\hecto\pascal} streamfunction $\psi$ over chosen domain.
+    	Leading EOF loadings of daily NDJF \SI{850}{\hecto\pascal} streamfunction $\psi$ over chosen domain.
 			EOFs are calculated after removing the climatology; see \cref{sec:methods}\ref{sec:climatology-anomalies} for details.
 	}
   \label{fig:eof-loading}
@@ -522,9 +528,8 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 	\noindent\includegraphics[width=6.5in,height=9in,keepaspectratio=true]{../figs/WTComposite.pdf}
 	\caption{
 		Composite anomalies associated with each weather type (column).
-		Top row shows absolute monthly mean values (color) and monthly-mean anomalies (contour) of streamfunction at \SI{850}{\hecto\pascal} $\psi_{850}$.
-		Contour interval for anomalies is \SI{1e6}{\meter\squared\per\second}.
-    Bottom row shows precipitation anomalies in units of \si{\milli\meter\per\day}.
+		Top and middle rows show streamfunction anomalies at \SIlist{200;850}{\hecto\pascal}, respectively.
+		Bottom row shows monthly-mean rainfall anomalies, in units of \si{\milli\meter\per\day}.
 	}
 	\label{fig:wt-composite}
 \end{figure*}
@@ -543,9 +548,8 @@ Model & Region (Predictor) & Final predictor(s) selected \\
 	\caption{
 		Circulation anomalies associated with intense rainfall (95th percentile exceedance of area-averaged rainfall in the Lower Paraguay River Basin shown in \cref{fig:study-area}).
 		Lagged composites are shown, by column, for $t = $ \SIlist{-2;-1;0;1}{\day} relative to the date of intense rainfall.
-		Top row shows absolute monthly mean values (color) and monthly-mean anomalies (contour) of streamfunction at \SI{850}{\hecto\pascal} $\psi_{850}$.
-		Contour interval for anomalies is \SI{1e6}{\meter\squared\per\second}.
-    Bottom row shows precipitation anomalies in units of \si{\milli\meter\per\day}.
+		Top and middle rows show streamfunction anomalies at \SIlist{200;850}{\hecto\pascal}, respectively.
+		Bottom row shows monthly-mean rainfall anomalies, in units of \si{\milli\meter\per\day}.
 	}
   \label{fig:lagged-rain}
 \end{figure*}
