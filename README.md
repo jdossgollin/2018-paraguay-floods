@@ -41,11 +41,14 @@ By default dependencies are installed when you run code (next section)
 
 ## Running
 
+The following instructions are for *NIX systems:
+
 1. Download this repository using `git clone` or just download as a `.zip`
 2. __Only the first time you are working with this program__ run `make setup`. This will create folders to store you data and will use `conda` to install all required python packages in a `conda` environment called `pyfloods`.
-3. To make all results, run `make output` -- this will download data, run all analysis, and convert all `jupyter` notebooks to `.html` for your browsing convenience.
+3. Type `source activate pyfloods`
+4. To make all results, run `make output` -- this will download data, run all analysis, and convert all `jupyter` notebooks to `.html` for your browsing convenience.
 It will also put plots in `_figs`.
-4. To create the writeup, run `make tex` -- this is not done by default when you run `make output`
+5. To create the writeup, run `make tex` -- this is not done by default when you run `make output`
 
 Please note that when you run `make output`, you're likely to see a bunch of warnings that look like this:
 ```
