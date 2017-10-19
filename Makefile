@@ -66,6 +66,7 @@ dirs	:
 
 # running make environment will create the custom conda environment
 environment	:
+	conda update -y conda;\
 	conda env create --file environment.yml;\
 	source activate pyfloods;\
 	conda install -c conda-forge cartopy eofs nbstripout netcdf4 windspharm;\
