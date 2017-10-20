@@ -62,7 +62,7 @@ YEARS := $(shell seq $(SYEAR) 1 $(EYEAR)) # don't edit this!!
 # running make dirs will create these directories if they don't exist already
 dirs	:
 	mkdir -p $(DIR_FIG)
-	mkdir -p $(DIR_ACCESSED)/cpc $(DIR_ACCESSED)/ncar
+	mkdir -p $(DIR_ACCESSED)/cpc $(DIR_ACCESSED)/ncar $(DIR_DERIVED)
 
 # running make environment will create the custom conda environment
 environment	:
@@ -136,7 +136,7 @@ $(RPYRAIN)	: $(DIR_DERIVE)/AreaAveragedRain.py	$(RAINSUB) $(DIR_CONFIG)/RioParag
 derive	:	$(PSI_850) $(RAINSUB) $(WTYPES) $(RPYRAIN) $(WTLOG)
 
 ################################################################################
-# STEP 03: RUN ALL THE JUPYTER NOTEBOOKS in 03-Analyze-Plot
+# STEP 03: RUN ALL THE JUPYTER NOTEBOOKS TO MAKE PLOTS
 #
 # This will generate the required figures
 # Any time that *any* of the "derived" data is updated, all notebooks will be
