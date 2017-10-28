@@ -31,6 +31,9 @@ def main():
     psi = xr.open_dataset(args.psi850[0])
     psi = psi.sel(lon = slice(lonmin, lonmax), lat = slice(latmax, latmin))
 
+    # TO REPRODUCE OUR RESULTS
+    np.random.seed(2015)
+
     # All the computation is in the paraguayfloodspy.weather_type module
     best_centroid, best_ts, classifiability = XrEofCluster(
         psi,
