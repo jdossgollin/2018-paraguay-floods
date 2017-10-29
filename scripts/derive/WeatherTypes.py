@@ -32,7 +32,7 @@ def main():
     psi = psi.sel(lon = slice(lonmin, lonmax), lat = slice(latmax, latmin))
 
     # TO REPRODUCE OUR RESULTS
-    np.random.seed(2015)
+    np.random.seed(22590)
 
     # All the computation is in the paraguayfloodspy.weather_type module
     best_centroid, best_ts, classifiability = XrEofCluster(
