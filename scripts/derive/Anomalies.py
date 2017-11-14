@@ -57,19 +57,12 @@ def main():
         raise ValueError('mode must be rain or reanalysis')
 
     # calculate anomaly
-    anomaly = SmoothAnomaly(raw, year0=1980, year1=2010, window=30, time_name='time')
-    anomaly = anomaly.reset_coords().drop('doy')
-    if args.mode[0] =='rain':
-        anomaly = anomaly['rain']
-    elif args.mode[0] == 'reanalysis':
-        anomaly = anomaly['streamfunction']
-    else:
-        raise ValueError('mode must be rain or reanalysis')
+    raw = raw.sel(time = slice('{}-11-01'.format(syear), '{}-02-28'.format(eyear)))
+    raw = raw.sel(time = np.in1d(raw['time.month'], [11, 12, 1, 2]))
+    anomaly = raw - raw.mean(dim='time')
 
     # combine and subset and save
     combined = xr.Dataset({'raw': raw, 'anomaly': anomaly})
-    combined = combined.sel(time = slice('{}-11-01'.format(syear), '{}-02-28'.format(eyear)))
-    combined = combined.sel(time = np.in1d(combined['time.month'], [11, 12, 1, 2]))
     combined.to_netcdf(args.outfile[0], format='NETCDF4')
 
 if __name__ == '__main__':

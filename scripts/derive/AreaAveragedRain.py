@@ -25,10 +25,10 @@ def main():
     lonmin, lonmax = np.min(args.lonlim), np.max(args.lonlim)
     rain = xr.open_dataset(infile).sel(lon = slice(lonmin, lonmax), lat = slice(latmin, latmax))
     rain_mean = rain.mean(dim=['lon', 'lat'])
-    rain_mean = rain_mean.to_dataframe()
+    print(rain_mean)
 
     # Save to file
-    rain_mean.to_csv(outfile)
+    rain_mean.to_netcdf(outfile)
 
 if __name__ == '__main__':
     main()

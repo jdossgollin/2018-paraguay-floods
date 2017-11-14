@@ -68,6 +68,7 @@ dirs	:
 environment	:
 	conda update -y conda;\
 	conda env create --file environment.yml;\
+	source activate pyfloods;\
 	conda install -yc conda-forge cartopy eofs nbstripout netcdf4 windspharm;\
 	nbstripout --install --attributes .gitattributes;\
 	pip install git+git://github.com/jdossgollin/paraguayfloodspy@master
@@ -118,7 +119,7 @@ get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV
 
 PSI_850 = $(DIR_DERIVED)/psi_850.nc # 850 hPa streamfunction over Southern Hemisphere
 RAINSUB = $(DIR_DERIVED)/precip.nc # Rainfall over South America
-RPYRAIN = $(DIR_DERIVED)/rainfall_rpy.csv # Area-averaged rainfall over Lower Paraguay River Basin
+RPYRAIN = $(DIR_DERIVED)/rainfall_rpy.nc # Area-averaged rainfall over Lower Paraguay River Basin
 WTYPES = $(DIR_DERIVED)/WeatherTypes.csv # Weather types by date
 WTLOG = $(DIR_DERIVED)/wtlog.txt # output from the weather typing function (so it's retained)
 
