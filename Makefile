@@ -88,6 +88,9 @@ DAILYIDX = $(DIR_ACCESSED)/daily_indices.csv # Daily MJO Indices
 MONTHLYIDX = $(DIR_ACCESSED)/monthly_indices.csv # monthly ENSO indices
 S2SAA = $(DIR_ACCESSED)/AreaAvg.nc # Area-averaged S2S forecasts over target region
 ELEV = $(DIR_ACCESSED)/elevation.nc
+S2S_FCST = $(DIR_ACCESSED)/s2s_forecast.nc
+S2S_SKILL = $(DIR_ACCESSED)/s2s_skill.nc
+S2S_IGNOR = $(DIR_ACCESSED)/s2s_ignorance.nc
 
 $(DIR_ACCESSED)/ncar/streamfunc_850_%.nc: $(DIR_ACCESS)/StreamfuncYear.py
 	$(PY_INTERP) $< --year $* --level 850 --outfile $@
@@ -107,8 +110,11 @@ $(S2SAA)	:	$(DIR_ACCESS)/S2S-Data.py $(DIR_CONFIG)/RioParaguay.mk
 $(ELEV)	:	$(DIR_ACCESS)/Elevation.py
 	$(PY_INTERP) $< --outfile $@
 
+$(S2S_FCST) $(S2S_SKILL) $(S2S_IGNOR)	:	$(DIR_ACCESS)/S2S-Skill.py
+	$(PY_INTERP) $< --forecast $(S2S_FCST) --skill $(S2S_SKILL) --ignorance $(S2S_IGNOR)
+
 # Get raw data
-get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV)
+get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV) $(S2S_FCST) $(S2S_SKILL) $(S2S_IGNOR)
 
 ################################################################################
 # STEP 02: PROCESS DATA TO GET DERIVED DATA
