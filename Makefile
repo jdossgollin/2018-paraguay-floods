@@ -87,7 +87,8 @@ RAIN_RAW: $(patsubst %,$(DIR_ACCESSED)/cpc/cpc_%.nc,$(YEARS)) # the rain files
 DAILYIDX = $(DIR_ACCESSED)/daily_indices.csv # Daily MJO Indices
 MONTHLYIDX = $(DIR_ACCESSED)/monthly_indices.csv # monthly ENSO indices
 S2SAA = $(DIR_ACCESSED)/AreaAvg.nc # Area-averaged S2S forecasts over target region
-ELEV = $(DIR_ACCESSED)/elevation.nc\
+ELEV = $(DIR_ACCESSED)/elevation.nc
+SST = $(DIR_ACCESSED)/sst.nc
 
 $(DIR_ACCESSED)/ncar/streamfunc_850_%.nc: $(DIR_ACCESS)/StreamfuncYear.py
 	$(PY_INTERP) $< --year $* --level 850 --outfile $@
@@ -106,9 +107,11 @@ $(S2SAA)	:	$(DIR_ACCESS)/S2S-Data.py $(DIR_CONFIG)/RioParaguay.mk
 
 $(ELEV)	:	$(DIR_ACCESS)/Elevation.py
 	$(PY_INTERP) $< --outfile $@
+$(SST)	:
+	wget -O $@ http://iridl.ldeo.columbia.edu/expert/SOURCES/.NOAA/.NCEP/.EMC/.CMB/.GLOBAL/.Reyn_SmithOIv2/.monthly/.ssta/data.nc
 
 # Get raw data
-get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV)
+get	: PSI_RAW_850 RAIN_RAW $(DAILYIDX) $(DAILYIDX) $(MONTHLYIDX) $(S2SAA) $(ELEV) $(SST)
 
 ################################################################################
 # STEP 02: PROCESS DATA TO GET DERIVED DATA
