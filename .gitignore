@@ -1,6 +1,5 @@
 *.nc
 *.csv
-*.pdf
 */.ipynb_checkpoints/*
 *.html
 *.aux
@@ -12,7 +11,5 @@
 *.lof
 *.lot
 *.log
-*.png
 *.ttt
 *.txt
-figs/*
