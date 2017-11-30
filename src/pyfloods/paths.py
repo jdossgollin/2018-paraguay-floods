@@ -12,3 +12,4 @@ for dir in [data_external, data_raw, data_processed, figures]:
         os.makedirs(dir)
 
 file_station_description = os.path.join(data_raw, 'station_description.csv')
+file_weather_types = os.path.join(data_processed, 'weather_types.nc')

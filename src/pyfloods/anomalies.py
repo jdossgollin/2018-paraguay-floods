@@ -9,7 +9,9 @@ from pyfloods.dataset import SingleFileDataSet,CPC
 from pyfloods.region import Region
 
 class Anomaly(SingleFileDataSet):
-    def __init__(self, superset: Any, fname: str, region: Region, sdate: datetime, edate: datetime, months: List[int]=[11, 12, 1, 2], verbose: bool=False) -> None:
+    def __init__(self, superset: Any, fname: str, varname:str, region: Region,
+                sdate: datetime, edate: datetime, months: List[int]=[11, 12, 1, 2],
+                verbose: bool=False) -> None:
         self.superset = superset
         params: Dict = superset.assets[0].params.copy()
         params.pop('year', None); params.pop('level', None)
@@ -21,11 +23,12 @@ class Anomaly(SingleFileDataSet):
             'latmin': region.latmin.astype('float'),
             'latmax': region.latmax.astype('float')
         })
+        self.varname = varname
         self.months = months
         super().__init__(fname=fname, params=params, verbose=verbose)
 
     def download_data(self) -> xr.DataArray:
-        raw = self.superset.get_data().to_array()
+        raw = self.superset.get_data()[self.varname]
         raw = raw.sortby('lat').sortby('lon')
         raw = raw.sel(
             lon = slice(self.params['lonmin'], self.params['lonmax']),
@@ -61,7 +64,7 @@ from pyfloods.streamfunction import psi
 from pyfloods import paths
 
 rainfall = Anomaly(
-    superset = cpc,
+    superset = cpc, varname = 'rain',
     fname = os.path.join(paths.data_processed, 'rainfall.nc'),
     region = region.rainfall,
     sdate = pd.to_datetime(cpc.get_data().time.min().values),
@@ -70,7 +73,7 @@ rainfall = Anomaly(
 )
 
 streamfunction = Anomaly(
-    superset = psi,
+    superset = psi, varname='streamfunction',
     fname = os.path.join(paths.data_processed, 'streamfunction.nc'),
     region = region.reanalysis,
     sdate = pd.to_datetime(psi.get_data().time.min().values),
