@@ -37,6 +37,7 @@ class S2SAreaAvg(SingleFileDataSet):
         url += 'dods'
         ds = xr.open_dataarray(url)
         ds = ds.sel(S = slice(self.sdate, self.edate))
+        ds['S'] = pd.to_datetime(ds['S'].values)
         ds['L'] = ds['L']
         ds.attrs['lonmin'] = self.lonmin
         ds.attrs['lonmax'] = self.lonmax
