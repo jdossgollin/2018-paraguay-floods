@@ -4,12 +4,13 @@ channels:
 dependencies:
   - python=3.6
   - bottleneck
+  - dask
+  - ipython
   - jupyter
   - matplotlib
   - numpy
   - pandas
   - pip
-  - seaborn
   - scipy
   - scikit-learn
   - xarray

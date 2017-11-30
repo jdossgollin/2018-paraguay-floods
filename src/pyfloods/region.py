@@ -1,5 +1,6 @@
 # Define spatial and temporal boundaries of the analysis
 import datetime
+import cartopy.crs as ccrs
 
 class Region:
     def __init__(self, lon, lat):
@@ -32,10 +33,10 @@ wtype = Region(lon = [-65, -45], lat = [-30, -15])
 lower_py_river = Region(lon = [-59.75, -55.75], lat = [-27.75, -22.75])
 south_america = Region(lon = [-85, -30], lat = [-40, 5])
 southern_hemisphere = Region(lon = [-120, 0], lat = [-50, 5])
-reanalysis = Region(lon = [-180, 180], lat = [-60, 10])
-rainfall = Region(lon = [-90, -30], lat = [-60, 10])
+reanalysis = Region(lon = [-177.5, 180], lat = [-60, 10])
+rainfall = Region(lon = [-89.75, -30.25], lat = [-59.75, 9.75])
 
 syear = 1979
-eyear = 1981
-sdate = datetime.date(syear, 1, 1)
-edate = datetime.date(syear, 12, 31)
+eyear = 2016
+sdate = datetime.datetime(syear, 1, 1)
+edate = datetime.datetime(eyear, 12, 31)

@@ -11,9 +11,4 @@ for dir in [data_external, data_raw, data_processed, figures]:
     if not os.path.isdir(dir):
         os.makedirs(dir)
 
-streamfunction = os.path.abspath(os.path.join(data_processed, 'streamfunction.nc'))
-rainfall = os.path.abspath(os.path.join(data_processed, 'precip.nc'))
-monthly_indices = os.path.abspath(os.path.join(data_external, 'monthly_indices.csv'))
-daily_indices = os.path.abspath(os.path.join(data_external, 'daily_indices.csv'))
-elevation_data = os.path.abspath(os.path.join(data_external, 'elevation_data.nc'))
-s2s_area_avg = os.path.abspath(os.path.join(data_external, 's2s_area_avg.nc'))
+file_station_description = os.path.join(data_raw, 'station_description.csv')

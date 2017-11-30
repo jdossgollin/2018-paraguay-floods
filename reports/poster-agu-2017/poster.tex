@@ -1,0 +1,136 @@
+\documentclass[serif,mathserif,final]{beamer}
+\mode<presentation>{\usetheme{Lankton}}
+
+
+\setbeamertemplate{caption}[numbered] % number figs
+\usepackage[
+  orientation=landscape,
+  size=custom,
+  width=121.92,height=91.44,%size=a0, % paper size
+  scale=1.075 % font scale factor
+  ]{beamerposter}
+
+
+% Graphics Path
+\usepackage{graphicx}
+\graphicspath{{"figs/"}}
+
+% OTHER PACKAGE CALLS
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amssymb,physics} % math symbols
+\usepackage{siunitx}
+\sisetup{round-mode = figures, round-precision = 3}
+\input{tikz_setup.tex}
+
+% eg and ie
+\usepackage{xspace}
+\newcommand*{\eg}{e.g.\@\xspace}
+\newcommand*{\ie}{i.e.\@\xspace}
+
+% this package loads last except for biblatex
+\usepackage{cleveref}
+
+% Use BibLaTeX
+\usepackage[
+	backend=biber,
+	doi=false,
+	url=false,
+	isbn=false,
+	maxnames=3,
+	minnames = 1,
+	style=numeric-comp,
+	sorting=none,
+	natbib=true,
+	firstinits=true,
+	isbn=false
+  ]{biblatex}
+\renewbibmacro{in:}{}
+\addbibresource{library.bib}
+\AtEveryBibitem{
+  \clearfield{month}
+  \clearlist{language}
+  \clearfield{pages}
+  \clearfield{pages}
+  \clearfield{volume}
+  \clearfield{number}
+  \ifentrytype{article}{%
+      \clearfield{title}%
+  }%
+}
+\setbeamertemplate{bibliography item}[text] % don't print the silly symbols
+
+%-- Header and footer information ----------------------------------
+\newcommand{\footleft}{Corresponding author: \url{djf2137@columbia.edu}}
+\newcommand{\footright}{Presenting author: \url{james.doss-gollin@columbia.edu}}
+\title{Regional Intense Precipitation: Inferences from GCM Atmospheric Circulation Fields}
+\author{David Farnham\inst{1,2} \quad James Doss-Gollin\inst{1,2} \quad Upmanu Lall\inst{1,2}}
+\institute{\inst{1} Columbia Water Center \quad \inst{2} Department of Earth and Environmental Engineering, Columbia University}
+
+
+%-------------------------------------------------------------------
+
+
+%-- Main Document --------------------------------------------------
+\begin{document}
+
+% Statistical Macros
+\def\ci{\perp\!\!\!\perp}
+\def\ex{\mathbb{E}}
+\def\prob{\mathbb{P}}
+\def\ind{\mathbb{I}}
+\def\grad{\triangledown}
+\def\bigo{\mathcal{O}}
+\def\normal{\mathcal{N}}
+\def\bern{\text{Bernoulli}}
+\def\logit{\text{logit}}
+\def\binom{\text{Bin}}
+\def\poiss{\text{Poiss}}
+\def\cauchy{\text{Cauchy}}
+\def\sigmoid{\vb{\sigma}}
+\def\given{\big|}
+\def\stan{\texttt{Stan~}}
+
+\begin{frame}{}
+  \begin{columns}[t]
+
+    %-- Column 1 ---------------------------------------------------
+    \begin{column}{0.23\linewidth}
+
+      \input{blocks/motivation.tex}
+      \input{blocks/questions.tex}
+      \input{blocks/methods-data.tex}
+
+    \end{column}%1
+
+    %-- Column 2 ---------------------------------------------------
+    \begin{column}{0.23\linewidth}
+
+      \input{blocks/rip-gcm-obs.tex}
+      \input{blocks/rip-circulations.tex}
+
+    \end{column}%2
+
+    %-- Column 3 ---------------------------------------------------
+    \begin{column}{0.23\linewidth}
+
+      \input{blocks/indices.tex}
+      \input{blocks/conditional-simulation.tex}
+
+    \end{column}%3
+
+    %-- Column 4 ---------------------------------------------------
+    \begin{column}{0.23\linewidth}
+      \input{blocks/future-simulation.tex}
+      \input{blocks/summary.tex}
+      \input{blocks/future-work.tex}
+      \begin{block}{References}
+        \renewcommand*{\bibfont}{\footnotesize}
+        \printbibliography[heading=none]
+      \end{block}
+      \input{blocks/thanks.tex}
+
+    \end{column}%1
+
+  \end{columns}
+\end{frame}
+\end{document}
