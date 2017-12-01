@@ -57,3 +57,4 @@ from .mjo_bom import MJOBOMD
 from .nino_34 import KaplanNINO34
 from .reanalysisv2 import ReanalysisV2
 from .s2s_area_avg import S2SAreaAvg
+from .sst import CMBGLOBAL

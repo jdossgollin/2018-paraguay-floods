@@ -2,6 +2,7 @@ import xarray as xr
 import numpy as np
 from typing import Dict,Tuple,List
 from windspharm.xarray import VectorWind
+import pandas as pd
 import os
 
 from pyfloods.dataset.reanalysisv2 import RV2Year
@@ -28,15 +29,23 @@ class PsiYear(SingleFileDataSet):
         super().__init__(fname=self.fname, params=params, verbose=verbose)
 
     def download_data(self) -> xr.DataArray:
+
         U = self.uwnd.get_data()
         V = self.vwnd.get_data()
         W = VectorWind(U, V)
         streamfunc = W.streamfunction()
-        streamfunc.to_netcdf(self.fname, format='NETCDF4')
-        streamfunc.attrs['coord_system'] = self.params.get('coord_system')
-        streamfunc.attrs['level'] = self.params.get('level')
-        streamfunc.attrs['year'] = self.params.get('year')
-        streamfunc.attrs['var'] = self.params.get('var')
+
+        old_time = pd.to_datetime(streamfunc['time'].values)
+        new_time = old_time + pd.DateOffset(hours=12)
+        streamfunc['time'] = new_time
+        streamfunc = streamfunc.resample(time='1D').mean(dim='time')
+        streamfunc.attrs.update({
+            'coord_system': self.params.get('coord_system'),
+            'level': self.params.get('level'),
+            'year': self.params.get('year'),
+            'var': self.params.get('var')
+        })
+
         streamfunc.to_netcdf(self.fname, format='NETCDF4')
         return streamfunc
 

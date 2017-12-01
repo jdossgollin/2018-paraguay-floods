@@ -8,7 +8,7 @@ import numpy as np
 from datetime import datetime
 import os
 
-from pyfloods.dataset import MJOBOMD, KaplanNINO34, NOAANGDC, S2SAreaAvg, ReanalysisV2, CPC
+from pyfloods.dataset import MJOBOMD, KaplanNINO34, NOAANGDC, S2SAreaAvg, ReanalysisV2, CPC, CMBGLOBAL
 from pyfloods import paths
 from pyfloods import region
 
@@ -26,6 +26,10 @@ enso = KaplanNINO34(
 )
 topo = NOAANGDC(
     fname = os.path.abspath(os.path.join(paths.data_external, 'elevation_data.nc')),
+    verbose = verbose
+)
+sst = CMBGLOBAL(
+    fname = os.path.abspath(os.path.join(paths.data_external, 'cmb_sst_data.nc')),
     verbose = verbose
 )
 s2s = S2SAreaAvg(
