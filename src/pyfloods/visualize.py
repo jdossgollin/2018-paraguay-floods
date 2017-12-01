@@ -18,13 +18,13 @@ def _FormatAxis(ax, coast=True, grid=False, border=True, river = False, extent=N
         ax.set_yticks(ticks[1], crs=ccrs.PlateCarree())
         lat_formatter = LatitudeFormatter()
         ax.yaxis.set_major_formatter(lat_formatter)
-    if extent is not None:
-        ax.set_extent(extent, crs = ccrs.PlateCarree())
     if len(feature_list) > 0:
         for f in feature_list:
             ax.add_feature(f)
     if states is not None:
         ax.add_feature(states, edgecolor='gray')
+    if extent is not None:
+        ax.set_extent(extent, crs = ccrs.PlateCarree())
 
 def FormatAxes(axes, states=False, **kwargs):
     import matplotlib.pyplot as plt

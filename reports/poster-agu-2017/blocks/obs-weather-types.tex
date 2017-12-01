@@ -1,0 +1,30 @@
+\begin{block}{Observations and Weather Types}
+  Observations come from:
+  \begin{itemize}
+    \item Rainfall: CPC Global Unified \cite{xie2010cpc}
+    \item Atmosphere: NCAR-NCEP Reanalysis II \cite{Kanamitsu:2002kk}
+  \end{itemize}
+  We use weather typing \cite{Munoz2015} to identify daily circulation patterns:
+  \begin{enumerate}
+    \item Calculate streamfunction $\Psi$ from meridional and zonal wind \cite{Dawson:2016ge}
+    \item Project \SI{850}{\hecto\pascal} streamfunction onto leading 4 EOFs
+    \item $K$-means clustering using classifiability index \cite{Michelangeli1995} to generate single weather type for each day
+  \end{enumerate}
+  Weather typing simplifies dynamics of daily rainfall but \emph{facilitates analysis of sequences of daily weather patterns}.
+  They are associated with patterns that have been well described in the literature; particularly relevant are:
+  \begin{itemize}
+    \item WT1 represents ``Chaco'' jet event \cite{Salio:2002ev}
+    \item WT4 represnts ``No-Chaco'' jet events \cite{Vera:2006ib}
+  \end{itemize}
+  \begin{mdframed}
+  \begin{figure}
+  	\noindent\includegraphics[width=0.925\textwidth]{weather-type-composite-alt.pdf}
+  	\caption{
+  		Colors: anomalies of rainfall associated with each weather type [\si{\milli\meter\per\day}].
+      Contours: anomalies of \SI{850}{\hecto\pascal} [contour interval \SI{1e4}{\meter\squared\per\second}]
+  	}
+    \label{fig:weather-types}
+  \end{figure}
+  \end{mdframed}
+% \item S2S forecasts issued by ECMWF \cite{Vitart2016}
+\end{block}

@@ -1,133 +1,90 @@
 \documentclass[serif,mathserif,final]{beamer}
-\mode<presentation>{\usetheme{Lankton}}
 
+\mode<presentation>{\usetheme{Lankton}}
 
 \setbeamertemplate{caption}[numbered] % number figs
 \usepackage[
   orientation=landscape,
-  size=custom,
-  width=121.92,height=91.44,%size=a0, % paper size
-  scale=1.075 % font scale factor
-  ]{beamerposter}
+  %size=custom,width=121.92,height=91.44,%
+  size=a0, % paper size
+  scale=1.1 % font scale factor
+]{beamerposter}
 
+% Packages without options
+\usepackage{
+  amsmath,amssymb, % math
+	siunitx, % units
+	cleveref,% cross-references
+	physics, % better physics notation
+	url, % for URLs
+	amsmath, % for math
+	nth, % for \nth{90}
+  xspace, % for spacing
+  graphicx, % for pictures
+  mdframed, 
+}
+\newcolumntype{L}[1]{>{\raggedright\let\newline\\\arraybackslash\hspace{0pt}}m{#1}}
+\graphicspath{{../../figures/}{./}}
 
-% Graphics Path
-\usepackage{graphicx}
-\graphicspath{{"figs/"}}
-
-% OTHER PACKAGE CALLS
-\usepackage[utf8]{inputenc}
-\usepackage{amsmath,amssymb,physics} % math symbols
-\usepackage{siunitx}
 \sisetup{round-mode = figures, round-precision = 3}
-\input{tikz_setup.tex}
 
-% eg and ie
-\usepackage{xspace}
+% MACROS
 \newcommand*{\eg}{e.g.\@\xspace}
 \newcommand*{\ie}{i.e.\@\xspace}
 
 % this package loads last except for biblatex
 \usepackage{cleveref}
 
-% Use BibLaTeX
-\usepackage[
-	backend=biber,
-	doi=false,
-	url=false,
-	isbn=false,
-	maxnames=3,
-	minnames = 1,
-	style=numeric-comp,
-	sorting=none,
-	natbib=true,
-	firstinits=true,
-	isbn=false
-  ]{biblatex}
-\renewbibmacro{in:}{}
-\addbibresource{library.bib}
-\AtEveryBibitem{
-  \clearfield{month}
-  \clearlist{language}
-  \clearfield{pages}
-  \clearfield{pages}
-  \clearfield{volume}
-  \clearfield{number}
-  \ifentrytype{article}{%
-      \clearfield{title}%
-  }%
-}
-\setbeamertemplate{bibliography item}[text] % don't print the silly symbols
+\input{biblatex_header.tex}
+\addbibresource{../library.bib}
 
 %-- Header and footer information ----------------------------------
-\newcommand{\footleft}{Corresponding author: \url{djf2137@columbia.edu}}
-\newcommand{\footright}{Presenting author: \url{james.doss-gollin@columbia.edu}}
-\title{Regional Intense Precipitation: Inferences from GCM Atmospheric Circulation Fields}
-\author{David Farnham\inst{1,2} \quad James Doss-Gollin\inst{1,2} \quad Upmanu Lall\inst{1,2}}
-\institute{\inst{1} Columbia Water Center \quad \inst{2} Department of Earth and Environmental Engineering, Columbia University}
+\newcommand{\footleft}{}
+\newcommand{\footright}{Corresponding author: \url{james.doss-gollin@columbia.edu}}
+\title{A31H-2289: Causes and Model Skill of the Persistent Intense Rainfall and Flooding in Paraguay during the Austral Summer 2015-2016}
+\author{James Doss-Gollin\inst{1} \quad \'{A}ngel G. Mu\~{n}oz\inst{2} \quad Simon J. Mason\inst{3} \quad Max Past\'{e}n\inst{4}}
+\institute{
+  \inst{1} Columbia Water Center, Columbia University \quad
+  \inst{2} AOS, Princeton University \quad
+  \inst{3} International Research Institute for Climate and Society, Columbia University \quad
+  \inst{4} Direcci\'{o}n de Meteorolog\'{i}a e Hidrolog\'{i}a, Paraguay
+}
 
-
-%-------------------------------------------------------------------
-
+%-- Main Document --------------------------------------------------
 
 %-- Main Document --------------------------------------------------
 \begin{document}
-
-% Statistical Macros
-\def\ci{\perp\!\!\!\perp}
-\def\ex{\mathbb{E}}
-\def\prob{\mathbb{P}}
-\def\ind{\mathbb{I}}
-\def\grad{\triangledown}
-\def\bigo{\mathcal{O}}
-\def\normal{\mathcal{N}}
-\def\bern{\text{Bernoulli}}
-\def\logit{\text{logit}}
-\def\binom{\text{Bin}}
-\def\poiss{\text{Poiss}}
-\def\cauchy{\text{Cauchy}}
-\def\sigmoid{\vb{\sigma}}
-\def\given{\big|}
-\def\stan{\texttt{Stan~}}
-
 \begin{frame}{}
   \begin{columns}[t]
 
     %-- Column 1 ---------------------------------------------------
     \begin{column}{0.23\linewidth}
 
-      \input{blocks/motivation.tex}
-      \input{blocks/questions.tex}
-      \input{blocks/methods-data.tex}
+      \input{blocks/at-a-glance.tex}
+      \input{blocks/obs-weather-types.tex}
 
     \end{column}%1
 
     %-- Column 2 ---------------------------------------------------
     \begin{column}{0.23\linewidth}
 
-      \input{blocks/rip-gcm-obs.tex}
-      \input{blocks/rip-circulations.tex}
+      \input{blocks/obs-1516.tex}
+      \input{blocks/study-area.tex}
 
     \end{column}%2
 
     %-- Column 3 ---------------------------------------------------
     \begin{column}{0.23\linewidth}
 
-      \input{blocks/indices.tex}
-      \input{blocks/conditional-simulation.tex}
+      \input{blocks/thanks.tex}
 
     \end{column}%3
 
     %-- Column 4 ---------------------------------------------------
     \begin{column}{0.23\linewidth}
-      \input{blocks/future-simulation.tex}
-      \input{blocks/summary.tex}
-      \input{blocks/future-work.tex}
-      \begin{block}{References}
-        \renewcommand*{\bibfont}{\footnotesize}
-        \printbibliography[heading=none]
-      \end{block}
+
       \input{blocks/thanks.tex}
+      \input{blocks/references.tex}
 
     \end{column}%1
 

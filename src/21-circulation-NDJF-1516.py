@@ -61,3 +61,41 @@ cbar1.set_label('Precip. Anomaly [mm/d]', rotation=270)
 cbar1.ax.get_yaxis().labelpad = 20
 
 fig.savefig(os.path.join(paths.figures, 'circulation-NDJF-1516-anomaly.pdf'), bbox_inches='tight')
+
+# MAKE THE PLOT WITH ALTERNATIVE SETUP
+fig, axes = plt.subplots(nrows=2, ncols=2, subplot_kw={'projection': map_proj}, figsize=(11, 6))
+for i,(month,year) in enumerate(zip(months_plot, years_plot)):
+    def selector(ds):
+        ds = ds.sel(time = ds['time.month']==month)
+        ds = ds.sel(time = ds['time.year'] == year)
+        return(ds.mean(dim='time'))
+
+    ax = viz.GetRowCol(i, axes)
+    ax.set_title('{} {}'.format(calendar.month_name[month], year))
+    C1 = selector(prcp).plot.contourf(
+        transform = ccrs.PlateCarree(), ax=ax,
+        cmap = 'BrBG', extend="both",
+        levels=np.linspace(-6, 6, 13),
+        add_colorbar=False, add_labels=False
+    )
+    psi_sub = selector(psi850)
+    X,Y = np.meshgrid(psi_sub.lon, psi_sub.lat)
+    C0 = ax.contour(X,Y,psi_sub.values,
+        transform = ccrs.PlateCarree(),
+        levels=np.linspace(-10e4, 10e4, 21),
+        colors='k'
+    )
+
+my_extent = region.south_america.as_extent()
+my_extent[0] -= 20
+my_extent[1] += 20
+viz.FormatAxes(axes, extent = my_extent)
+
+plt.tight_layout()
+fig.subplots_adjust(right=0.925)
+cax = fig.add_axes([0.965, 0.1, 0.02, 0.75])
+cbar = fig.colorbar(C1, cax = cax)
+cbar.set_label('Rainfall Anomaly [mm/day]', rotation=270)
+cbar.ax.get_yaxis().labelpad = 20
+
+fig.savefig(os.path.join(paths.figures, 'circulation-NDJF-1516-anomaly-alt.pdf'), bbox_inches='tight')

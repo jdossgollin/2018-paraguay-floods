@@ -128,6 +128,47 @@ viz.FormatAxes(axes[0,:], extent = region.southern_hemisphere.as_extent())
 viz.FormatAxes(axes[1,:], extent = region.south_america.as_extent())
 
 fig.savefig(os.path.join(paths.figures, 'weather-type-composite.pdf'), bbox_inches='tight')
+# PLOT ANOMALIES WITH A DIFFERENT SETUP
+wt_all = np.unique(wt['wtype'])
+psi = streamfunction.get_data()
+prcp = rainfall.get_data()
+
+fig,axes = plt.subplots(nrows=2, ncols = np.int(np.ceil(wt_all.size/2)),
+                         subplot_kw={'projection': ccrs.PlateCarree()},
+                         figsize=[12,8], sharex=True, sharey=True)
+for i,w in enumerate(wt_all):
+    def selector(ds):
+        times = wt.loc[wt['wtype'] == w].index
+        ds = ds.sel(time = np.in1d(ds.time, times))
+        ds = ds.mean(dim = 'time')
+        return(ds)
+
+    ax = viz.GetRowCol(i, axes)
+    ax.set_title('WT {}'.format(w))
+    C1 = selector(prcp['anomaly']).plot.contourf(
+        transform = ccrs.PlateCarree(), ax=ax,
+        cmap = 'BrBG', extend="both",
+        levels=np.linspace(-6, 6, 13),
+        add_colorbar=False, add_labels=False
+    )
+    psi_sub = selector(psi['anomaly'])
+    X,Y = np.meshgrid(psi_sub.lon, psi_sub.lat)
+    C0 = ax.contour(X,Y,psi_sub.values,
+        transform = ccrs.PlateCarree(),
+        levels=np.linspace(-9e4, 9e4, 19),
+        colors='k'
+    )
+    #ax.add_patch(region.wtype.as_patch(color='black'))
+
+plt.tight_layout()
+fig.subplots_adjust(right=0.9)
+cax = fig.add_axes([0.95, 0.1, 0.02, 0.75])
+cbar = fig.colorbar(C1, cax = cax)
+cbar.set_label('Rainfall Anomaly [mm/day]', rotation=270)
+cbar.ax.get_yaxis().labelpad = 20
+viz.FormatAxes(axes, extent = region.south_america.as_extent())
+
+fig.savefig(os.path.join(paths.figures, 'weather-type-composite-alt.pdf'), bbox_inches='tight')
 
 
 # Plot WT Time Series
