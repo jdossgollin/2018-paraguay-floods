@@ -22,6 +22,9 @@ pars = {
     'pcscaling': 1
 }
 
+################################################################################
+# Calculate the weather types
+################################################################################
 recalculate = False
 try:
     cluster_ts = xr.open_dataarray(paths.file_weather_types)
@@ -67,7 +70,9 @@ wt_prop = pd.DataFrame({'climatology': wt_counts / np.sum(wt_counts),
               'NDJF1516': wt_counts2 / np.sum(wt_counts2)})
 print(wt_prop)
 
-# Plot Proportion of Days
+################################################################################
+# Plot the proportion of days of each weather type
+################################################################################
 plt.figure(figsize=(8.5, 4.5))
 plt.plot(wt_prop['climatology'], label = "Climatology")
 plt.plot(wt_prop['NDJF1516'], label = "2015-16")
@@ -78,7 +83,9 @@ plt.grid()
 plt.savefig(os.path.join(paths.figures, 'wt_occurrence_fraction.pdf'), bbox_inches='tight')
 
 
-# Plot Anomalies
+################################################################################
+# Plot the anomalies associated with each weather type
+################################################################################
 wt_all = np.unique(wt['wtype'])
 psi = streamfunction.get_data()
 prcp = rainfall.get_data()
@@ -128,14 +135,17 @@ viz.FormatAxes(axes[0,:], extent = region.southern_hemisphere.as_extent())
 viz.FormatAxes(axes[1,:], extent = region.south_america.as_extent())
 
 fig.savefig(os.path.join(paths.figures, 'weather-type-composite.pdf'), bbox_inches='tight')
-# PLOT ANOMALIES WITH A DIFFERENT SETUP
+
+################################################################################
+# Plot the anomalies associated with each weather type using a different setup
+################################################################################
 wt_all = np.unique(wt['wtype'])
 psi = streamfunction.get_data()
 prcp = rainfall.get_data()
 
 fig,axes = plt.subplots(nrows=2, ncols = np.int(np.ceil(wt_all.size/2)),
                          subplot_kw={'projection': ccrs.PlateCarree()},
-                         figsize=[12,8], sharex=True, sharey=True)
+                         figsize=[9,6], sharex=True, sharey=True)
 for i,w in enumerate(wt_all):
     def selector(ds):
         times = wt.loc[wt['wtype'] == w].index
@@ -171,7 +181,9 @@ viz.FormatAxes(axes, extent = region.south_america.as_extent())
 fig.savefig(os.path.join(paths.figures, 'weather-type-composite-alt.pdf'), bbox_inches='tight')
 
 
-# Plot WT Time Series
+################################################################################
+# Plot the time series of weather type & rainfall
+################################################################################
 prcp_rpy = prcp['raw'].sel(lon = slice(lpr.lonmin, lpr.lonmax),
                     lat = slice(lpr.latmin, lpr.latmax)).mean(
             dim=['lon', 'lat']).to_dataframe(name='raw')
@@ -183,10 +195,10 @@ rain = wt_prcp.raw.values
 wt_vec = np.int_(wt_prcp.wtype.values)
 
 colors = plt.get_cmap('Accent', 6).colors
-
 plt.style.use('ggplot')
-fig,ax = plt.subplots(nrows=1, ncols=1, figsize=(14,4))
-wt_prcp.raw.plot(ax=ax)
+
+fig,ax = plt.subplots(nrows=1, ncols=1, figsize=(10, 3.5))
+ax.plot(wt_prcp.index, wt_prcp['raw'])
 ax.axhline(prcp_rpy.raw.quantile(0.50), label="p50", color='blue', linestyle='--', linewidth=0.75)
 ax.axhline(prcp_rpy.raw.quantile(0.90), label="p90", color='blue', linestyle='--', linewidth=0.75)
 ax.axhline(prcp_rpy.raw.quantile(0.99), label="p99", color='blue', linestyle='--', linewidth=0.75)
@@ -194,4 +206,5 @@ ax.set_ylabel('Area-Averaged Rainfall [mm/d]')
 ax.grid(True)
 for i,t in enumerate(time):
     ax.text(t, rain[i], '{:d}'.format(wt_vec[i]), color=colors[wt_vec[i]-1], size=12, weight='bold')
+fig.tight_layout()
 fig.savefig(os.path.join(paths.figures, 'wt-rain-time-series.pdf'), bbox_inches='tight')

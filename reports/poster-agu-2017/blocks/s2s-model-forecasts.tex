@@ -3,26 +3,27 @@
   \begin{figure}
     \caption{
       Chiclet diagram of ensemble-mean precipitation anomaly forecasts over the Lower Paraguay River Basin from ECMWF S2S forecast data, as a function of the forecast target date (horizontal axis) and lead time (vertical axis).
-      Time series of CPC daily mean precipitation over the same area is plotted with $y$-axis inverted.
+      Time series of daily precipitation over the same area is plotted with $y$-axis inverted.
   	}
     \noindent\includegraphics[width=0.925\textwidth]{chiclet-s2s-area-averaged.pdf}
   	\label{fig:chiclet}
   \end{figure}
   \end{mdframed}
 
-  \Cref{fig:chiclet} uses a Chiclet diagram to visualize, as a function of lead time, the time evolution of the uncorrected, ensemble-mean rainfall anomaly forecast, spatially averaged over the Lower Paraguay River Basin.
-  At times greater than about two weeks, the ensemble-mean forecast is slightly wetter than climatology.
+  \Cref{fig:chiclet} uses a Chiclet diagram \cite{Carbin:2016fx} to visualize, as a function of lead time, the time evolution of the uncorrected, ensemble-mean rainfall anomaly forecast, spatially averaged over the Lower Paraguay River Basin.
+  At lead times greater than about two weeks, the ensemble-mean forecast is slightly wetter than climatology.
   At weather timescales (less than one week), the ensemble-mean successfully predicts the timing and amplitude of the area-averaged rainfall.
   At intermediate timescales, the model successfully forecast the strongest breaks and pauses in the rainfall, such as the heavy rainfall during December 2015 and the dry period during mid-January 2016.
 
-  \vspace{0.5cm}
+  \end{block}
+  \begin{block}{Model Output Statistics}
 
   We explore whether using Model Output Statistics \cite[MOS;][]{Glahn:1972vt} can improve the modeled representation of rainfall (\cref{fig:subs-prob-fcst}).
   Specifically, we use: the raw model output(Raw); extended logistic regression \cite[XLR;][]{Wilks:2009bk}; heteroscedastic \cite[HXLR;][]{Messner:2014gp}; principal component regression \cite[PCR;][]{Mason:2008da,Wilks:2006fx}; and canonical correlation analysis \cite[CCA;][]{Mason:2008da,Barnston:1992gd} using 20 years of ECMWF forecasts.
 
   \vspace{0.5cm}
 
-  In general, \cref{fig:subs-prob-fcst} indicates that better forecasts are obtained when both magnitude and spatial corrections are performed (PCR and CCA).
+  \Cref{fig:subs-prob-fcst} indicates that better forecasts are obtained when both magnitude and spatial corrections are performed (PCR and CCA).
   The enhanced skill is achieved through the spatial corrections via the EOF-based regressions, which -- in contrast with the extended logistic models -- use information from multiple grid-boxes,.
 
   \begin{mdframed}

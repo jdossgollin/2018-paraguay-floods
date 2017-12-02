@@ -20,7 +20,9 @@ data_proj = ccrs.PlateCarree()
 months_plot = [11, 12, 1, 2]
 years_plot = [2015, 2015, 2016, 2016]
 
-# MAKE THE PLOT
+################################################################################
+# Plot the anomalies
+################################################################################
 fig, axes = plt.subplots(nrows=2, ncols=4, subplot_kw={'projection': map_proj}, figsize=(16, 5))
 for i,(month,year) in enumerate(zip(months_plot, years_plot)):
     def selector(ds):
@@ -62,8 +64,10 @@ cbar1.ax.get_yaxis().labelpad = 20
 
 fig.savefig(os.path.join(paths.figures, 'circulation-NDJF-1516-anomaly.pdf'), bbox_inches='tight')
 
-# MAKE THE PLOT WITH ALTERNATIVE SETUP
-fig, axes = plt.subplots(nrows=2, ncols=2, subplot_kw={'projection': map_proj}, figsize=(11, 6))
+################################################################################
+# Plot the anomalies using a different setup
+################################################################################
+fig, axes = plt.subplots(nrows=2, ncols=2, subplot_kw={'projection': map_proj}, figsize=(8.25, 4.5))
 for i,(month,year) in enumerate(zip(months_plot, years_plot)):
     def selector(ds):
         ds = ds.sel(time = ds['time.month']==month)

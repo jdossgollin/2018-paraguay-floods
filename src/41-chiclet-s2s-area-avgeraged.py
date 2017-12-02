@@ -34,7 +34,7 @@ target_date = pd.to_datetime(forecast.target_date.values)
 obs = obs['2015-11-01':'2016-02-29']
 
 # MAKE PLOT
-fig,axes = plt.subplots(ncols=1, nrows=2, figsize=((15,8)), gridspec_kw = {'height_ratios':[3, 1]})
+fig,axes = plt.subplots(ncols=1, nrows=2, figsize=((9, 5)), gridspec_kw = {'height_ratios':[3, 1]})
 
 ax=axes[0] # Chiclet
 C1 = forecast.plot.pcolormesh(x='target_date', y='L', cmap = 'BrBG', ax=ax, add_colorbar=False, add_labels=False)

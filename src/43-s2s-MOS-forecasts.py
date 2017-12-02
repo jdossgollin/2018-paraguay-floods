@@ -40,7 +40,7 @@ ncols = len(model_names)
 fig, axes = plt.subplots(
     ncols=len(model_names), nrows=3,
     subplot_kw={'projection': ccrs.PlateCarree()},
-    figsize=(14,10), sharex=True, sharey=True
+    figsize=(11,8), sharex=True, sharey=True
 )
 for i,m in enumerate(model_names):
     ax = axes[0, i] # Forecast for December 1-7 2015
