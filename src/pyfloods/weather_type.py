@@ -34,6 +34,7 @@ def Classifiability(P, Q):
     return(classifiability)
 
 def XrEofCluster(ds, n_clusters=5, prop=0.90, nsim=100, verbose = True, pcscaling=0):
+    # DS should be an xarray data array (not dataset!)
     if verbose:
         print('xarray-based classifiability for {} clusters'.format(n_clusters))
         print('Performing EOF decomposition of data for dimension reduction.')

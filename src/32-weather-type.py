@@ -176,7 +176,9 @@ cax = fig.add_axes([0.95, 0.1, 0.02, 0.75])
 cbar = fig.colorbar(C1, cax = cax)
 cbar.set_label('Rainfall Anomaly [mm/day]', rotation=270)
 cbar.ax.get_yaxis().labelpad = 20
-viz.FormatAxes(axes, extent = region.south_america.as_extent())
+
+viz.FormatAxes(axes, extent = region.south_america.as_extent(),
+    ticks=[np.linspace(-180, 180, 19), np.linspace(-90, 90, 19)])
 
 fig.savefig(os.path.join(paths.figures, 'weather-type-composite-alt.pdf'), bbox_inches='tight')
 
@@ -204,7 +206,9 @@ ax.axhline(prcp_rpy.raw.quantile(0.90), label="p90", color='blue', linestyle='--
 ax.axhline(prcp_rpy.raw.quantile(0.99), label="p99", color='blue', linestyle='--', linewidth=0.75)
 ax.set_ylabel('Area-Averaged Rainfall [mm/d]')
 ax.grid(True)
+
 for i,t in enumerate(time):
     ax.text(t, rain[i], '{:d}'.format(wt_vec[i]), color=colors[wt_vec[i]-1], size=12, weight='bold')
+
 fig.tight_layout()
 fig.savefig(os.path.join(paths.figures, 'wt-rain-time-series.pdf'), bbox_inches='tight')

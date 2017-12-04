@@ -67,7 +67,8 @@ fig.savefig(os.path.join(paths.figures, 'circulation-NDJF-1516-anomaly.pdf'), bb
 ################################################################################
 # Plot the anomalies using a different setup
 ################################################################################
-fig, axes = plt.subplots(nrows=2, ncols=2, subplot_kw={'projection': map_proj}, figsize=(8.25, 4.5))
+map_proj = ccrs.PlateCarree()
+fig, axes = plt.subplots(nrows=2, ncols=2, subplot_kw={'projection': map_proj}, figsize=(8, 5.25), sharex=True, sharey=True)
 for i,(month,year) in enumerate(zip(months_plot, years_plot)):
     def selector(ds):
         ds = ds.sel(time = ds['time.month']==month)
@@ -90,10 +91,9 @@ for i,(month,year) in enumerate(zip(months_plot, years_plot)):
         colors='k'
     )
 
-my_extent = region.south_america.as_extent()
-my_extent[0] -= 20
-my_extent[1] += 20
-viz.FormatAxes(axes, extent = my_extent)
+my_extent = [-100, -20, -45, 10]
+viz.FormatAxes(axes, extent = my_extent,
+    ticks=[np.linspace(-180, 180, 19), np.linspace(-90, 90, 19)])
 
 plt.tight_layout()
 fig.subplots_adjust(right=0.925)
