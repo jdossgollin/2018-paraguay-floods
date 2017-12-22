@@ -37,7 +37,7 @@ for ax in axes.flat:
     ax.set_xlim([0.8, 9.2])
 
 fig.tight_layout()
-fig.savefig(os.path.join(pyfloods.paths.figures, 'ssta-composite-wt4.pdf.pdf'), bbox_inches='tight')
+fig.savefig(os.path.join(pyfloods.paths.figures, 'eof-variance-explained.pdf'), bbox_inches='tight')
 
 
 # plot the EOF loadings
