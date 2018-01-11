@@ -7,7 +7,6 @@ def _FormatAxis(ax, coast=True, grid=False, border=True, river = False, extent=N
     ax.set_xlabel('')
     ax.set_ylabel('')
     if coast: ax.coastlines()
-    if grid: ax.gridlines()
     if border: ax.add_feature(cartopy.feature.BORDERS)
     if river: ax.add_feature(cartopy.feature.RIVERS)
     if ticks is not None:
@@ -18,6 +17,11 @@ def _FormatAxis(ax, coast=True, grid=False, border=True, river = False, extent=N
         ax.set_yticks(ticks[1], crs=ccrs.PlateCarree())
         lat_formatter = LatitudeFormatter()
         ax.yaxis.set_major_formatter(lat_formatter)
+        if grid:
+            ax.gridlines(xlocs=ticks[0], ylocs=ticks[1])
+    else:
+        if grid:
+            ax.gridlines()
     if len(feature_list) > 0:
         for f in feature_list:
             ax.add_feature(f)

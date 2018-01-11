@@ -18,7 +18,7 @@ class NOAANGDC(SingleFileDataSet):
 
     def download_data(self) -> xr.DataArray:
         url = 'http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NGDC/.GLOBE/.topo/'
-        url += 'X/-180/0.1/180/GRID/Y/-90/0.1/90/GRID/'
+        url += 'X/-180/0.025/180/GRID/Y/-90/0.025/90/GRID/'
         url += 'dods'
         ds = xr.open_dataarray(url)
         ds.to_netcdf(self.fname, format='NETCDF4', mode='w')

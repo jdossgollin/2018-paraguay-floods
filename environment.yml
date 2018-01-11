@@ -14,9 +14,10 @@ dependencies:
   - mypy
   - numpy
   - pandas
-  - pip
   - scipy
   - scikit-learn
   - seaborn
   - xarray
   - windspharm
+  - pip:
+    - colorcet

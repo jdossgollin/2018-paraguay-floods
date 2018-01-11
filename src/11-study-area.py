@@ -3,6 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import cartopy.feature
+import colorcet as cc
 import pandas as pd
 from cartopy.io import shapereader
 import matplotlib.patches as patches
@@ -14,6 +15,7 @@ import pyfloods.visualize as viz
 # Figure Options
 map_proj = ccrs.PlateCarree()
 data_proj = ccrs.PlateCarree()
+elev_cmap = cc.cm['bgyw']
 
 rivers = shapereader.natural_earth(
     category='physical',
@@ -27,18 +29,23 @@ desc = pd.read_csv(paths.file_station_description)
 
 # Elevation
 elev = raw_data.topo.get_data().sel(X=slice(-85, -32.5), Y=slice(-50,15))
-log_elev = np.log10(elev)
+elev = np.log10(elev)
+elev_min = -0.3
+elev_max = 3.7
+contours = np.linspace(elev_min, elev_max, 21)
+levels = np.linspace(elev_min, elev_max, 41)
 
 # Create the plot!
 fig, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={'projection': map_proj}, figsize=[10, 7.5])
 ax = axes[0]
-log_elev.plot(ax=ax, transform=data_proj, add_colorbar=False, add_labels=False, vmin=-0.5, vmax=4, cmap='terrain')
+C = elev.plot.contourf(ax=ax, transform=data_proj, add_colorbar=False, add_labels=False, levels=levels, cmap=elev_cmap)
 ax.add_patch(region.wtype.as_patch(label='Weather Typing Region', color='blue'))
 ax.add_patch(region.lower_py_river.as_patch(label='Lower PY River Basin', color='red'))
 ax.legend(loc='lower right')
 
 ax = axes[1]
-C = log_elev.plot(ax=ax, transform=data_proj, add_colorbar=False, add_labels=False, vmin=-0.5, vmax=4, cmap='terrain')
+C = elev.plot.contourf(ax=ax, transform=data_proj, add_colorbar=False, add_labels=False, levels=levels, cmap=elev_cmap)
+elev.plot.contour(ax=ax, transform=data_proj, add_colorbar=False, add_labels=False, colors='k', levels=contours, alpha=0.3, linewidths=0.4)
 ax.add_patch(region.lower_py_river.as_patch(label='Lower PY River Basin', color='red'))
 
 rivernum_plot = [36, 1032, 1125, 294]
@@ -56,7 +63,7 @@ ax.legend(loc = 'upper left')
 viz.FormatAxes(axes[0], coast=True, grid=True, border=True,
            extent = [-85, -32.5, -50, 15], ticks=[np.linspace(-180, 180, 37), np.linspace(-90, 90, 19)])
 viz.FormatAxes(axes[1], coast=True, grid=True, border=True,
-           extent = [-67.5, -52.5, -30, -12.5], ticks=[np.linspace(-180, 180, 73), np.linspace(-90, 90, 37)])
+           extent = [-65, -52.5, -30, -15], ticks=[np.linspace(-180, 180, 73), np.linspace(-90, 90, 37)])
 plt.tight_layout()
 fig.subplots_adjust(right=0.9)
 
