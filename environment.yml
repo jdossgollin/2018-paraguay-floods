@@ -12,6 +12,7 @@ dependencies:
   - jupyter
   - matplotlib
   - mypy
+  - netCDF4
   - numpy
   - pandas
   - scipy
