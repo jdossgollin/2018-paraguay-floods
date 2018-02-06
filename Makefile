@@ -98,7 +98,16 @@ data/processed/rain.nc	:	src/make_anomaly.py data/external/cpc_rain_*.nc config/
 data/processed/streamfunction.nc	:	src/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/processed/reanalysisv2_psi_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --outfile $@
 
-processed: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc
+data/processed/rain_rpy.nc: src/make_time_series.py data/processed/rain.nc
+	$(PY_INTERP) $< --infile data/processed/rain.nc --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1) --outfile $@
+
+data/processed/psi_wtype.nc: src/make_subset.py data/processed/streamfunction.nc
+	$(PY_INTERP) $< --infile data/processed/streamfunction.nc --X0 $(WTX0) --X1 $(WTX1) --Y0 $(WTY0) --Y1 $(WTY1) --outfile $@
+
+data/processed/weather_type.nc: src/make_weather_type.py data/processed/psi_wtype.nc config/wtype.mk
+	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL) --n_cluster $(NCLUS) --n_sim $(NSIM) --outfile $@
+
+processed: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc data/processed/weather_type.nc
 
 ################################################################################
 # Self-Documenting Help Commands
