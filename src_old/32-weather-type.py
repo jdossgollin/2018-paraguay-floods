@@ -25,7 +25,7 @@ pars = {
 ################################################################################
 # Calculate the weather types
 ################################################################################
-recalculate = False
+recalculate = True
 try:
     cluster_ts = xr.open_dataarray(paths.file_weather_types)
     data_pars = {
@@ -49,17 +49,19 @@ if recalculate:
     psi = psi.sel(time = np.in1d(psi['time.month'], [11, 12, 1, 2]))
     psi = psi.sel(time = slice('1979-11-01', '2016-02-29'))
     np.random.seed(22591)
-    best_centroid, cluster_ts, classifiability = weather_type.XrEofCluster(
-        ds=psi['anomaly'],
+    best_centroid, cluster_ts, classifiability = weather_type.cluster_xr_eof(
+        data_array=psi['anomaly'],
         n_clusters=pars.get('n_clusters'),
         prop=pars.get('wt_prop'),
         nsim=pars.get('nsim'),
         pcscaling=pars.get('pcscaling'),
-        verbose = True
+        verbose=True
     )
     print("Classifiability Index: {}".format(classifiability))
     cluster_ts.attrs.update(pars)
     cluster_ts.attrs.update({'classifiability': classifiability})
+    if os.path.isfile(paths.file_weather_types):
+        os.remove(paths.file_weather_types)
     cluster_ts.to_netcdf(paths.file_weather_types, format='NETCDF4')
 
 wt = cluster_ts.to_dataframe(name='wtype')

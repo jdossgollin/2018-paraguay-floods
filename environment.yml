@@ -1,7 +1,7 @@
 name: pyfloods
 channels:
-  - defaults
   - conda-forge
+  - defaults
 dependencies:
   - python=3.6
   - bottleneck
@@ -11,10 +11,11 @@ dependencies:
   - ipython
   - jupyter
   - matplotlib
-  - mypy
   - netCDF4
+  - numba
   - numpy
   - pandas
+  - pylint
   - scipy
   - scikit-learn
   - seaborn
