@@ -120,8 +120,11 @@ figs/study_area.jpg	:	src/analyze/plot_study_area.py config/wt_region.mk config/
 figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
 	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
 
+figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py data/processed/psi_wtype.nc
+	$(PY_INTERP) $< --outfile $@ --psi_wtype data/processed/psi_wtype.nc --n_eof 4
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf
 
 ################################################################################
 # Self-Documenting Help Commands
