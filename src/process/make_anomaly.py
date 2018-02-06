@@ -16,10 +16,10 @@ parser.add_argument("--outfile", help="the filename of the data to save")
 parser.add_argument("--path", help="the files to read in")
 parser.add_argument("--syear", type=int, help="start year")
 parser.add_argument("--eyear", type=int, help="end year")
-parser.add_argument("--X0", type=float, help="lon min")
-parser.add_argument("--X1", type=float, help="lon max")
-parser.add_argument("--Y0", type=float, help="lat min")
-parser.add_argument("--Y1", type=float, help="lat max")
+parser.add_argument("--X0", type=float)
+parser.add_argument("--X1", type=float)
+parser.add_argument("--Y0", type=float)
+parser.add_argument("--Y1", type=float)
 
 def read_netcdfs(files, dim, transform_func=None):
     """From http://xarray.pydata.org/en/stable/io.html#netcdf

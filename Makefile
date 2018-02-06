@@ -27,18 +27,12 @@ all: dirs get
 # and to create all required folders
 ################################################################################
 
-# Define the directory structure
-DIR_DATA=data
-DIR_FIG=figs
-DIR_CONFIG=config
-DIR_SRC=src
-
 # Input parameters from other files
 include config/*.mk
 
 ## Create all directories that the system expects
 dirs	:
-	mkdir -p $(DIR_FIG) $(DIR_ACCESSED)
+	mkdir -p figs data data/external data/processed
 
 ## Create and activate a conda environment pyfloods
 environment	:
@@ -53,30 +47,30 @@ environment	:
 ################################################################################
 
 CPC_RAW: $(patsubst %,data/external/cpc_rain_%.nc,$(YEARS))
-data/external/cpc_rain_%.nc : src/download_cpc_year.py
+data/external/cpc_rain_%.nc : src/get/download_cpc_year.py
 	$(PY_INTERP) $< --year $* --outfile $@
 
 UWND_RAW: $(patsubst %,data/external/reanalysisv2_uwnd_850_%.nc,$(YEARS))
-data/external/reanalysisv2_uwnd_850_%.nc : src/download_reanalysis_year.py
+data/external/reanalysisv2_uwnd_850_%.nc : src/get/download_reanalysis_year.py
 	$(PY_INTERP) $< --year $* --coord_system pressure --var uwnd --level 850 --outfile $@
 
 VWND_RAW: $(patsubst %,data/external/reanalysisv2_vwnd_850_%.nc,$(YEARS))
-data/external/reanalysisv2_vwnd_850_%.nc : src/download_reanalysis_year.py
+data/external/reanalysisv2_vwnd_850_%.nc : src/get/download_reanalysis_year.py
 	$(PY_INTERP) $< --year $* --coord_system pressure --var vwnd --level 850 --outfile $@
 
 data/external/elevation.nc	:
 	wget -o $@ http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NGDC/.GLOBE/.topo/X/-180/0.025/180/GRID/Y/-90/0.025/90/GRID/data.nc
 
-data/external/ssta_cmb.nc	:	src/download_ssta.py
+data/external/ssta_cmb.nc	:	src/get/download_ssta.py
 	$(PY_INTERP) $< --outfile $@
 
-data/external/mjo.nc	: src/download_mjo.py
+data/external/mjo.nc	: src/get/download_mjo.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
 
-data/external/nino34.nc	: src/download_nino34.py
+data/external/nino34.nc	: src/get/download_nino34.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
 
-data/external/s2s_area_avg.nc	: src/download_s2s_area_avg.py config/rain_region.mk
+data/external/s2s_area_avg.nc	: src/get/download_s2s_area_avg.py config/rain_region.mk
 	$(PY_INTERP) $< --outfile $@ --year 2015 --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1)
 
 ## Download all external data
@@ -89,25 +83,38 @@ get: CPC_RAW UWND_RAW VWND_RAW data/external/elevation.nc data/external/ssta_cmb
 ################################################################################
 
 PSI_RAW: $(patsubst %,data/processed/reanalysisv2_psi_850_%.nc,$(YEARS))
-data/processed/reanalysisv2_psi_850_%.nc : src/calculate_streamfunction.py data/external/reanalysisv2_uwnd_850_%.nc data/external/reanalysisv2_vwnd_850_%.nc
+data/processed/reanalysisv2_psi_850_%.nc : src/process/calculate_streamfunction.py data/external/reanalysisv2_uwnd_850_%.nc data/external/reanalysisv2_vwnd_850_%.nc
 	$(PY_INTERP) $< --uwnd data/external/reanalysisv2_uwnd_850_$*.nc --vwnd data/external/reanalysisv2_vwnd_850_$*.nc --outfile $@
 
-data/processed/rain.nc	:	src/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
+data/processed/rain.nc	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --outfile $@
 
-data/processed/streamfunction.nc	:	src/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
+data/processed/streamfunction.nc	:	src/process/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/processed/reanalysisv2_psi_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --outfile $@
 
-data/processed/rain_rpy.nc: src/make_time_series.py data/processed/rain.nc
+data/processed/rain_rpy.nc: src/process/make_time_series.py data/processed/rain.nc
 	$(PY_INTERP) $< --infile data/processed/rain.nc --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1) --outfile $@
 
-data/processed/psi_wtype.nc: src/make_subset.py data/processed/streamfunction.nc
+data/processed/psi_wtype.nc: src/process/make_subset.py data/processed/streamfunction.nc
 	$(PY_INTERP) $< --infile data/processed/streamfunction.nc --X0 $(WTX0) --X1 $(WTX1) --Y0 $(WTY0) --Y1 $(WTY1) --outfile $@
 
-data/processed/weather_type.nc: src/make_weather_type.py data/processed/psi_wtype.nc config/wtype.mk
+WT_CI: $(patsubst %,data/processed/wt_k_%.nc,$(WTK))
+data/processed/wt_k_%.nc	:	src/process/make_weather_type.py data/processed/psi_wtype.nc config/wtype2.mk
+	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL2) --n_cluster $* --n_sim $(NSIM2) --outfile $@
+
+data/processed/weather_type.nc: src/process/make_weather_type.py data/processed/psi_wtype.nc config/wtype.mk
 	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL) --n_cluster $(NCLUS) --n_sim $(NSIM) --outfile $@
 
-processed: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc data/processed/weather_type.nc
+## Get all the processed data
+process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc WT_CI data/processed/weather_type.nc
+
+################################################################################
+# MAKE PLOTS AND TABLES (ANALYSIS)
+#
+# Each plot or table is created from a separate file with corresponding name
+################################################################################
+
+
 
 ################################################################################
 # Self-Documenting Help Commands
@@ -118,21 +125,6 @@ processed: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/
 ################################################################################
 
 .DEFAULT_GOAL := help
-
-# sed script explained:
-# /^##/:
-# 	* save line in hold space
-# 	* purge line
-# 	* Loop:
-# 		* append newline + line to hold space
-# 		* go to next line
-# 		* if line starts with doc comment, strip comment character off and loop
-# 	* remove target prerequisites
-# 	* append hold space (+ newline) to line
-# 	* replace newline plus comments by `---`
-# 	* print line
-# Separate expressions are necessary because labels cannot be delimited by
-# semicolon; see <http://stackoverflow.com/a/11799865/1968>
 .PHONY: help
 help:
 	@echo "$$(tput bold)Available rules:$$(tput sgr0)"

@@ -4,9 +4,9 @@
 """
 
 import argparse
+import os
 import xarray as xr
 import numpy as np
-import os
 import pandas as pd
 from scipy.stats import pearsonr as correl
 from sklearn.cluster import KMeans
@@ -25,7 +25,7 @@ def loop_kmeans(X, pc_ts, n_cluster, n_sim, n_components_keep):
     centroids = np.zeros(shape=(n_sim, n_cluster, n_components_keep))
     w_types = np.zeros(shape=(n_sim, X.shape[0]))
     for i in np.arange(n_sim):
-        km = KMeans(n_clusters=6).fit(pc_ts)
+        km = KMeans(n_clusters=n_cluster).fit(pc_ts)
         centroids[i, :, :] = km.cluster_centers_
         w_types[i, :] = km.labels_
     return centroids, w_types

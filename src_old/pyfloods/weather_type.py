@@ -97,8 +97,10 @@ def cluster_xr_eof(data_array, n_clusters=5, prop=0.90, nsim=100, verbose=True, 
 
     cluster_ts = xr.DataArray(
         best_ts,
-        coords={'time': data_array['time'], 'year_adj': data_array['year_adj']},
+        coords={'time': data_array['time'],
+        'year_adj': data_array['year_adj']},
         dims=['time']
     )
+    cluster_ts.attrs.update({'classifiability': classifiability})
 
     return best_centroid, cluster_ts, classifiability
