@@ -21,10 +21,10 @@ def _format_axis(plt_ax, **kwargs):
     yticks = kwargs.pop('yticks', None)
     crs = kwargs.pop('crs', ccrs.PlateCarree())
 
-    ax.axes.get_xaxis().set_ticklabels([])
-    ax.axes.get_yaxis().set_ticklabels([])
-    ax.set_xlabel('')
-    ax.set_ylabel('')
+    plt_ax.axes.get_xaxis().set_ticklabels([])
+    plt_ax.axes.get_yaxis().set_ticklabels([])
+    plt_ax.set_xlabel('')
+    plt_ax.set_ylabel('')
 
     if coast:
         plt_ax.coastlines()
@@ -45,7 +45,7 @@ def _format_axis(plt_ax, **kwargs):
         plt_ax.xaxis.set_major_formatter(lon_formatter)
 
     if yticks is not None:
-        plt_ax.set_yticks(yticks, crs=crs())
+        plt_ax.set_yticks(yticks, crs=crs)
         lat_formatter = LatitudeFormatter()
         plt_ax.yaxis.set_major_formatter(lat_formatter)
 
@@ -73,10 +73,10 @@ def format_axes(axes, **kwargs):
     if isinstance(axes, np.ndarray):
         # There are multiple axes, format each of them
         for ax in axes.flat:
-            _format_axis(ax, states=states_and_provinces, **kwargs)
+            _format_axis(ax, **kwargs)
     else:
         # There is just one
-        _FormatAxis(axes, states=states_and_provinces, **kwargs)
+        _format_axis(axes, **kwargs)
 
 def get_row_col(i, axes):
     """Get the ith element of axes

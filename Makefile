@@ -15,7 +15,7 @@ output	: get derive plot
 
 ## View all figures
 viewfigs:
-	open -a $(PDF_VIEWER) $(DIR_FIG)/*.pdf
+	open -a $(PDF_VIEWER) figs/*.pdf
 
 ## create everything in the analysis
 all: dirs get
@@ -58,8 +58,8 @@ VWND_RAW: $(patsubst %,data/external/reanalysisv2_vwnd_850_%.nc,$(YEARS))
 data/external/reanalysisv2_vwnd_850_%.nc : src/get/download_reanalysis_year.py
 	$(PY_INTERP) $< --year $* --coord_system pressure --var vwnd --level 850 --outfile $@
 
-data/external/elevation.nc	:
-	wget -o $@ http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NGDC/.GLOBE/.topo/X/-180/0.025/180/GRID/Y/-90/0.025/90/GRID/data.nc
+data/external/elevation.nc	: src/get/download_elevation.py
+	$(PY_INTERP) $< --outfile $@
 
 data/external/ssta_cmb.nc	:	src/get/download_ssta.py
 	$(PY_INTERP) $< --outfile $@
@@ -114,7 +114,14 @@ process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/pr
 # Each plot or table is created from a separate file with corresponding name
 ################################################################################
 
+figs/study_area.jpg	:	src/analyze/plot_study_area.py config/wt_region.mk config/rpy_region.mk data/external/elevation.nc
+	$(PY_INTERP) $< --outfile $@ --LPRX0 $(LPRX0) --LPRX1 $(LPRX1) --LPRY0 $(LPRY0) --LPRY1 $(LPRY1) --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
 
+figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
+	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
+
+## Make all analysis tables and figures
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf
 
 ################################################################################
 # Self-Documenting Help Commands

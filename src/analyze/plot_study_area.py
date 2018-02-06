@@ -5,31 +5,27 @@ https://www.esrl.noaa.gov/psd/thredds/dodsC/Datasets/ncep.reanalysis2
 """
 
 import argparse
-import os.path
 import xarray as xr
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-import matplotlib.patches as patches
 import cartopy.crs as ccrs
-import cartopy.feature
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 from cartopy.io import shapereader
 import colorcet as cc
 
-from pyfloods.region import Region
-import pyfloods.visualize as viz
+from region import Region
+import visualize as viz
 
 parser = argparse.ArgumentParser() #pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the data to save")
-parser.add_argument("--LPRX0", kind=float)
-parser.add_argument("--LPRX1", kind=float)
-parser.add_argument("--LPRY0", kind=float)
-parser.add_argument("--LPRY1", kind=float)
-parser.add_argument("--WTX0", kind=float)
-parser.add_argument("--WTX1", kind=float)
-parser.add_argument("--WTY0", kind=float)
-parser.add_argument("--WTY1", kind=float)
+parser.add_argument("--LPRX0", type=float)
+parser.add_argument("--LPRX1", type=float)
+parser.add_argument("--LPRY0", type=float)
+parser.add_argument("--LPRY1", type=float)
+parser.add_argument("--WTX0", type=float)
+parser.add_argument("--WTX1", type=float)
+parser.add_argument("--WTY0", type=float)
+parser.add_argument("--WTY1", type=float)
 
 def plot_rivers(ax):
     """Get the rivers and add them to a matplotlib axis
@@ -45,12 +41,12 @@ def plot_rivers(ax):
         num = rec.attributes['rivernum']
         if np.in1d(num, rivernum_plot):
             ax.add_geometries(
-                [rec.geometry], transform=ccrs.PlateCarree(),
+                [rec.geometry], crs=ccrs.PlateCarree(),
                 edgecolor='blue', facecolor='none'
             )
 
 def plot_stations(ax):
-    desc = pd.read_csv('data/raw/file_station_description.csv')
+    desc = pd.read_csv('data/raw/station_description.csv')
     for i in range(desc.shape[0]):
         ax.scatter(x=desc['lon'][i], y = desc['lat'][i], color='k')
         ax.text(x=desc['lon'][i] + 0.25, y = desc['lat'][i] - 0.1, s = desc['short_name'][i], color='black')
@@ -63,7 +59,7 @@ def main():
 
     # Create Region objects from the tangle of input arguments
     lprb_region = Region(lon=[args.LPRX0, args.LPRX1], lat=[args.LPRY0, args.LPRY1])
-    wt_region = Region(lon=[args.WTX0, args.WTX1], lat=[args.WTY0, args.WYY1])
+    wt_region = Region(lon=[args.WTX0, args.WTX1], lat=[args.WTY0, args.WTY1])
 
     # Read in raw data
     elev = xr.open_dataarray('data/external/elevation.nc').sel(
@@ -81,9 +77,6 @@ def main():
     contours = np.linspace(elev_min, elev_max, 21)
     levels = np.linspace(elev_min, elev_max, 41)
     figsize = (10, 7.5)
-
-    # Make two patches
-    lpyrb_patch = as_patch()
 
     # Create the figure and axes
     fig, axes = plt.subplots(nrows=1, ncols=2, subplot_kw={'projection': map_proj}, figsize=figsize)
