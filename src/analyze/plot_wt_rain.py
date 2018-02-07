@@ -39,9 +39,9 @@ def main():
     # Make the plot
     fig,ax = plt.subplots(nrows=1, ncols=1, figsize=figsize)
     wt_prcp['raw'].plot(ax=ax, c='gray')
-    ax.axhline(prcp_rpy.raw.quantile(0.50), label="p50", color='blue', linestyle='--', linewidth=0.75)
-    ax.axhline(prcp_rpy.raw.quantile(0.90), label="p90", color='blue', linestyle='--', linewidth=0.75)
-    ax.axhline(prcp_rpy.raw.quantile(0.99), label="p99", color='blue', linestyle='--', linewidth=0.75)
+    ax.axhline(prcp_rpy.raw.quantile(0.50), label="p50", color='blue', linestyle='--', linewidth=0.5)
+    ax.axhline(prcp_rpy.raw.quantile(0.90), label="p90", color='blue', linestyle='--', linewidth=0.5)
+    ax.axhline(prcp_rpy.raw.quantile(0.99), label="p99", color='blue', linestyle='--', linewidth=0.5)
     ax.set_ylabel('Area-Averaged Rainfall [mm/d]')
     ax.set_xlabel('')
 

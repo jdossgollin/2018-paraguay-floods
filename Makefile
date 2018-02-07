@@ -127,10 +127,13 @@ figs/rain_wt_201516.pdf	:	src/analyze/plot_wt_rain.py data/processed/weather_typ
 	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --wt data/processed/weather_type.nc
 
 figs/wt_composite.pdf	:	src/analyze/plot_wt_composite.py data/processed/weather_type.nc data/processed/rain.nc data/processed/streamfunction.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type\.nc --rain data/processed/rain.nc --psi data/processed/streamfunction.nc
+	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --rain data/processed/rain.nc --psi data/processed/streamfunction.nc
+
+figs/klee.pdf	:	src/analyze/plot_klee.py data/processed/weather_type.nc
+	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
 
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf
 
 ################################################################################
 # Self-Documenting Help Commands
