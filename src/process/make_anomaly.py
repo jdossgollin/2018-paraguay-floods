@@ -16,6 +16,7 @@ parser.add_argument("--outfile", help="the filename of the data to save")
 parser.add_argument("--path", help="the files to read in")
 parser.add_argument("--syear", type=int, help="start year")
 parser.add_argument("--eyear", type=int, help="end year")
+parser.add_argument("--to_daily", type=int, help="1 if yes, 0 if no")
 parser.add_argument("--X0", type=float)
 parser.add_argument("--X1", type=float)
 parser.add_argument("--Y0", type=float)
@@ -38,9 +39,21 @@ def read_netcdfs(files, dim, transform_func=None):
     combined = xr.concat(datasets, dim)
     return combined
 
-def calc_anomaly(path, outfile, syear, eyear, lonmin, lonmax, latmin, latmax):
+def hourly_to_daily(hourly, offset=12):
+    """Convert data to daily time step
+    """
+    old_time = pd.to_datetime(hourly['time'].values)
+    new_time = old_time + pd.DateOffset(hours=offset)
+    new_time = new_time.date
+    hourly['time'] = new_time
+    daily = hourly.groupby('time').mean(dim='time')
+    daily['time'] = pd.to_datetime(daily.time.values)
+    return daily
+
+def calc_anomaly(path, outfile, syear, eyear, lonmin, lonmax, latmin, latmax, to_daily=0):
     """Decompose into anomaly and subset geographically
     """
+
     # Read in the data
     def subset_function(ds):
         # HARD-CODED FOR NOW: subset NDJF, calculate "adjusted year"
@@ -48,12 +61,16 @@ def calc_anomaly(path, outfile, syear, eyear, lonmin, lonmax, latmin, latmax):
             lon=slice(lonmin, lonmax),
             lat=slice(latmin, latmax)
         )
-        sub = sub.sel(time=np.in1d(sub['time.month'], np.array([11, 12, 1, 2])))
         return sub
 
     raw = read_netcdfs(path, dim='time', transform_func=subset_function)
     varname = list(raw.data_vars.keys())[0]
     raw = raw[varname]
+
+    # Convert to daily data?
+    if to_daily is 1:
+        raw = hourly_to_daily(raw)
+
     year = raw['time.year']
     month = raw['time.month']
     year_adj = year
@@ -61,6 +78,7 @@ def calc_anomaly(path, outfile, syear, eyear, lonmin, lonmax, latmin, latmax):
     raw.coords['year_adj'] = year_adj
 
     # Sub-set by date
+    raw = raw.sel(time=np.in1d(raw['time.month'], np.array([11, 12, 1, 2])))
     sdate = pd.Timestamp('{}-11-01'.format(syear))
     if calendar.isleap(eyear):
         edate = pd.Timestamp('{}-02-29'.format(eyear))
@@ -87,7 +105,8 @@ def main():
         lonmin=args.X0,
         lonmax=args.X1,
         latmin=args.Y0,
-        latmax=args.Y1
+        latmax=args.Y1,
+        to_daily=args.to_daily,
     )
 
 if __name__ == "__main__":

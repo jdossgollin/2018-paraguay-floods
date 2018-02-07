@@ -8,7 +8,6 @@ import argparse
 import os
 import xarray as xr
 import numpy as np
-import pandas as pd
 from windspharm.xarray import VectorWind
 
 parser = argparse.ArgumentParser() #pylint: disable=C0103
@@ -25,15 +24,6 @@ def calculate_streamfunction(uwnd, vwnd):
     psi = wind.streamfunction()
     return psi
 
-def to_daily(hourly):
-    """Convert data to daily time step
-    """
-    old_time = pd.to_datetime(hourly['time'].values)
-    new_time = old_time + pd.DateOffset(hours=12) # OFFSET 12 HOURS
-    hourly['time'] = new_time
-    daily = hourly.resample(time='1D').mean(dim='time')
-    return daily
-
 def main():
     """Run everything
     """
@@ -45,7 +35,6 @@ def main():
     longitudes = psi['lon'].values
     longitudes[np.where(longitudes > 180)] -= 360
     psi['lon'].values = longitudes
-    psi = to_daily(psi)
     if os.path.isfile(outfile):
         os.remove(outfile)
     psi.to_netcdf(outfile, format='NETCDF4', mode='w')

@@ -31,21 +31,23 @@ def main():
     wt_vec = np.int_(wt_prcp.wtype.values)
 
     # Plot options
-    colors = plt.get_cmap('Set1', 6).colors
-    plt.style.use('ggplot')
+    colors = plt.get_cmap('Accent', 7).colors[1:]
+    #plt.style.use('ggplot')
+    plt.style.use('seaborn-white')
     figsize=(10, 3.5)
 
     # Make the plot
     fig,ax = plt.subplots(nrows=1, ncols=1, figsize=figsize)
-    ax.plot(wt_prcp.index, wt_prcp['raw'])
+    wt_prcp['raw'].plot(ax=ax, c='gray')
     ax.axhline(prcp_rpy.raw.quantile(0.50), label="p50", color='blue', linestyle='--', linewidth=0.75)
     ax.axhline(prcp_rpy.raw.quantile(0.90), label="p90", color='blue', linestyle='--', linewidth=0.75)
     ax.axhline(prcp_rpy.raw.quantile(0.99), label="p99", color='blue', linestyle='--', linewidth=0.75)
     ax.set_ylabel('Area-Averaged Rainfall [mm/d]')
+    ax.set_xlabel('')
 
     # Annotate with WT labels
     for i,t in enumerate(time):
-        ax.text(t, rain[i], '{:d}'.format(wt_vec[i]), color=colors[wt_vec[i]-1], size=12, weight='bold')
+        ax.text(t, rain[i], '{:d}'.format(wt_vec[i]), color=colors[wt_vec[i]-1], size=11, weight='bold')
 
     # Save
     fig.tight_layout()
