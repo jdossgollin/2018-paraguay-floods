@@ -132,8 +132,11 @@ figs/wt_composite.pdf	:	src/analyze/plot_wt_composite.py data/processed/weather_
 figs/klee.pdf	:	src/analyze/plot_klee.py data/processed/weather_type.nc
 	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
 
+figs/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py data/processed/weather_type.nc
+	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex
 
 ################################################################################
 # Self-Documenting Help Commands
