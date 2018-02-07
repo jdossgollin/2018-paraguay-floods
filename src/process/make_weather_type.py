@@ -10,6 +10,7 @@ import numpy as np
 import pandas as pd
 from scipy.stats import pearsonr as correl
 from sklearn.cluster import KMeans
+from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from numba import jit
 
@@ -81,12 +82,13 @@ def resort_labels(old_labels):
     labels_from = np.unique(old_labels).argsort()
     counts = np.array([np.sum(old_labels == xi) for xi in labels_from])
     orders = counts.argsort()[::-1].argsort()
-    new_labels = orders[labels_from[old_labels]]
+    new_labels = orders[labels_from[old_labels]] + 1
     return new_labels
 
 def main():
     """Parse the command line arguments and run download_data().
     """
+    np.random.seed(2061834) # set seed from
     args = parser.parse_args()
     psi = xr.open_dataset(args.infile)['anomaly']
 
@@ -99,11 +101,16 @@ def main():
     pc_ts = pca.transform(psi_stacked)
     loadings = pca.components_
 
+    # Re-Scale the PC Time series to standard normal -- this is not always good
+    scaler = StandardScaler()
+    pc_ts = scaler.fit_transform(pc_ts)
+
     centroids, wtypes = loop_kmeans(X=psi_stacked, pc_ts=pc_ts, n_cluster=args.n_cluster, n_sim=args.n_sim, n_components_keep=n_components_keep)
     class_idx, best_part = matrix_classifiability(centroids)
     best_centroid = centroids[best_part, :, :]
     best_wt = wtypes[best_part, :]
     best_wt = pd.Series(resort_labels(best_wt), index=psi_stacked['time']).to_xarray()
+    best_wt.name = 'wtype'
 
     if os.path.isfile(args.outfile):
         os.remove(args.outfile)
