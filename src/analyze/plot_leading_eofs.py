@@ -9,7 +9,6 @@ import xarray as xr
 import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
-import colorcet as cc
 from sklearn.decomposition import PCA
 
 from region import Region
@@ -49,7 +48,7 @@ def main():
         col='eof',
         aspect=aspect,
         subplot_kws={'projection': data_proj},
-        cmap=cc.cm['coolwarm'],
+        cmap='PuOr',
         levels=np.linspace(-0.3, 0.3, 13)
     )
 

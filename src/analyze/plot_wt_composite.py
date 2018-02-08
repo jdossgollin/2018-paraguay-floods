@@ -55,9 +55,9 @@ def main():
         C0 = selector(psi['anomaly']).plot.contourf(
             transform = data_proj,
             ax=ax,
-            cmap = cc.cm['coolwarm'],
+            cmap='PuOr',
             extend="both",
-            levels=12,
+            levels=np.linspace(-5e6, 5e6, 11),
             add_colorbar=False,
             add_labels=False
         )

@@ -120,6 +120,9 @@ figs/study_area.jpg	:	src/analyze/plot_study_area.py config/wt_region.mk config/
 figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
 	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
 
+figs/anomalies_ndjf1516.pdf	:	src/analyze/plot_anom_1516.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
+	$(PY_INTERP) $< --outfile $@ --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
+
 figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py data/processed/psi_wtype.nc
 	$(PY_INTERP) $< --outfile $@ --psi_wtype data/processed/psi_wtype.nc --n_eof 4
 
@@ -136,7 +139,7 @@ figs/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py data/proces
 	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
 
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex
 
 ################################################################################
 # Self-Documenting Help Commands
