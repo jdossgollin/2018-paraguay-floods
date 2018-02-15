@@ -144,8 +144,11 @@ figs/seasonal_forecast.pdf	:	src/analyze/plot_seasonal_forecast.py data/processe
 figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/external/s2s_area_avg.nc
 	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --s2s data/external/s2s_area_avg.nc
 
+figs/mos_forecasts.pdf	:	src/analyze/plot_mos_forecasts.py
+	$(PY_INTERP) $< --outfile $@
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf
 
 ################################################################################
 # Self-Documenting Help Commands
