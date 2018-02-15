@@ -15,7 +15,7 @@ output	: get derive plot
 
 ## View all figures
 viewfigs:
-	open -a $(PDF_VIEWER) figs/*.pdf
+	open -a $(PDF_VIEWER) figs/*
 
 ## create everything in the analysis
 all: dirs get process analyze
@@ -70,8 +70,8 @@ data/external/mjo.nc	: src/get/download_mjo.py
 data/external/nino34.nc	: src/get/download_nino34.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
 
-data/external/s2s_area_avg.nc	: src/get/download_s2s_area_avg.py config/rain_region.mk
-	$(PY_INTERP) $< --outfile $@ --year 2015 --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1)
+data/external/s2s_area_avg.nc	: src/get/download_s2s_area_avg.py config/rpy_region.mk
+	$(PY_INTERP) $< --outfile $@ --year 2015 --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1)
 
 ## Download all external data
 get: CPC_RAW UWND_RAW VWND_RAW data/external/elevation.nc data/external/ssta_cmb.nc data/external/mjo.nc data/external/nino34.nc data/external/s2s_area_avg.nc
@@ -141,8 +141,11 @@ figs/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py data/proces
 figs/seasonal_forecast.pdf	:	src/analyze/plot_seasonal_forecast.py data/processed/rain.nc data/raw/SeasonalForecast.tsv
 	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --seasonal data/raw/SeasonalForecast.tsv
 
+figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/external/s2s_area_avg.nc
+	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --s2s data/external/s2s_area_avg.nc
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf
 
 ################################################################################
 # Self-Documenting Help Commands
