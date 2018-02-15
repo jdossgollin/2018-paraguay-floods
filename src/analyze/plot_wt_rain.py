@@ -31,7 +31,7 @@ def main():
     wt_vec = np.int_(wt_prcp.wtype.values)
 
     # Plot options
-    colors = plt.get_cmap('Accent', 7).colors[1:]
+    colors = plt.get_cmap('viridis', 6).colors
     #plt.style.use('ggplot')
     plt.style.use('seaborn-white')
     figsize=(10, 3.5)

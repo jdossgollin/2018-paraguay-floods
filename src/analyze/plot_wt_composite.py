@@ -30,16 +30,19 @@ def main():
     w_type = xr.open_dataarray(args.wt).to_dataframe(name='wtype')
 
     # Plot Options
-    map_proj = ccrs.Orthographic(-60, -10)
+    map_proj = ccrs.PlateCarree()#Orthographic(-60, -10)
     data_proj = ccrs.PlateCarree()
     wt_unique = np.unique(w_type['wtype'])
-    figsize = (18, 4.5)
+    figsize = (14, 4.5)
 
     # Get the proportion of weather types each day
     wt_counts = w_type.groupby('wtype').size().div(w_type['wtype'].size)
 
     # Set up the Figure
-    fig, axes = plt.subplots(nrows=2, ncols=len(wt_unique), subplot_kw={'projection': map_proj}, figsize=figsize)
+    fig, axes = plt.subplots(
+            nrows=2, ncols=len(wt_unique), subplot_kw={'projection': map_proj}, 
+            figsize=figsize, sharex=True, sharey=True
+        )
 
     # Loop through
     for i,w in enumerate(wt_unique):
@@ -90,10 +93,11 @@ def main():
     cbar1.ax.get_yaxis().labelpad = 20
 
     # Format these axes
-    southern_hemisphere = Region(lon = [-120, 0], lat = [-50, 5])
-    south_america = Region(lon = [-85, -30], lat = [-40, -7.5])
-    viz.format_axes(axes[0,:], extent = southern_hemisphere.as_extent(), border=True)
-    viz.format_axes(axes[1,:], extent = south_america.as_extent(), border=True)
+    plot_region = Region(lon = [-90, -30], lat = [-50, 10])
+    viz.format_axes(
+        axes, extent = plot_region.as_extent(), border=True,
+        xticks=np.linspace(-180, 180, 19), yticks=np.linspace(-90, 90, 10)
+    )
 
     fig.savefig(args.outfile, bbox_inches='tight')
 

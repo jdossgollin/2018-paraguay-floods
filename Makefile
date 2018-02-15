@@ -18,7 +18,7 @@ viewfigs:
 	open -a $(PDF_VIEWER) figs/*.pdf
 
 ## create everything in the analysis
-all: dirs get
+all: dirs get process analyze
 
 ################################################################################
 # MAKE SETUP
@@ -138,8 +138,11 @@ figs/klee.pdf	:	src/analyze/plot_klee.py data/processed/weather_type.nc
 figs/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py data/processed/weather_type.nc
 	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
 
+figs/seasonal_forecast.pdf	:	src/analyze/plot_seasonal_forecast.py data/processed/rain.nc data/raw/SeasonalForecast.tsv
+	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --seasonal data/raw/SeasonalForecast.tsv
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf
 
 ################################################################################
 # Self-Documenting Help Commands
