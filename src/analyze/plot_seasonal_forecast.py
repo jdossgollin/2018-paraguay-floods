@@ -50,7 +50,7 @@ def main():
     )
     sub = np.ma.masked_invalid((df/(1-df)) / (.1/(1-.1)))
     C = ax.pcolormesh(X,Y, sub, transform=ccrs.PlateCarree(),
-                    cmap=cc.cm['rainbow'], vmin=0, vmax=7)
+                    cmap=cc.cm['inferno'], vmin=0, vmax=7)
     ax.pcolor(Xh, Yh, hatch, facecolor='none', edgecolors='k')
 
     viz.format_axes(
