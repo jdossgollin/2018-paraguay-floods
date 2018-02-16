@@ -84,7 +84,7 @@ get: CPC_RAW UWND_RAW VWND_RAW data/external/elevation.nc data/external/ssta_cmb
 
 PSI_RAW: $(patsubst %,data/processed/reanalysisv2_psi_850_%.nc,$(YEARS))
 data/processed/reanalysisv2_psi_850_%.nc : src/process/calculate_streamfunction.py data/external/reanalysisv2_uwnd_850_%.nc data/external/reanalysisv2_vwnd_850_%.nc
-	$(PY_INTERP) $< --uwnd data/external/reanalysisv2_uwnd_850_$*.nc --vwnd data/external/reanalysisv2_vwnd_850_$*.nc --outfile $@
+	$(PY_INTERP) $< --uwnd "data/external/reanalysisv2_uwnd_850_$*.nc" --vwnd "data/external/reanalysisv2_vwnd_850_$*.nc" --outfile $@
 
 data/processed/rain.nc	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --outfile $@
@@ -147,8 +147,11 @@ figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/exter
 figs/mos_forecasts.pdf	:	src/analyze/plot_mos_forecasts.py
 	$(PY_INTERP) $< --outfile $@
 
+figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/weather_type.nc
+	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --sst data/external/ssta_cmb.nc
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf
 
 ################################################################################
 # Self-Documenting Help Commands

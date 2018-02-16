@@ -94,6 +94,7 @@ def main():
 
     # carry out PCA
     psi_stacked = psi.stack(grid=['lon', 'lat'])
+    #psi_stacked = StandardScaler().fit_transform(psi_stacked.values) # Standardize each grid cell
     pca = PCA().fit(psi_stacked)
     cum_var = pca.explained_variance_ratio_.cumsum()
     n_components_keep = np.where(cum_var > args.var_xpl)[0].min() + 1 #compensate for zero indexing
@@ -102,14 +103,13 @@ def main():
     loadings = pca.components_
 
     # Re-Scale the PC Time series to standard normal -- this is not always good
-    scaler = StandardScaler()
-    pc_ts = scaler.fit_transform(pc_ts)
+    pc_ts = StandardScaler().fit_transform(pc_ts)
 
     centroids, wtypes = loop_kmeans(X=psi_stacked, pc_ts=pc_ts, n_cluster=args.n_cluster, n_sim=args.n_sim, n_components_keep=n_components_keep)
     class_idx, best_part = matrix_classifiability(centroids)
     best_centroid = centroids[best_part, :, :]
     best_wt = wtypes[best_part, :]
-    best_wt = pd.Series(resort_labels(best_wt), index=psi_stacked['time']).to_xarray()
+    best_wt = pd.Series(resort_labels(best_wt), index=psi['time']).to_xarray()
     best_wt.name = 'wtype'
 
     if os.path.isfile(args.outfile):
