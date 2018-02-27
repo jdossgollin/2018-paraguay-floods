@@ -36,7 +36,7 @@ def main():
     wt = wt.sort_values(4, ascending=False).head()
 
     # Plot options
-    n_months = 15
+    n_months = 10
     map_proj = ccrs.PlateCarree(central_longitude=-60)
     data_proj = ccrs.PlateCarree()
     figsize = (10, 8)
@@ -44,7 +44,8 @@ def main():
     cmap = cc.cm['coolwarm']
 
     # Times to plot
-    times = wt.sort_values(4, ascending=False).head(n_months).index.to_timestamp()
+    wt['SALLJ'] = wt[4] + wt[1]
+    times = wt.sort_values('SALLJ', ascending=False).head(n_months).index.to_timestamp()
     composite_wt4 = sea_temp.sel(T = np.in1d(sea_temp['T'], times)).mean(dim='T')
 
     # Set up 2 plots
@@ -58,20 +59,20 @@ def main():
     C1 = composite_wt4.plot.contourf(
         ax=ax, transform=data_proj,
         cmap=cmap,
-        levels=np.linspace(-0.6, 0.6, 13),
+        levels=np.linspace(-1.25, 1.25, 13),
         extend='both',
         add_colorbar=True,
         add_labels=False
     )
     ax.add_patch(dipole.as_patch(color='black'))
-
+    ax.set_title('{} Months with Most No-Chaco Jet Events'.format(n_months))
 
     # Second: Plot December 2015
     ax = axes[1]
     C2 = sea_temp.sel(T = '2015-12-01').plot.contourf(
         ax=ax, transform=data_proj,
         cmap=cmap,
-        levels=np.linspace(-2.5, 2.5, 11),
+        levels=np.linspace(-2, 2, 11),
         extend='both',
         add_colorbar=True,
         add_labels=False
@@ -79,6 +80,7 @@ def main():
     ax.add_patch(dipole.as_patch(color='black'))
     ax.set_xlim([-120, 120])
     ax.set_ylim([-70, 15])
+    ax.set_title('December 2015')
 
     # Format axes
     viz.format_axes(

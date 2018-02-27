@@ -90,8 +90,8 @@ def main():
     cbar1.set_label('Precip. Anomaly [mm/d]', rotation=270)
     cbar1.ax.get_yaxis().labelpad = 20
 
-    for i,ax in enumerate(axes.flat):
-        ax.set_title(string.ascii_lowercase[i])
+    #for i,ax in enumerate(axes.flat):
+    #    ax.set_title(string.ascii_lowercase[i])
 
     fig.savefig(args.outfile, bbox_inches='tight')
 

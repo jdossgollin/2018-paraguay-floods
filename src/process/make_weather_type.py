@@ -5,6 +5,7 @@
 
 import argparse
 import os
+from collections import OrderedDict
 import xarray as xr
 import numpy as np
 import pandas as pd
@@ -88,13 +89,12 @@ def resort_labels(old_labels):
 def main():
     """Parse the command line arguments and run download_data().
     """
-    np.random.seed(2061834) # set seed from
+    np.random.seed(1085) # set seed from
     args = parser.parse_args()
     psi = xr.open_dataset(args.infile)['anomaly']
 
     # carry out PCA
     psi_stacked = psi.stack(grid=['lon', 'lat'])
-    #psi_stacked = StandardScaler().fit_transform(psi_stacked.values) # Standardize each grid cell
     pca = PCA().fit(psi_stacked)
     cum_var = pca.explained_variance_ratio_.cumsum()
     n_components_keep = np.where(cum_var > args.var_xpl)[0].min() + 1 #compensate for zero indexing
@@ -111,6 +111,7 @@ def main():
     best_wt = wtypes[best_part, :]
     best_wt = pd.Series(resort_labels(best_wt), index=psi['time']).to_xarray()
     best_wt.name = 'wtype'
+    best_wt.attrs = OrderedDict(class_idx = class_idx)
 
     if os.path.isfile(args.outfile):
         os.remove(args.outfile)

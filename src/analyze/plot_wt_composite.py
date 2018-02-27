@@ -20,6 +20,10 @@ parser.add_argument("--outfile", help="the filename of the data to save")
 parser.add_argument("--wt", help="The weather type data")
 parser.add_argument("--psi", help="The streamfunction data file")
 parser.add_argument("--rain", help="The rainfall data file")
+parser.add_argument("--WTX0", type=float)
+parser.add_argument("--WTX1", type=float)
+parser.add_argument("--WTY0", type=float)
+parser.add_argument("--WTY1", type=float)
 
 def main():
     """Run everything
@@ -28,6 +32,8 @@ def main():
     psi = xr.open_dataset(args.psi)
     prcp = xr.open_dataset(args.rain)
     w_type = xr.open_dataarray(args.wt).to_dataframe(name='wtype')
+
+    wt_region = Region(lon=[args.WTX0, args.WTX1], lat=[args.WTY0, args.WTY1])
 
     # Plot Options
     map_proj = ccrs.PlateCarree()#Orthographic(-60, -10)
@@ -64,7 +70,8 @@ def main():
             add_colorbar=False,
             add_labels=False
         )
-        #ax.add_patch(region.wtype.as_patch(color='black'))
+        ax.add_patch(wt_region.as_patch(label='Weather Typing Region', color='black'))
+
         # Bottom row: rainfall anomalies
         ax = axes[1, i]
         C1 = selector(prcp['anomaly']).plot.contourf(
