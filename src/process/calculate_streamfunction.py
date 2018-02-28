@@ -32,11 +32,10 @@ def main():
     vwnd = os.path.abspath(args.vwnd)
     outfile = os.path.abspath(args.outfile)
     psi = calculate_streamfunction(uwnd, vwnd)
-    longitudes = psi['lon'].values
-    longitudes[np.where(longitudes > 180)] -= 360
-    psi['lon'].values = longitudes
+    
     if os.path.isfile(outfile):
         os.remove(outfile)
+    
     psi.to_netcdf(outfile, format='NETCDF4', mode='w')
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import colorcet as cc
 import datetime
+import string
 
 from region import Region
 import visualize as viz
@@ -105,6 +106,13 @@ def main():
         axes, extent = plot_region.as_extent(), border=True,
         xticks=np.linspace(-180, 180, 19), yticks=np.linspace(-90, 90, 10)
     )
+
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.05, 0.9, label, fontsize=11, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', edgecolor='gray'))
 
     fig.savefig(args.outfile, bbox_inches='tight')
 

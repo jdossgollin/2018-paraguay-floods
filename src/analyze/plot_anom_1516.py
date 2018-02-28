@@ -90,8 +90,12 @@ def main():
     cbar1.set_label('Precip. Anomaly [mm/d]', rotation=270)
     cbar1.ax.get_yaxis().labelpad = 20
 
-    #for i,ax in enumerate(axes.flat):
-    #    ax.set_title(string.ascii_lowercase[i])
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.05, 0.9, label, fontsize=11, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', edgecolor='gray'))
 
     fig.savefig(args.outfile, bbox_inches='tight')
 

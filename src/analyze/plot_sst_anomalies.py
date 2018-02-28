@@ -14,6 +14,7 @@ from matplotlib import patches
 import cartopy.crs as ccrs
 import cartopy.feature
 import colorcet as cc
+import string
 
 from region import Region
 import visualize as viz
@@ -21,32 +22,54 @@ import visualize as viz
 parser = argparse.ArgumentParser() #pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the figure to save")
 parser.add_argument("--sst", help="the filename of the SST data")
-parser.add_argument("--wt", help="the filename of the weather type data")
+parser.add_argument("--uwnd", help="the filename of the weather type data")
+
+def covariance_gufunc(x, y):
+    cov = (
+        (x - x.mean(axis=-1, keepdims=True)) * (y - y.mean(axis=-1, keepdims=True))
+    ).mean(axis=-1)
+    return cov
+
+def pearson_correlation_gufunc(x, y):
+    return covariance_gufunc(x, y) / (x.std(axis=-1) * y.std(axis=-1))
+
+def pearson_correlation(x, y, dim):
+    rho = xr.apply_ufunc(
+        pearson_correlation_gufunc, x, y,
+        input_core_dims=[[dim], [dim]],
+        dask='parallelized',
+        output_dtypes=[float]
+    )
+    return rho
+
+def daily_to_monthly(daily):
+    df = pd.DataFrame({'year': daily['time.year'], 'month': daily['time.month'], 'day': 1})
+    df['date'] = pd.to_datetime(df[['year', 'month', 'day']])
+    daily['time'] = df['date'].values
+    monthly = daily.groupby('time').mean(dim='time')
+    return monthly
 
 def main():
     """Run everything
     """
     args = parser.parse_args()
 
-    # Read in and parse the raw data
-    sea_temp = xr.open_dataarray(args.sst)
-    wt = xr.open_dataarray(args.wt).to_dataframe(name='wtype')
-    wt['T'] = wt.index.to_period("M")
-    wt = wt.groupby(['T', 'wtype']).size().unstack(fill_value=0)
-    wt = wt.sort_values(4, ascending=False).head()
+    sea_temp = xr.open_dataarray(args.sst).rename({'X': 'lon', 'Y': 'lat', 'T': 'time'})
+    sea_temp = sea_temp.sel(time = np.in1d(sea_temp['time.month'], [11, 12, 1, 2]))
+    uwnd = xr.open_dataset(args.uwnd).mean(dim=['lon', 'lat'])
+    uwnd = daily_to_monthly(uwnd)['raw']
+    uwnd.name = 'uwnd'
+    mrg = xr.merge([sea_temp, uwnd], join='inner') 
+    uwnd_sst_cor = pearson_correlation(mrg['ssta'], mrg['uwnd'], dim='time')
 
     # Plot options
-    n_months = 10
     map_proj = ccrs.PlateCarree(central_longitude=-60)
     data_proj = ccrs.PlateCarree()
-    figsize = (10, 8)
+    figsize = (10, 6.5)
     dipole = Region(lon=[-30,-10], lat=[-10,-40])
-    cmap = cc.cm['coolwarm']
+    rpy = Region(lon=[-60, -55], lat=[-27.5, -22.5])
 
-    # Times to plot
-    wt['SALLJ'] = wt[4] + wt[1]
-    times = wt.sort_values('SALLJ', ascending=False).head(n_months).index.to_timestamp()
-    composite_wt4 = sea_temp.sel(T = np.in1d(sea_temp['T'], times)).mean(dim='T')
+    cmap = cc.cm['coolwarm']
 
     # Set up 2 plots
     fig, axes = plt.subplots(
@@ -56,31 +79,35 @@ def main():
 
     # First: Months with most WT4
     ax = axes[0]
-    C1 = composite_wt4.plot.contourf(
+    uwnd_sst_cor.name = 'Pearson Correlation'
+    C1 = uwnd_sst_cor.plot.contourf(
         ax=ax, transform=data_proj,
-        cmap=cmap,
-        levels=np.linspace(-1.25, 1.25, 13),
-        extend='both',
+        cmap=cc.cm['gwv'],
+        levels=np.linspace(-0.5, 0.5, 11),
         add_colorbar=True,
-        add_labels=False
+        add_labels=True,
+        extend='both',
     )
     ax.add_patch(dipole.as_patch(color='black'))
-    ax.set_title('{} Months with Most No-Chaco Jet Events'.format(n_months))
+    ax.add_patch(rpy.as_patch(color='blue'))
+    ax.set_title('')
 
     # Second: Plot December 2015
     ax = axes[1]
-    C2 = sea_temp.sel(T = '2015-12-01').plot.contourf(
+    sub2 = sea_temp.sel(time = '2015-12-01')
+    sub2.name = 'SSTA [degree C]'
+    C2 = sub2.plot.contourf(
         ax=ax, transform=data_proj,
         cmap=cmap,
-        levels=np.linspace(-2, 2, 11),
+        levels=np.linspace(-3.5, 3.5, 15),
         extend='both',
         add_colorbar=True,
-        add_labels=False
+        add_labels=True
     )
     ax.add_patch(dipole.as_patch(color='black'))
     ax.set_xlim([-120, 120])
     ax.set_ylim([-70, 15])
-    ax.set_title('December 2015')
+    ax.set_title('')
 
     # Format axes
     viz.format_axes(
@@ -88,10 +115,18 @@ def main():
         xticks=np.linspace(-180, 180, 19), yticks=np.linspace(-90, 90, 10)
     )
     for ax in axes.flat:
-        ax.set_xlim([-50, 80]) # is relative to central longitude
-        ax.set_ylim([-50, 10])
+        ax.set_xlim([-80, 80]) # is relative to central longitude
+        ax.set_ylim([-60, 10])
 
     fig.tight_layout()
+
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.05, 0.9, label, fontsize=11, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', alpha=0.75, edgecolor='gray'))
+
     fig.savefig(args.outfile, bbox_inches='tight')
 
 if __name__ == "__main__":

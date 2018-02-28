@@ -87,10 +87,16 @@ data/processed/reanalysisv2_psi_850_%.nc : src/process/calculate_streamfunction.
 	$(PY_INTERP) $< --uwnd "data/external/reanalysisv2_uwnd_850_$*.nc" --vwnd "data/external/reanalysisv2_vwnd_850_$*.nc" --outfile $@
 
 data/processed/rain.nc	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --to_daily 1 --outfile $@
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --to_daily 0 --outfile $@
 
 data/processed/streamfunction.nc	:	src/process/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/processed/reanalysisv2_psi_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --to_daily 1 --outfile $@
+
+data/processed/uwnd_rpy.nc	:	src/process/make_anomaly.py data/external/reanalysisv2_uwnd_850_*.nc config/time.mk config/rpy_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_uwnd_850_*.nc" --X0 -60 --X1 -55 --Y0 -27.5 --Y1 -22.5 --to_daily 1 --outfile $@
+
+data/processed/vwnd_rpy.nc	:	src/process/make_anomaly.py data/external/reanalysisv2_vwnd_850_*.nc config/time.mk config/rpy_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_vwnd_850_*.nc" --X0 -60 --X1 -55 --Y0 -27.5 --Y1 -22.5 --to_daily 1 --outfile $@
 
 data/processed/rain_rpy.nc: src/process/make_time_series.py data/processed/rain.nc
 	$(PY_INTERP) $< --infile data/processed/rain.nc --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1) --outfile $@
@@ -106,7 +112,7 @@ data/processed/weather_type.nc: src/process/make_weather_type.py data/processed/
 	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL) --n_cluster $(NCLUS) --n_sim $(NSIM) --outfile $@
 
 ## Get all the processed data
-process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc WT_CI data/processed/weather_type.nc
+process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/uwnd_rpy.nc data/processed/vwnd_rpy.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc WT_CI data/processed/weather_type.nc
 
 ################################################################################
 # MAKE PLOTS AND TABLES (ANALYSIS)
@@ -147,14 +153,20 @@ figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/exter
 figs/mos_forecasts.pdf	:	src/analyze/plot_mos_forecasts.py
 	$(PY_INTERP) $< --outfile $@
 
-figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/weather_type.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --sst data/external/ssta_cmb.nc
+figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/uwnd_rpy.nc
+	$(PY_INTERP) $< --outfile $@ --uwnd data/processed/uwnd_rpy.nc --sst data/external/ssta_cmb.nc
+
+figs/nino_sst_anomalies.pdf	:	src/analyze/plot_nino_sst.py
+	$(PY_INTERP) $< --outfile $@ --sst data/external/ssta_cmb.nc
 
 figs/wt_classifiability.pdf	:	src/analyze/plot_classifiability.py data/processed/wt_k_*.nc
 	$(PY_INTERP) $< --outfile $@ --infiles "data/processed/wt_k_*.nc"
 
+figs/wt_mjo_enso.pdf	:	src/analyze/plot_wt_mjo_enso.py data/processed/weather_type.nc data/external/nino34.nc data/external/mjo.nc
+	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --nino data/external/nino34.nc --mjo data/external/mjo.nc
+
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/wt_classifiability.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/wt_mjo_enso.pdf
 
 ################################################################################
 # Self-Documenting Help Commands

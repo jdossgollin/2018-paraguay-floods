@@ -56,11 +56,17 @@ def calc_anomaly(path, outfile, syear, eyear, lonmin, lonmax, latmin, latmax, to
 
     # Read in the data
     def subset_function(ds):
-        # HARD-CODED FOR NOW: subset NDJF, calculate "adjusted year"
-        sub = ds.sortby('lon').sortby('lat').sortby('time').sel(
-            lon=slice(lonmin, lonmax),
-            lat=slice(latmin, latmax)
-        )
+        # Step 1: Adjust Longitudes
+        longitudes = ds['lon'].values
+        longitudes[np.where(longitudes > 180)] -= 360
+        ds['lon'].values = longitudes
+
+        # Step 2: Sort
+        sub = ds.sortby('lon').sortby('lat').sortby('time')
+        
+        # Step 3: sub-set
+        sub = sub.sel(lon=slice(lonmin, lonmax), lat=slice(latmin, latmax))
+        
         return sub
 
     raw = read_netcdfs(path, dim='time', transform_func=subset_function)

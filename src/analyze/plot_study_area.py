@@ -12,6 +12,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from cartopy.io import shapereader
 import colorcet as cc
+import string
 
 from region import Region
 import visualize as viz
@@ -105,7 +106,6 @@ def main():
         extent=[-65, -52.5, -30, -15], crs=data_proj,
         xticks=np.linspace(-180, 180, 73), yticks=np.linspace(-90, 90, 37)
     )
-    ax.legend(loc='upper left')
 
     # Add color bar
     fig.tight_layout()
@@ -114,6 +114,13 @@ def main():
     cb = plt.colorbar(C, cax=cax)
     cb.set_label(r"$\log_{10}$ Elevation [m]", rotation=270)
     cb.ax.get_yaxis().labelpad = 20
+
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.9, 0.95, label, fontsize=12, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', alpha=0.75, edgecolor='gray'))
 
     # Save to file
     fig.savefig(args.outfile, bbox_inches='tight', dpi=500)

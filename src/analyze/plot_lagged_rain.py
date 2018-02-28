@@ -11,6 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import datetime
+import string
 
 from region import Region
 import visualize as viz
@@ -86,6 +87,13 @@ def main():
     cbar1 = fig.colorbar(C1, cax=cax1)
     cbar1.set_label('Precip. Anomaly [mm/d]', rotation=270)
     cbar1.ax.get_yaxis().labelpad = 20
+
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.025, 0.9, label, fontsize=12, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', alpha=0.75, edgecolor='gray'))
 
     fig.savefig(args.outfile, bbox_inches='tight')
 

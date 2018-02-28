@@ -10,6 +10,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from sklearn.decomposition import PCA
+import string
 
 from region import Region
 import visualize as viz
@@ -63,6 +64,13 @@ def main():
     )
     for i,ax in enumerate(p.axes.flat):
        ax.set_title('EOF {}'.format(i+1))
+
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(p.axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.05, 0.9, label, fontsize=11, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', edgecolor='gray'))
 
     # Save figure
     plt.savefig(args.outfile, bbox_inches='tight')

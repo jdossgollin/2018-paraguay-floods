@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from cartopy.io import shapereader
 import colorcet as cc
+import string
 
 from region import Region
 import visualize as viz
@@ -66,7 +67,7 @@ def main():
         sub = ds.values
         sub = np.ma.masked_invalid(sub)
         sub = np.ma.masked_less(sub, 0)
-        C1 = ax.pcolormesh(X, Y, sub, cmap=cc.cm['inferno'], transform=ccrs.PlateCarree(), vmin=0, vmax=8)
+        C1 = ax.pcolormesh(X, Y, sub, cmap=cc.cm['inferno'], transform=ccrs.PlateCarree(), vmin=0, vmax=9)
         ax.pcolor(Xh, Yh, hatch, facecolor='none', edgecolors='k')
 
         ax = axes[1, i] # Ignorance Score
@@ -111,6 +112,14 @@ def main():
     cbar3 = fig.colorbar(C3, cax=cax3)
     cbar3.set_label(r'2AFC Skill Score', rotation=270)
     cbar3.ax.get_yaxis().labelpad = 15
+    
+    # Add plot labels
+    letters = string.ascii_lowercase
+    for i, ax in enumerate(axes.flat):
+        label = '({})'.format(letters[i])
+        t = ax.text(0.8, 0.1, label, fontsize=12, transform=ax.transAxes)
+        t.set_bbox(dict(facecolor='white', alpha=0.75, edgecolor='gray'))
+    
     # Save to file
     fig.savefig(args.outfile, bbox_inches='tight', dpi=500)
 

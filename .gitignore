@@ -15,3 +15,5 @@
 *.txt
 *.pyc
 */.mypy_cache/*
+.ipynb_checkpoints/Untitled-checkpoint.ipynb
+*.ipynb
