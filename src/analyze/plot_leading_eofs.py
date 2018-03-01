@@ -62,8 +62,12 @@ def main():
         extent=extent,
         crs = data_proj,
     )
+    
+    # Label Titles with Variance Explained
+    var_xpl = pca.explained_variance_
+    var_xpl /= var_xpl.sum()
     for i,ax in enumerate(p.axes.flat):
-       ax.set_title('EOF {}'.format(i+1))
+       ax.set_title('EOF {} ({:.1f}%)'.format(i+1, var_xpl[i]*100))
 
     # Add plot labels
     letters = string.ascii_lowercase

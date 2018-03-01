@@ -22,10 +22,12 @@ parser.add_argument("--mjo", help="The streamfunction data file")
 
 def main():
     args = parser.parse_args()
+
     wt = xr.open_dataarray(args.wt).to_dataframe(name='wtype')
     mjo = xr.open_dataset(args.mjo).to_dataframe()
-    enso = xr.open_dataarray(args.nino).to_dataframe(name='nino_34')
+    enso = xr.open_dataarray(args.nino).to_dataframe(name='nino_34').resample('1D').ffill()
     mrg = wt.join(mjo).join(enso)
+    
     mrg.loc[mrg['amplitude'] < 1, 'phase'] =  0
     mrg['enso_state'] = 0
     mrg.loc[mrg['nino_34'] < -1, 'enso_state'] = -1
@@ -36,7 +38,7 @@ def main():
     anomaly = conditional - conditional.mean(dim=['level_2'])
 
     # Bootstrap simulations
-    n_sim = 3000
+    n_sim = 5000
     anomalies = []
     for i in np.arange(n_sim):
         wt_seq = np.random.choice(mrg['wtype'], size=mrg.shape[0], replace=True)

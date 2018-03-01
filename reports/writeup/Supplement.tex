@@ -16,7 +16,7 @@
 \renewcommand{\thefigure}{S\arabic{figure}}
 \renewcommand{\thetable}{S\arabic{table}}
 \usepackage[breaklinks=true,hidelinks]{hyperref}
-\graphicspath{{../../figures/}{./}}
+\graphicspath{{../../figs/}{./}}
 
 %-------------------------------------------------------------------------------
 % Title and Authors
@@ -42,18 +42,18 @@ Further supporting information is available in the form of source code and \text
 \begin{table}
 	\centering
 	\begin{tabular}{lrr}
-	\toprule
-	{} &  NDJF 2015-16 &  Climatology \\
-	WT &           &              \\
-	\midrule
-	1     &  0.258 &     0.212 \\
-	2     &  0.242 &     0.187 \\
-	3     &  0.133 &     0.158 \\
-	4     &  0.192 &     0.155 \\
-	5     &  0.092 &     0.146 \\
-	6     &  0.083 &     0.142 \\
-	\bottomrule
-	\end{tabular}
+		\toprule
+		{} &  NDJF 2015-16 &  climatology \\
+		wtype &               &              \\
+		\midrule
+		1     &      0.272727 &     0.212849 \\
+		2     &      0.231405 &     0.184517 \\
+		3     &      0.107438 &     0.156342 \\
+		4     &      0.206612 &     0.156189 \\
+		5     &      0.132231 &     0.149665 \\
+		6     &      0.049587 &     0.140438 \\
+		\bottomrule
+		\end{tabular}
 	\caption{Weather type (WT) occurrence fraction during NDJF 2015-16 and Climatology}
 \end{table}
 
@@ -68,29 +68,20 @@ Further supporting information is available in the form of source code and \text
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{eof-variance-explained.pdf}
-	\caption{
-		Variance explained for each EOF loading of the \SI{850}{\hecto\pascal} streamfunction $\psi$.
-    (L): the individual variance explained for each EOF.
-		(R): cumulative variance explained.
-	}
-\end{figure}
-
-\begin{figure}
-  \includegraphics[width=\textwidth]{wt-classifiability.pdf}
+  \includegraphics[width=\textwidth]{wt_classifiability.pdf}
 	\caption{
 		Classifiability index \citep[see Methods and][]{Michelangeli1995} calculated for several chosen values of $K$, representing the number of weather types produced.
-		Results are produced with only 50 simulations for each $K$.
+		Results are produced with only 75 simulations for each $K$.
 	}
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{mjo-time-series.pdf}
+	\includegraphics[width=\textwidth]{nino_sst_anomalies.pdf}
 	\caption{
-		Phase plot of the Madden-Julian Oscillation during NDJF 2015-16.
-		The $x$-axis shows RMM1 and the $y$-axis shows RMM2 -- gray lines separate MJO phases.
+		Monthly SST anomalies during major El Ni\~{n}o events.
+		Months shown are (a) December 1982, (b) December 1997, and (c) December 2015.
+		Units are in \si{\celsius}.
 	}
-	\label{fig:mjo-ts}
 \end{figure}
 
 \clearpage
