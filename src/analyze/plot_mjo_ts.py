@@ -16,7 +16,7 @@ parser.add_argument("--mjo", help="The MJO Data")
 def main():
     # Read in raw data
     args = parser.parse_args()
-    mjo = xr.open_dataset(args.mjo).sel(time=slice('2015-12-01', '2016-02-29'))
+    mjo = xr.open_dataset(args.mjo).sel(time=slice('2015-11-01', '2016-02-29'))
     dt = np.arange(mjo['time'].size)
 
     # Set up axes

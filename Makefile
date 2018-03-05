@@ -171,11 +171,11 @@ figs/nino_34_ts.pdf	:	src/analyze/plot_nino34.py data/external/nino34.nc
 figs/mjo_ts.pdf	:	src/analyze/plot_mjo_ts.py data/external/mjo.nc
 	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc
 
-figs/predicotrs._wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py data/processed/weather_type.nc data/external/mjo.nc data/external/nino34.nc data/external/ssta_cmb.nc
-	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc --nino data/external/nino34.nc --wt data/processed/weather_type.nc --sst data/external/ssta_cmb.nc
+figs/predictors_wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py data/processed/weather_type.nc data/external/mjo.nc data/external/nino34.nc
+	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc --nino data/external/nino34.nc --wt data/processed/weather_type.nc
 
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/wt_mjo_enso.pdf figs/nino_34_ts.pdf figs/mjo_ts.pdf figs/predicotrs._wtypes.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/wt_mjo_enso.pdf figs/nino_34_ts.pdf figs/mjo_ts.pdf figs/predictors_wtypes.pdf
 
 ################################################################################
 # Self-Documenting Help Commands

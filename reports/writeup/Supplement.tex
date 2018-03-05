@@ -31,8 +31,8 @@
 %% Necessary!
 \maketitle
 
-This document contains several supplemental figures described in the main text.
-Further supporting information is available in the form of source code and \texttt{jupyter} notebooks at \url{github.com/jdossgollin/PYFloods}.
+This document contains several supplemental figures referenced in the main text.
+Further supporting information is available in the form of source code at \url{github.com/jdossgollin/PYFloods}.
 
 \listoftables
 \listoffigures
@@ -44,7 +44,7 @@ Further supporting information is available in the form of source code and \text
 	\begin{tabular}{lrr}
 		\toprule
 		{} &  NDJF 2015-16 &  climatology \\
-		wtype &               &              \\
+		WT &               &              \\
 		\midrule
 		1     &      0.272727 &     0.212849 \\
 		2     &      0.231405 &     0.184517 \\
@@ -68,24 +68,56 @@ Further supporting information is available in the form of source code and \text
 \end{figure}
 
 \begin{figure}
-  \includegraphics[width=\textwidth]{wt_classifiability.pdf}
+	\includegraphics[width=\textwidth]{mjo_ts.pdf}
 	\caption{
-		Classifiability index \citep[see Methods and][]{Michelangeli1995} calculated for several chosen values of $K$, representing the number of weather types produced.
-		Results are produced with only 75 simulations for each $K$.
+		Time series of MJO evolution during NDJF 2015-16 season.
+		$x$-axis shows RMM1 and $y$-axis shows RMM2.
+		The associated phases are marked with gray lines and annotated in gray letters.
+		The inner circle denotes a ``neutral'' MJO, where the amplitude is less than 1/
+		The colored circles describe the time evolution of the system, from 2015-11-01 to 2016-02-29.
+		Data from Australian Bureau of Meteorology \citep{Wheeler2004}.
+	}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{nino_34_ts.pdf}
+	\caption{
+		Monthly NINO 3.4 time series during the study period.
+		Each month from November 2015 through February 2016 is specifically marked with a blue dot.
+		Data from \citet{Kaplan1998}.
 	}
 \end{figure}
 
 \begin{figure}
 	\includegraphics[width=\textwidth]{nino_sst_anomalies.pdf}
 	\caption{
-		Monthly SST anomalies during major El Ni\~{n}o events.
+		Monthly SST anomalies during December of several major El Ni\~{n}o events.
 		Months shown are (a) December 1982, (b) December 1997, and (c) December 2015.
 		Units are in \si{\celsius}.
+		Data from \citet{Reynolds2002}.
 	}
 \end{figure}
 
+\begin{figure}
+	\includegraphics[width=\textwidth]{predictors_wtypes.pdf}
+	\caption{
+		Pearson correlation coefficient between several S2S predictors and weather type occurrence.
+		For daily correlation (L), correlations are computed between the binary 0-1 occurrence of each weather type and the predictor.
+		Predictors are the 8 MJO phases, encoded as a multinomial variable, and the NINO 3.4 time series, interpolated from monthly to daily values by using the most recent monthly value (no interpolation).
+		For monthly correlation (R), correlations are computed between the proportion of occurrence of each weather type and the predictor.
+	}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{wt_classifiability.pdf}
+	  \caption{
+		  Classifiability index (see Methods) calculated for several chosen values of $K$, representing the number of weather types produced.
+		  Results are produced with only 75 simulations for each $K$.
+	  }
+  \end{figure}
+
 \clearpage
 \bibliographystyle{ametsoc2014}
-\bibliography{library}
+\bibliography{../library}
 
 \end{document}

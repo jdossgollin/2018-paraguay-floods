@@ -16,7 +16,6 @@ parser.add_argument("--outfile", help="the filename of the data to save")
 parser.add_argument("--mjo", help="The MJO data")
 parser.add_argument("--nino", help="The NINO data")
 parser.add_argument("--wt", help="The Weather Type sequence")
-parser.add_argument("--sst", help="SST data")
 
 def main():
     # Read in raw data
@@ -31,25 +30,13 @@ def main():
     wt = pd.get_dummies(wt['Weather Type'])
     wt.columns = ['WT ' + str(w) for w in wt.columns]
 
-    sst = (xr.open_dataarray(args.sst).
-       rename({'X': 'lon', 'Y': 'lat', 'T': 'time'}).
-       sel(lon=slice(330, 350), lat=slice(-40, -10)).
-       diff(dim='lon').
-       mean(dim=['lon', 'lat']).
-       to_dataframe().
-       resample('1D').
-       ffill()
-      )
-    sst.columns = ['Dipole']
-
     # Join everything together
-    daily = mjo.join(nino_daily).join(wt).join(sst).dropna()
+    daily = mjo.join(nino_daily).join(wt).dropna()
     monthly = daily.resample('1M').mean().dropna()
 
     # Get the daily and monthly correlations
     predictors = mjo.columns.tolist()
     predictors.append('NINO 3.4')
-    predictors.append('Dipole')
     wtypes = wt.columns.tolist()
     daily_correlations = np.zeros((len(predictors), len(wtypes)))
     monthly_correlations = np.zeros((len(predictors), len(wtypes)))
