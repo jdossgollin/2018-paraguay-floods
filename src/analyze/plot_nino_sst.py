@@ -34,6 +34,8 @@ def main():
     nino_times = pd.to_datetime(['1982-12-01', '1997-12-01', '2015-12-01'])
     sst_plot = sea_temp.sel(time=np.in1d(sea_temp['time'], nino_times))
 
+    rain = xr.open_dataset('data/processed/rain.nc')['anomaly']
+
     # Plot options
     map_proj = ccrs.PlateCarree(central_longitude=-60)
     data_proj = ccrs.PlateCarree()
@@ -41,6 +43,7 @@ def main():
     dipole = Region(lon=[-30,-10], lat=[-10,-40])
 
     cmap = cc.cm['coolwarm']
+
     p = sst_plot.plot.contourf(
        x='lon', y='lat',
        transform=data_proj,
@@ -51,6 +54,19 @@ def main():
        levels=np.linspace(-3.5, 3.5, 15),
        figsize=figsize
     )
+
+    keywords = dict(add_colorbar=False, add_labels=False, vmin=-10, vmax=10, cmap='BrBG', transform=data_proj, levels=np.linspace(-10, 10, 21))
+    rain_sub = rain.sel(time=slice('1982-12-01', '1982-12-31')).mean(dim='time')
+    rain_sub.plot.contourf(ax=p.axes.flat[0], **keywords)
+    p.axes.flat[0].set_title('December 1982')
+
+    rain_sub = rain.sel(time=slice('1997-12-01', '1997-12-31')).mean(dim='time')
+    rain_sub.plot.contourf(ax=p.axes.flat[1], **keywords)
+    p.axes.flat[1].set_title('December 1997')
+
+    rain_sub = rain.sel(time=slice('2015-12-01', '2015-12-31')).mean(dim='time')
+    rain_sub.plot.contourf(ax=p.axes.flat[2], **keywords)
+    p.axes.flat[2].set_title('December 2015')
 
     # Add stuff to the axes
     viz.format_axes(

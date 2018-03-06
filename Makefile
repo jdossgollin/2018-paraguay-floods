@@ -129,7 +129,7 @@ figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py data/processed/rain.nc da
 figs/anomalies_ndjf1516.pdf	:	src/analyze/plot_anom_1516.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
 	$(PY_INTERP) $< --outfile $@ --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
 
-figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py data/processed/psi_wtype.nc
+figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py data/processed/psi_wtype.nc config/wtype.mk
 	$(PY_INTERP) $< --outfile $@ --psi_wtype data/processed/psi_wtype.nc --n_eof 4
 
 figs/rain_wt_201516.pdf	:	src/analyze/plot_wt_rain.py data/processed/weather_type.nc data/processed/rain_rpy.nc
@@ -153,11 +153,11 @@ figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/exter
 figs/mos_forecasts.pdf	:	src/analyze/plot_mos_forecasts.py
 	$(PY_INTERP) $< --outfile $@
 
-figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/uwnd_rpy.nc
-	$(PY_INTERP) $< --outfile $@ --uwnd data/processed/uwnd_rpy.nc --sst data/external/ssta_cmb.nc
+figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/psi_wtype.nc
+	$(PY_INTERP) $< --outfile $@ --psi data/processed/psi_wtype.nc --sst data/external/ssta_cmb.nc --n_eof 4 --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
 
-figs/nino_sst_anomalies.pdf	:	src/analyze/plot_nino_sst.py
-	$(PY_INTERP) $< --outfile $@ --sst data/external/ssta_cmb.nc
+figs/nino_sst_anomalies.pdf	:	src/analyze/plot_nino_sst.py data/external/ssta_cmb.nc
+	$(PY_INTERP) $< --outfile $@ --sst data/external/ssta_cmb.nc 
 
 figs/wt_classifiability.pdf	:	src/analyze/plot_classifiability.py data/processed/wt_k_*.nc
 	$(PY_INTERP) $< --outfile $@ --infiles "data/processed/wt_k_*.nc"
@@ -171,8 +171,8 @@ figs/nino_34_ts.pdf	:	src/analyze/plot_nino34.py data/external/nino34.nc
 figs/mjo_ts.pdf	:	src/analyze/plot_mjo_ts.py data/external/mjo.nc
 	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc
 
-figs/predictors_wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py data/processed/weather_type.nc data/external/mjo.nc data/external/nino34.nc
-	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc --nino data/external/nino34.nc --wt data/processed/weather_type.nc
+figs/predictors_wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py data/processed/psi_wtype.nc data/external/mjo.nc data/external/nino34.nc data/external/ssta_cmb.nc config/wtype.mk
+	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc --nino data/external/nino34.nc --psi_wtype data/processed/psi_wtype.nc --n_eof 4 --sst data/external/ssta_cmb.nc
 
 ## Make all analysis tables and figures
 analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/wt_mjo_enso.pdf figs/nino_34_ts.pdf figs/mjo_ts.pdf figs/predictors_wtypes.pdf
