@@ -19,6 +19,7 @@ import visualize as viz
 
 parser = argparse.ArgumentParser() #pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the data to save")
+parser.add_argument("--elev", help="the path to elevation data")
 parser.add_argument("--LPRX0", type=float)
 parser.add_argument("--LPRX1", type=float)
 parser.add_argument("--LPRY0", type=float)
@@ -63,7 +64,7 @@ def main():
     wt_region = Region(lon=[args.WTX0, args.WTX1], lat=[args.WTY0, args.WTY1])
 
     # Read in raw data
-    elev = xr.open_dataarray('data/external/elevation.nc').sel(
+    elev = xr.open_dataarray(args.elev).sel(
         X=slice(-85, -32.5),
         Y=slice(-50, 15)
     )

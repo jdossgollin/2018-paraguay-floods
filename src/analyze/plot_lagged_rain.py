@@ -18,9 +18,11 @@ import visualize as viz
 
 parser = argparse.ArgumentParser() #pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the data to save")
-parser.add_argument("--prcp_rpy", help="The Paraguay River Basin Rainfall")
+parser.add_argument("--rain_rpy", help="The Paraguay River Basin Rainfall")
 parser.add_argument("--psi", help="The streamfunction")
 parser.add_argument("--rain", help="The streamfunction")
+parser.add_argument("--uwnd", help="The zonal wind")
+parser.add_argument("--vwnd", help="The meridional wind")
 
 def main():
     """Run everything
@@ -32,13 +34,19 @@ def main():
     days_back = [-2, -1, 0, 1]
     figsize = (4 * len(days_back), 4.75)
 
-    psi = xr.open_dataset(args.psi)
-    prcp = xr.open_dataset(args.rain)
-    prcp_rpy = xr.open_dataset(args.prcp_rpy)['raw'].to_pandas()
+    psi = xr.open_dataset(args.psi)['anomaly']
+    prcp = xr.open_dataset(args.rain)['anomaly']
+    uwnd = xr.open_dataset(args.uwnd)['anomaly']
+    vwnd = xr.open_dataset(args.vwnd)['anomaly']
+    X, Y = np.meshgrid(uwnd.lon, uwnd.lat)
+    
+    prcp_rpy = xr.open_dataset(args.rain_rpy)['raw'].to_pandas()
     threshold = np.nanpercentile(prcp_rpy, 90)
     rainy_days = prcp_rpy.loc[prcp_rpy > threshold].index
     rainy_days = pd.to_datetime(rainy_days)
 
+    data_proj = ccrs.PlateCarree()
+    
     # Initialize the plot and axes
     fig, axes = plt.subplots(nrows=2, ncols=len(days_back), subplot_kw={'projection': map_proj}, figsize=figsize)
     for i,d in enumerate(days_back):
@@ -52,17 +60,26 @@ def main():
         # Plot the streamfunction
         ax = axes[0, i]
         ax.set_title("t={} d".format(d))
-        C0 = select_fun(psi['anomaly']).plot.contourf(
-            transform = ccrs.PlateCarree(), ax=ax,
+
+        C0 = select_fun(psi).plot.contourf(
+            transform=data_proj, 
+            ax=ax,
             cmap='PuOr',
             extend="both",
             levels=np.linspace(-2.5e6, 2.5e6, 11),
             add_colorbar=False, add_labels=False
         )
+        # add wind arrows
+        U = select_fun(uwnd).values
+        V = select_fun(vwnd).values
+        magnitude = np.sqrt(U**2 + V**2)
+        strongest = magnitude > np.percentile(magnitude, 95)
+        ax.quiver(X[strongest], Y[strongest], U[strongest], V[strongest], transform=data_proj, scale=80)
 
         ax = axes[1, i] # Rainfall
-        C1 = select_fun(prcp['anomaly']).plot.contourf(
-            transform = ccrs.PlateCarree(), ax=ax,
+        C1 = select_fun(prcp).plot.contourf(
+            transform=data_proj, 
+            ax=ax,
             cmap = 'BrBG', extend="both",
             levels = np.linspace(-12, 12, 13),
             add_colorbar=False, add_labels=False

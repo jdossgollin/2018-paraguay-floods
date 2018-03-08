@@ -28,67 +28,102 @@ def main():
     """
     args = parser.parse_args()
 
-    sea_temp = xr.open_dataarray(args.sst).rename({'X': 'lon', 'Y': 'lat', 'T': 'time'})
+    sea_temp = xr.open_dataarray(args.sst)
     sea_temp = sea_temp.sel(time = np.in1d(sea_temp['time.month'], [11, 12, 1, 2]))
-    
-    nino_times = pd.to_datetime(['1982-12-01', '1997-12-01', '2015-12-01'])
-    sst_plot = sea_temp.sel(time=np.in1d(sea_temp['time'], nino_times))
-
     rain = xr.open_dataset('data/processed/rain.nc')['anomaly']
 
     # Plot options
     map_proj = ccrs.PlateCarree(central_longitude=-60)
     data_proj = ccrs.PlateCarree()
-    figsize = (10, 9)
+    figsize = (18, 9)
     dipole = Region(lon=[-30,-10], lat=[-10,-40])
 
-    cmap = cc.cm['coolwarm']
+    
+    nino_years = [1982, 1997, 2015]
 
-    p = sst_plot.plot.contourf(
-       x='lon', y='lat',
-       transform=data_proj,
-       col='time',
-       col_wrap=1,
-       subplot_kws={'projection': map_proj},
-       cmap=cmap,
-       levels=np.linspace(-3.5, 3.5, 15),
-       figsize=figsize
+    # Set up plots
+    fig, axes = plt.subplots(
+        nrows=4, ncols=len(nino_years), subplot_kw={'projection': map_proj},
+        figsize=figsize, sharex=True, sharey=True
     )
 
-    keywords = dict(add_colorbar=False, add_labels=False, vmin=-10, vmax=10, cmap='BrBG', transform=data_proj, levels=np.linspace(-10, 10, 21))
-    rain_sub = rain.sel(time=slice('1982-12-01', '1982-12-31')).mean(dim='time')
-    rain_sub.plot.contourf(ax=p.axes.flat[0], **keywords)
-    p.axes.flat[0].set_title('December 1982')
+    for i, yr in enumerate(nino_years):
+        sst_keywords = dict(
+            transform=data_proj,
+            cmap=cc.cm['coolwarm'],
+            levels=np.linspace(-3, 3, 13),
+            add_colorbar=True,
+            add_labels=False,
+            extend='both',
+        )
 
-    rain_sub = rain.sel(time=slice('1997-12-01', '1997-12-31')).mean(dim='time')
-    rain_sub.plot.contourf(ax=p.axes.flat[1], **keywords)
-    p.axes.flat[1].set_title('December 1997')
+        rain_keywords = dict(
+            transform=data_proj,
+            cmap='BrBG',
+            levels=np.linspace(-7, 7, 15),
+            add_colorbar=False,
+            add_labels=False,
+            extend='both',
+        )
+        
+        # NOVEMBER
+        ax = axes[0, i]
+        selector = lambda ds: ds.sel(time = slice('{}-11-01'.format(yr), '{}-11-30'.format(yr))).mean(dim='time')
+        rain_sub = selector(rain)
+        sst_sub = selector(sea_temp)
+        sst_sub.plot.contourf(ax=ax, **sst_keywords)
+        rain_sub.plot.contourf(ax=ax, **rain_keywords)
+        ax.add_patch(dipole.as_patch(color='blue'))
+        ax.set_title('November {}'.format(yr))
 
-    rain_sub = rain.sel(time=slice('2015-12-01', '2015-12-31')).mean(dim='time')
-    rain_sub.plot.contourf(ax=p.axes.flat[2], **keywords)
-    p.axes.flat[2].set_title('December 2015')
+        # DECEMBER
+        ax = axes[1, i]
+        selector = lambda ds: ds.sel(time = slice('{}-12-01'.format(yr), '{}-12-31'.format(yr))).mean(dim='time')
+        rain_sub = selector(rain)
+        sst_sub = selector(sea_temp)
+        sst_sub.plot.contourf(ax=ax, **sst_keywords)
+        rain_sub.plot.contourf(ax=ax, **rain_keywords)
+        ax.add_patch(dipole.as_patch(color='blue'))
+        ax.set_title('December {}'.format(yr))
 
-    # Add stuff to the axes
+        # JANUARY
+        ax = axes[2, i]
+        selector = lambda ds: ds.sel(time = slice('{}-01-01'.format(yr), '{}-01-31'.format(yr+1))).mean(dim='time')
+        rain_sub = selector(rain)
+        sst_sub = selector(sea_temp)
+        sst_sub.plot.contourf(ax=ax, **sst_keywords)
+        rain_sub.plot.contourf(ax=ax, **rain_keywords)
+        ax.add_patch(dipole.as_patch(color='blue'))
+        ax.set_title('January {}'.format(yr+1))
+
+        # FEBRUARY
+        ax = axes[3, i]
+        selector = lambda ds: ds.sel(time = slice('{}-02-01'.format(yr), '{}-02-28'.format(yr+1))).mean(dim='time')
+        rain_sub = selector(rain)
+        sst_sub = selector(sea_temp)
+        sst_sub.plot.contourf(ax=ax, **sst_keywords)
+        rain_sub.plot.contourf(ax=ax, **rain_keywords)
+        ax.add_patch(dipole.as_patch(color='blue'))
+        ax.set_title('February {}'.format(yr+1))
+
+    # Format axes
     viz.format_axes(
-        p.axes,
-        coast=True, grid=False, border=True,
+        axes, extent = None, border=True,
         xticks=np.linspace(-180, 180, 19), yticks=np.linspace(-90, 90, 10)
     )
-
-    dipole = Region(lon=[-30,-10], lat=[-10,-40])
-    for ax in p.axes.flat:
-        ax.set_xlim([-80, 80]) 
+    for ax in axes.flat:
+        ax.set_xlim([-100, 75]) # is relative to central longitude
         ax.set_ylim([-60, 10])
-        ax.add_patch(dipole.as_patch(color='black'))
-
+    
     # Add plot labels
     letters = string.ascii_lowercase
-    for i, ax in enumerate(p.axes.flat):
+    for i, ax in enumerate(axes.flat):
         label = '({})'.format(letters[i])
         t = ax.text(0.05, 0.9, label, fontsize=11, transform=ax.transAxes)
         t.set_bbox(dict(facecolor='white', edgecolor='gray'))
 
-    plt.savefig(args.outfile, bbox_inches='tight')
+    fig.tight_layout()
+    fig.savefig(args.outfile, bbox_inches='tight')
 
 if __name__ == "__main__":
     main()

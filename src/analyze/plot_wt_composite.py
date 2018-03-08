@@ -21,6 +21,8 @@ parser.add_argument("--outfile", help="the filename of the data to save")
 parser.add_argument("--wt", help="The weather type data")
 parser.add_argument("--psi", help="The streamfunction data file")
 parser.add_argument("--rain", help="The rainfall data file")
+parser.add_argument("--uwnd", help="The zonal wind")
+parser.add_argument("--vwnd", help="The meridional wind")
 parser.add_argument("--WTX0", type=float)
 parser.add_argument("--WTX1", type=float)
 parser.add_argument("--WTY0", type=float)
@@ -30,8 +32,11 @@ def main():
     """Run everything
     """
     args = parser.parse_args()
-    psi = xr.open_dataset(args.psi)
+    psi = xr.open_dataset(args.psi).sel(lon=slice(-90, -30), lat=slice(-50, 10))
     prcp = xr.open_dataset(args.rain)
+    uwnd = xr.open_dataset(args.uwnd)['anomaly'].sel(lon=slice(-90, -30), lat=slice(-50, 10))
+    vwnd = xr.open_dataset(args.vwnd)['anomaly'].sel(lon=slice(-90, -30), lat=slice(-50, 10))
+    X, Y = np.meshgrid(uwnd.lon, uwnd.lat)
     w_type = xr.open_dataarray(args.wt).to_dataframe(name='wtype')
 
     wt_region = Region(lon=[args.WTX0, args.WTX1], lat=[args.WTY0, args.WTY1])
@@ -41,6 +46,7 @@ def main():
     data_proj = ccrs.PlateCarree()
     wt_unique = np.unique(w_type['wtype'])
     figsize = (14, 4.5)
+    plot_region = Region(lon = [-90, -30], lat = [-50, 10])
 
     # Get the proportion of weather types each day
     wt_counts = w_type.groupby('wtype').size().div(w_type['wtype'].size)
@@ -72,6 +78,13 @@ def main():
             add_labels=False
         )
         ax.add_patch(wt_region.as_patch(label='Weather Typing Region', color='black'))
+        
+        # add wind arrows
+        U = selector(uwnd).values
+        V = selector(vwnd).values
+        magnitude = np.sqrt(U**2 + V**2)
+        strongest = magnitude > np.percentile(magnitude, 80)
+        ax.quiver(X[strongest], Y[strongest], U[strongest], V[strongest], transform=data_proj, scale=80)
 
         # Bottom row: rainfall anomalies
         ax = axes[1, i]
@@ -101,7 +114,6 @@ def main():
     cbar1.ax.get_yaxis().labelpad = 20
 
     # Format these axes
-    plot_region = Region(lon = [-90, -30], lat = [-50, 10])
     viz.format_axes(
         axes, extent = plot_region.as_extent(), border=True,
         xticks=np.linspace(-180, 180, 19), yticks=np.linspace(-90, 90, 10)

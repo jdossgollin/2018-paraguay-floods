@@ -46,6 +46,13 @@ environment	:
 # get all data from external sources that is required
 ################################################################################
 
+# We name these variables because they are called in analysis section
+ELEV = data/external/elevation.nc # gridded elevation data
+SST = data/external/ssta_cmb.nc # sst anomalies
+MJO = data/external/mjo.nc # MJO data
+NINO34 = data/external/nino34.nc # NINO 3.4 Index
+S2SAA = data/external/s2s_area_avg.nc # ECMWF S2S model area-averaged over LPRB
+
 CPC_RAW: $(patsubst %,data/external/cpc_rain_%.nc,$(YEARS))
 data/external/cpc_rain_%.nc : src/get/download_cpc_year.py
 	$(PY_INTERP) $< --year $* --outfile $@
@@ -58,23 +65,23 @@ VWND_RAW: $(patsubst %,data/external/reanalysisv2_vwnd_850_%.nc,$(YEARS))
 data/external/reanalysisv2_vwnd_850_%.nc : src/get/download_reanalysis_year.py
 	$(PY_INTERP) $< --year $* --coord_system pressure --var vwnd --level 850 --outfile $@
 
-data/external/elevation.nc	: src/get/download_elevation.py
+$(ELEV)	: src/get/download_elevation.py
 	$(PY_INTERP) $< --outfile $@
 
-data/external/ssta_cmb.nc	:	src/get/download_ssta.py
+$(SST)	:	src/get/download_ssta.py
 	$(PY_INTERP) $< --outfile $@
 
-data/external/mjo.nc	: src/get/download_mjo.py
+$(MJO)	: src/get/download_mjo.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
 
-data/external/nino34.nc	: src/get/download_nino34.py
+$(NINO34)	: src/get/download_nino34.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
 
-data/external/s2s_area_avg.nc	: src/get/download_s2s_area_avg.py config/rpy_region.mk
+$(S2SAA)	: src/get/download_s2s_area_avg.py config/rpy_region.mk
 	$(PY_INTERP) $< --outfile $@ --year 2015 --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1)
 
 ## Download all external data
-get: CPC_RAW UWND_RAW VWND_RAW data/external/elevation.nc data/external/ssta_cmb.nc data/external/mjo.nc data/external/nino34.nc data/external/s2s_area_avg.nc
+get: CPC_RAW UWND_RAW VWND_RAW $(ELEV) $(SST) $(MJO) $(NINO34) $(S2SAA)
 
 ################################################################################
 # PROCESSED DATA
@@ -86,33 +93,46 @@ PSI_RAW: $(patsubst %,data/processed/reanalysisv2_psi_850_%.nc,$(YEARS))
 data/processed/reanalysisv2_psi_850_%.nc : src/process/calculate_streamfunction.py data/external/reanalysisv2_uwnd_850_%.nc data/external/reanalysisv2_vwnd_850_%.nc
 	$(PY_INTERP) $< --uwnd "data/external/reanalysisv2_uwnd_850_$*.nc" --vwnd "data/external/reanalysisv2_vwnd_850_$*.nc" --outfile $@
 
-data/processed/rain.nc	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --to_daily 0 --outfile $@
+# We name these variables because they are called in analysis section
+RAIN = data/processed/rain.nc # rainfall raw + anomaly
+PSI = data/processed/streamfunction.nc # streamfunction raw + anomaly
+UWND = data/processed/uwnd.nc # zonal wind raw + anomaly
+VWND = data/processed/vwnd.nc # meridional wind raw + anomaly
+RAIN_RPY = data/processed/rain_rpy.nc # area-averaged rain over LPRB
+PSI_WT = data/processed/psi_wtype.nc # streamfunction over WT region
+WT = data/processed/weather_type.nc # weather type sequence
+DIPOLE = data/processed/scad.nc # south central atlantic dipole
 
-data/processed/streamfunction.nc	:	src/process/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/processed/reanalysisv2_psi_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --to_daily 1 --outfile $@
+$(RAIN)	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --to_daily 0 --outfile $(RAIN)
 
-data/processed/uwnd_rpy.nc	:	src/process/make_anomaly.py data/external/reanalysisv2_uwnd_850_*.nc config/time.mk config/rpy_region.mk
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_uwnd_850_*.nc" --X0 -60 --X1 -55 --Y0 -27.5 --Y1 -22.5 --to_daily 1 --outfile $@
+$(PSI)	:	src/process/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/processed/reanalysisv2_psi_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --to_daily 1 --outfile $(PSI)
 
-data/processed/vwnd_rpy.nc	:	src/process/make_anomaly.py data/external/reanalysisv2_vwnd_850_*.nc config/time.mk config/rpy_region.mk
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_vwnd_850_*.nc" --X0 -60 --X1 -55 --Y0 -27.5 --Y1 -22.5 --to_daily 1 --outfile $@
+$(UWND)	:	src/process/make_anomaly.py data/external/reanalysisv2_uwnd_850_*.nc config/time.mk config/reanalysis_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_uwnd_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --to_daily 1 --outfile $(UWND)
 
-data/processed/rain_rpy.nc: src/process/make_time_series.py data/processed/rain.nc
-	$(PY_INTERP) $< --infile data/processed/rain.nc --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1) --outfile $@
+$(VWND)	:	src/process/make_anomaly.py data/external/reanalysisv2_vwnd_850_*.nc config/time.mk config/reanalysis_region.mk
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/reanalysisv2_vwnd_850_*.nc" --X0 $(RNLSX0) --X1 $(RNLSX1) --Y0 $(RNLSY0) --Y1 $(RNLSY1) --to_daily 1 --outfile $(VWND)
 
-data/processed/psi_wtype.nc: src/process/make_subset.py data/processed/streamfunction.nc config/wt_region.mk
-	$(PY_INTERP) $< --infile data/processed/streamfunction.nc --X0 $(WTX0) --X1 $(WTX1) --Y0 $(WTY0) --Y1 $(WTY1) --outfile $@
+$(RAIN_RPY)	: src/process/make_time_series.py $(RAIN)
+	$(PY_INTERP) $< --infile $(RAIN) --X0 $(LPRX0) --X1 $(LPRX1) --Y0 $(LPRY0) --Y1 $(LPRY1) --outfile $(RAIN_RPY)
+
+$(PSI_WT)	: src/process/make_subset.py data config/wt_region.mk $(PSI)
+	$(PY_INTERP) $< --infile $(PSI) --X0 $(WTX0) --X1 $(WTX1) --Y0 $(WTY0) --Y1 $(WTY1) --outfile $(PSI_WT)
 
 WT_CI: $(patsubst %,data/processed/wt_k_%.nc,$(WTK))
 data/processed/wt_k_%.nc	:	src/process/make_weather_type.py data/processed/psi_wtype.nc config/wtype2.mk
 	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL2) --n_cluster $* --n_sim $(NSIM2) --outfile $@
 
-data/processed/weather_type.nc: src/process/make_weather_type.py data/processed/psi_wtype.nc config/wtype.mk
-	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL) --n_cluster $(NCLUS) --n_sim $(NSIM) --outfile $@
+$(WT) tables/weather_type_centroid.tex : src/process/make_weather_type.py data/processed/psi_wtype.nc config/wtype.mk
+	$(PY_INTERP) $< --infile data/processed/psi_wtype.nc --var_xpl $(VARXPL) --n_cluster $(NCLUS) --n_sim $(NSIM) --outfile data/processed/weather_type.nc --table tables/weather_type_centroid.tex
+
+$(DIPOLE)	:	src/process/make_dipole.py config/dipole_region.mk $(SST)
+	$(PY_INTERP) $< --infile $(SST) --outfile $(DIPOLE) --X0 $(SCADX0) --X1 $(SCADX1) --Y0 $(SCADY0) --Y1 $(SCADY1)
 
 ## Get all the processed data
-process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/processed/uwnd_rpy.nc data/processed/vwnd_rpy.nc data/processed/rain_rpy.nc data/processed/psi_wtype.nc WT_CI data/processed/weather_type.nc
+process: PSI_RAW $(RAIN) $(PSI) $(UWND) $(VWND) $(RAIN_RPY) $(PSI_WT) WT_CI $(WT) tables/weather_type_centroid.tex $(DIPOLE)
 
 ################################################################################
 # MAKE PLOTS AND TABLES (ANALYSIS)
@@ -120,62 +140,65 @@ process: PSI_RAW data/processed/rain.nc data/processed/streamfunction.nc data/pr
 # Each plot or table is created from a separate file with corresponding name
 ################################################################################
 
-figs/study_area.jpg	:	src/analyze/plot_study_area.py config/wt_region.mk config/rpy_region.mk data/external/elevation.nc
-	$(PY_INTERP) $< --outfile $@ --LPRX0 $(LPRX0) --LPRX1 $(LPRX1) --LPRY0 $(LPRY0) --LPRY1 $(LPRY1) --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
+figs/study_area.jpg	:	src/analyze/plot_study_area.py config/wt_region.mk config/rpy_region.mk $(ELEV)
+	$(PY_INTERP) $< --outfile $@ --LPRX0 $(LPRX0) --LPRX1 $(LPRX1) --LPRY0 $(LPRY0) --LPRY1 $(LPRY1) --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1) --elev $(ELEV)
 
-figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
-	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
+figs/lagged_rain.pdf	:	src/analyze/plot_lagged_rain.py $(RAIN) $(RAIN_RPY) $(PSI) $(UWND) $(VWND)
+	$(PY_INTERP) $< --outfile $@ --rain_rpy $(RAIN_RPY) --psi $(PSI) --rain $(RAIN) --uwnd $(UWND) --vwnd $(VWND)
 
-figs/anomalies_ndjf1516.pdf	:	src/analyze/plot_anom_1516.py data/processed/rain.nc data/processed/rain_rpy.nc data/processed/streamfunction.nc
-	$(PY_INTERP) $< --outfile $@ --psi data/processed/streamfunction.nc --rain data/processed/rain.nc
+figs/anomalies_ndjf1516.pdf	:	src/analyze/plot_anomalies_ndjf1516.py $(PSI) $(RAIN)
+	$(PY_INTERP) $< --outfile $@ --psi $(PSI) --rain $(RAIN)
 
-figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py data/processed/psi_wtype.nc config/wtype.mk
-	$(PY_INTERP) $< --outfile $@ --psi_wtype data/processed/psi_wtype.nc --n_eof 4
+figs/eof_loadings.pdf	:	src/analyze/plot_leading_eofs.py config/wtype.mk $(PSI_WT)
+	$(PY_INTERP) $< --outfile $@ --psi_wtype $(PSI_WT) --n_eof 4
 
-figs/rain_wt_201516.pdf	:	src/analyze/plot_wt_rain.py data/processed/weather_type.nc data/processed/rain_rpy.nc
-	$(PY_INTERP) $< --outfile $@ --prcp_rpy data/processed/rain_rpy.nc --wt data/processed/weather_type.nc
+figs/rain_wt_201516.pdf	:	src/analyze/plot_wt_rain.py $(WT) $(RAIN_RPY)
+	$(PY_INTERP) $< --outfile $@ --prcp_rpy $(RAIN_RPY) --wt $(WT)
 
-figs/wt_composite.pdf	:	src/analyze/plot_wt_composite.py data/processed/weather_type.nc data/processed/rain.nc data/processed/streamfunction.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --rain data/processed/rain.nc --psi data/processed/streamfunction.nc --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
+figs/wt_composite.pdf	:	src/analyze/plot_wt_composite.py $(WT) $(RAIN) $(PSI) $(UWND) $(VWND)
+	$(PY_INTERP) $< --outfile $@ --wt $(WT) --rain $(RAIN) --psi $(PSI) --uwnd $(UWND) --vwnd $(VWND) --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
 
-figs/klee.pdf	:	src/analyze/plot_klee.py data/processed/weather_type.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
+figs/klee.pdf	:	src/analyze/plot_klee.py $(WT)
+	$(PY_INTERP) $< --outfile $@ --wt $(WT)
 
-figs/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py data/processed/weather_type.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc
+tables/weather_type_prop_year.tex	:	src/analyze/print_wt_prop_table.py $(WT)
+	$(PY_INTERP) $< --outfile $@ --wt $(WT)
 
-figs/seasonal_forecast.pdf	:	src/analyze/plot_seasonal_forecast.py data/processed/rain.nc data/raw/SeasonalForecast.tsv
-	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --seasonal data/raw/SeasonalForecast.tsv
+figs/seasonal_forecast.pdf	:	src/analyze/plot_seasonal_forecast.py $(RAIN) data/raw/SeasonalForecast.tsv
+	$(PY_INTERP) $< --outfile $@ --rain $(RAIN) --seasonal data/raw/SeasonalForecast.tsv
 
-figs/chiclet.pdf	:	src/analyze/plot_chiclet.py data/processed/rain.nc data/external/s2s_area_avg.nc
-	$(PY_INTERP) $< --outfile $@ --rain data/processed/rain.nc --s2s data/external/s2s_area_avg.nc
+figs/chiclet.pdf	:	src/analyze/plot_chiclet.py $(RAIN) $(S2SAA)
+	$(PY_INTERP) $< --outfile $@ --rain $(RAIN) --s2s $(S2SAA)
 
 figs/mos_forecasts.pdf	:	src/analyze/plot_mos_forecasts.py
 	$(PY_INTERP) $< --outfile $@
 
-figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py data/processed/psi_wtype.nc
-	$(PY_INTERP) $< --outfile $@ --psi data/processed/psi_wtype.nc --sst data/external/ssta_cmb.nc --n_eof 4 --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
+figs/sst_anomalies.pdf	:	src/analyze/plot_sst_anomalies.py $(PSI_WT)
+	$(PY_INTERP) $< --outfile $@ --psi $(PSI_WT) --sst $(SST) --n_eof 4 --WTX0 $(WTX0) --WTX1 $(WTX1) --WTY0 $(WTY0) --WTY1 $(WTY1)
 
-figs/nino_sst_anomalies.pdf	:	src/analyze/plot_nino_sst.py data/external/ssta_cmb.nc
-	$(PY_INTERP) $< --outfile $@ --sst data/external/ssta_cmb.nc 
+figs/nino_sst_anomalies.pdf	:	src/analyze/plot_nino_sst.py $(SST)
+	$(PY_INTERP) $< --outfile $@ --sst $(SST)
 
 figs/wt_classifiability.pdf	:	src/analyze/plot_classifiability.py data/processed/wt_k_*.nc
 	$(PY_INTERP) $< --outfile $@ --infiles "data/processed/wt_k_*.nc"
 
-figs/wt_mjo_enso.pdf	:	src/analyze/plot_wt_mjo_enso.py data/processed/weather_type.nc data/external/nino34.nc data/external/mjo.nc
-	$(PY_INTERP) $< --outfile $@ --wt data/processed/weather_type.nc --nino data/external/nino34.nc --mjo data/external/mjo.nc
+figs/nino_34_ts.pdf	:	src/analyze/plot_nino34.py $(NINO34)
+	$(PY_INTERP) $< --outfile $@ --nino $(NINO34)
 
-figs/nino_34_ts.pdf	:	src/analyze/plot_nino34.py data/external/nino34.nc
-	$(PY_INTERP) $< --outfile $@ --nino data/external/nino34.nc
+figs/mjo_ts.pdf	:	src/analyze/plot_mjo_ts.py $(MJO)
+	$(PY_INTERP) $< --outfile $@ --mjo $(MJO)
 
-figs/mjo_ts.pdf	:	src/analyze/plot_mjo_ts.py data/external/mjo.nc
-	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc
+figs/predictors_wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py $(PSI_WT) $(MJO) $(NINO34) $(DIPOLE) $(WT) config/wtype.mk
+	$(PY_INTERP) $< --outfile $@ --mjo $(MJO) --nino $(NINO34) --wt $(WT) --dipole $(DIPOLE) --n_eof 4
 
-figs/predictors_wtypes.pdf	:	src/analyze/plot_predictors_wtypes.py data/processed/psi_wtype.nc data/external/mjo.nc data/external/nino34.nc data/external/ssta_cmb.nc config/wtype.mk
-	$(PY_INTERP) $< --outfile $@ --mjo data/external/mjo.nc --nino data/external/nino34.nc --psi_wtype data/processed/psi_wtype.nc --n_eof 4 --sst data/external/ssta_cmb.nc
+figs/predictors_eofs.pdf	:	src/analyze/plot_predictors_eofs.py $(PSI_WT) $(MJO) $(NINO34) $(DIPOLE) $(WT) config/wtype.mk
+	$(PY_INTERP) $< --outfile $@ --mjo $(MJO) --nino $(NINO34) --psi_wtype $(PSI_WT) --dipole $(DIPOLE) --n_eof 4
+
+figs/wt_mjo_enso.pdf	:	src/analyze/plot_wt_mjo_enso.py $(WT) $(NINO) $(MJO)
+	$(PY_INTERP) $< --outfile $@ --wt $(WT) --nino $(NINO34) --mjo $(MJO)
 
 ## Make all analysis tables and figures
-analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf figs/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/wt_mjo_enso.pdf figs/nino_34_ts.pdf figs/mjo_ts.pdf figs/predictors_wtypes.pdf
+analyze:	figs/study_area.jpg figs/lagged_rain.pdf figs/anomalies_ndjf1516.pdf figs/eof_loadings.pdf figs/rain_wt_201516.pdf figs/wt_composite.pdf figs/klee.pdf tables/weather_type_prop_year.tex figs/seasonal_forecast.pdf figs/chiclet.pdf figs/mos_forecasts.pdf figs/sst_anomalies.pdf figs/nino_sst_anomalies.pdf figs/wt_classifiability.pdf figs/nino_34_ts.pdf figs/mjo_ts.pdf figs/predictors_wtypes.pdf figs/predictors_eofs.pdf figs/wt_mjo_enso.pdf
 
 ################################################################################
 # Self-Documenting Help Commands

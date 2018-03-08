@@ -42,7 +42,7 @@ def main():
     wt_prop_tex = pd.DataFrame({'climatology': wt_prop_clim, 'NDJF 2015-16': wt_prop_1516})
 
     # Save to latex table
-    wt_prop_tex.to_latex(args.outfile)
+    wt_prop_tex.round(decimals=3).to_latex(args.outfile)
 
 if __name__ == "__main__":
     main()

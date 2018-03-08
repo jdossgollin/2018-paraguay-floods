@@ -17,6 +17,7 @@ from numba import jit
 
 parser = argparse.ArgumentParser() #pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the data to save")
+parser.add_argument("--table", help="the filename of the latex table to write", default=None)
 parser.add_argument("--infile", help="the input data")
 parser.add_argument("--var_xpl", type=float, help="Min amount of variance that must be retained")
 parser.add_argument("--n_cluster", type=int, help="Number of clusters to create")
@@ -107,7 +108,15 @@ def main():
 
     centroids, wtypes = loop_kmeans(X=psi_stacked, pc_ts=pc_ts, n_cluster=args.n_cluster, n_sim=args.n_sim, n_components_keep=n_components_keep)
     class_idx, best_part = matrix_classifiability(centroids)
-    best_centroid = centroids[best_part, :, :]
+
+    if args.table is not None:
+        best_centroid = centroids[best_part, :, :]
+        best_centroid = pd.DataFrame(best_centroid)
+        best_centroid.columns = ['EOF {}'.format(i) for i in np.arange(1, n_components_keep + 1)]
+        best_centroid['WT'] = np.arange(1, args.n_cluster + 1)
+        best_centroid.set_index('WT', inplace=True)
+        best_centroid.round(decimals=3).to_latex(args.table)
+
     best_wt = wtypes[best_part, :]
     best_wt = pd.Series(resort_labels(best_wt), index=psi['time']).to_xarray()
     best_wt.name = 'wtype'
