@@ -67,7 +67,7 @@ def main():
         sub = ds.values
         sub = np.ma.masked_invalid(sub)
         sub = np.ma.masked_less(sub, 0)
-        C1 = ax.pcolormesh(X, Y, sub, cmap=cc.cm['inferno'], transform=ccrs.PlateCarree(), vmin=0, vmax=9)
+        C1 = ax.contourf(X, Y, sub, cmap=cc.cm['bgyw_r'], transform=ccrs.PlateCarree(), levels=np.linspace(0, 9, 10), extend='both')
         ax.pcolor(Xh, Yh, hatch, facecolor='none', edgecolors='k')
 
         ax = axes[1, i] # Ignorance Score
@@ -76,7 +76,7 @@ def main():
         sub = ds.values
         sub = np.ma.masked_invalid(sub)
         sub = np.ma.masked_less(sub, 0)
-        C2 = ax.pcolormesh(X, Y, sub, transform=ccrs.PlateCarree(), cmap=cc.cm['inferno'], vmin=0, vmax=2)
+        C2 = ax.contourf(X, Y, sub, transform=ccrs.PlateCarree(), cmap=cc.cm['bgyw_r'], levels=np.linspace(1, 2, 11), extend='both')
         ax.pcolor(Xh, Yh, hatch, facecolor='none', edgecolors='k')
 
         ax = axes[2, i] # 2AFC Skill Score
@@ -85,7 +85,7 @@ def main():
         sub = ds.values
         sub = np.ma.masked_invalid(sub)
         sub = np.ma.masked_less(sub, 0)
-        C3 = ax.pcolormesh(X, Y, sub, transform=ccrs.PlateCarree(), cmap=cc.cm['gwv'], vmin=0, vmax=100)
+        C3 = ax.contourf(X, Y, sub, transform=ccrs.PlateCarree(), cmap=cc.cm['gwv'], levels=np.linspace(0, 100, 11))
         ax.pcolor(Xh, Yh, hatch, facecolor='none', edgecolors='k')
 
     # Format the axes
@@ -96,9 +96,9 @@ def main():
 
     fig.tight_layout()
     fig.subplots_adjust(right=0.94)
-    cax1 = fig.add_axes([0.97, 0.7, 0.015, 0.25])
-    cax2 = fig.add_axes([0.97, 0.38, 0.015, 0.25])
-    cax3 = fig.add_axes([0.97, 0.05, 0.015, 0.25])
+    cax1 = fig.add_axes([0.97, 0.69, 0.0125, 0.25])
+    cax2 = fig.add_axes([0.97, 0.38, 0.0125, 0.25])
+    cax3 = fig.add_axes([0.97, 0.065, 0.0125, 0.25])
     # Color bar for Odds Ratio
     cbar1 = fig.colorbar(C1, cax = cax1)
     cbar1.update_ticks()
