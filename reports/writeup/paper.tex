@@ -130,14 +130,14 @@ The analysis presented involves both observations and model forecasts.
 The period analyzed for diagnostic purposes is from 1 Nov 1979 through 28 Feb 2016.
 \Cref{fig:study-area} shows the study area and defines several spatial domains which are discussed throughout the paper.
 
-Rainfall data are taken from the CPC Unified Gauge-based Analysis of Global Daily Precipitation dataset \citep{Xie2010}.
+Rainfall data are taken from the CPC Unified Gauge-based Analysis of Global Daily Precipitation dataset \citep{Chen2008}.
 Spatial resolution is \SI{0.5}{\degree}, and temporal resolution is daily.
 We define ``heavy'' rainfall events to be exceedances of the \nth{90} percentile; while the value is different for each grid cell, the \nth{90} percentile of area-averaged rainfall over the \gls{lprb} is approximately \SI{15}{\milli\meter\per\day}.
 
 Atmospheric circulations are diagnosed using daily data from the NCAR-NCEP Reanalysis II dataset \citep{Kanamitsu2002}.
 Spatial resolution is \SI{2.5}{\degree}.
-Because the end-of-day time for the rainfall data is 12:00 GMT over most of South America \citep{Xie2010}, we use six-hour reanalysis data, and shift by twelve hours before re-sampling to the daily time step.
-This ensures that the time steps in the reanalysis and rainfall data sets are the same, but means that a day is defined as beginning at 12:00 GMT.
+Because the end-of-day time for the rainfall data is 12:00 GMT over most of South America \citep{Chen2008}, we use six-hour reanalysis data, and shift by twelve hours before re-sampling to the daily time step.
+This ensures that the time steps in the reanalysis and ƒrainfall data sets are the same, but means that a day is defined as beginning at 12:00 GMT.
 Since most summer rainfall in this region occurs overnight \citep{Salio2007,Vera2006}, this end-of-day time (which translates to approximately 8:00 AM locally depending on the exact time zone) tends to separate distinct events.
 The primary atmospheric variable  used was the \SI{850}{\hecto\pascal} streamfunction, calculated directly from the wind field as described in \cref{sec:methods}.
 The streamfunction is preferable to, for example, the geopotential height $\Phi$ because $\Phi$ has weak gradients near the equator, making it difficult to visualize circulations that span from the tropics to the extratropics.
@@ -634,7 +634,7 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 		Raw and \gls{mos}-adjusted \gls{s2s} model forecasts and skill scores for the methods indicated in \cref{tab:mos-methods}.
 		Top row (a-e) shows the heavy rainfall forecast for 1-7 December 2015 as the odds ratio defined in \cref{eq:odds-ratio} over the target domain.
 		A value greater than 1 indicates that the model forecast greater-than-average odds of rainfall exceeding the \nth{90} percentile.
-        Second row (f-j) shows the Ignorance score defined in \cref{eq:ignorance}, with zero indicating a perfect forecast.
+        Second row (f-j) shows the Ignorance Score defined in \cref{eq:ignorance}, with zero indicating a perfect forecast.
 		Bottom row (k-o) shows the 2AFC skill score for each grid cell; a value greater than 50 indicates that the model outperforms climatology.
 		Columns separate different \gls{mos} models except for ``Raw'' (a,f,k), which indicates the uncorrected \gls{s2s} model output.
 		For all rows the grid cells which observed a \nth{90} percentile exceedance for 1-7 December 2015 are outlined in black.
@@ -669,7 +669,7 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 	\includegraphics[width=\textwidth]{wt_mjo_enso.pdf}
 	\caption{
 		Anomalous probability of occurrence of each weather type concurrent with observance of each \gls{mjo} phase. 
-		When \gls{mjo} amplitude is less than zero, it is defined as neutral phase (0)/
+		When \gls{mjo} amplitude is less than zero, it is defined as neutral phase (0).
 		Plots are shown separately for El Ni\~no (NINO 3.4 $>1$), La Ni\~na (NINO 3.4 $< -1$), and Neutral \gls{enso} phases.
 		Only values which are significant at $\alpha=0.10$, calculated with a bootstrap of 5000 samples, are shown.
 	}\label{fig:wt-mjo-enso}
