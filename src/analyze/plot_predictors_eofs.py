@@ -41,7 +41,7 @@ def main():
     pc_ts = pd.DataFrame(pc_ts, index=psi_stacked['time'])
     pc_ts.columns = ['EOF{}'.format(i) for i in np.arange(1, args.n_eof + 1)]
 
-    dipole = xr.open_dataarray(args.dipole).to_dataframe(name='Dipole').resample('1D').ffill()
+    dipole = xr.open_dataarray(args.dipole).to_dataframe(name='SCAD').resample('1D').ffill()
 
     # Join everything together
     daily = mjo.join(nino_daily).join(dipole).join(pc_ts).dropna()
@@ -49,7 +49,7 @@ def main():
 
     # Get the predictor, EOF, and WT columns
     predictors = mjo.columns.tolist()
-    predictors.append('Dipole')
+    predictors.append('SCAD')
     predictors.append('NINO 3.4')
     eofs = pc_ts.columns.tolist()
 

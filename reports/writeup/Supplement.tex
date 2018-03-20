@@ -43,24 +43,6 @@ Further supporting information is available in the form of source code at \url{g
 
 \begin{table}
 	\centering
-	\begin{tabular}{lrr}
-		\toprule
-		{} &  NDJF 2015-16 &  Climatology \\
-		WT &               &              \\
-		\midrule
-		1     &         0.273 &        0.213 \\
-		2     &         0.231 &        0.185 \\
-		3     &         0.107 &        0.156 \\
-		4     &         0.207 &        0.156 \\
-		5     &         0.132 &        0.150 \\
-		6     &         0.050 &        0.140 \\
-		\bottomrule
-	\end{tabular}
-	\caption{Weather type (WT) occurrence fraction during NDJF 2015-16 and Climatology}
-\end{table}
-
-\begin{table}
-	\centering
 	\begin{tabular}{lrrrr}
 		\toprule
 		{} &  EOF 1 &  EOF 2 &  EOF 3 &  EOF 4 \\
@@ -81,6 +63,24 @@ Further supporting information is available in the form of source code at \url{g
 	}
 \end{table}
 
+\begin{table}
+	\centering
+	\begin{tabular}{lrr}
+		\toprule
+		{} &  NDJF 2015-16 &  Climatology \\
+		WT &               &              \\
+		\midrule
+		1     &         0.273 &        0.213 \\
+		2     &         0.231 &        0.185 \\
+		3     &         0.107 &        0.156 \\
+		4     &         0.207 &        0.156 \\
+		5     &         0.132 &        0.150 \\
+		6     &         0.050 &        0.140 \\
+		\bottomrule
+	\end{tabular}
+	\caption{Weather type (WT) occurrence fraction during NDJF 2015-16 and Climatology}
+\end{table}
+
 \clearpage
 
 \begin{figure}
@@ -92,13 +92,10 @@ Further supporting information is available in the form of source code at \url{g
 \end{figure}
 
 \begin{figure}
-	\includegraphics[width=\textwidth]{mjo_ts.pdf}
+	\includegraphics[width=\textwidth]{wt_classifiability.pdf}
 	\caption{
-		Evolution of the MJO during NDJF 2015-16.
-		Points are plotted on RMM1 ($x$-axis) and RMM2 ($y$-axis), derived from leading EOFs of OLR fields \citep{Wheeler2004}.
-		Gray lines divide the plot into the eight phases used in the text.
-		Colors show the time evolution of the system from 01 November 2015 (blue) to 29 February 2016 (yellow).
-		Gray circle indicates the area of neutral MJO activity with amplitude $<0$.
+		Classifiability index (see Methods) calculated for several chosen values of $K$, representing the number of weather types produced.
+		Results are produced with only 75 simulations for each $K$.
 	}
 \end{figure}
 
@@ -124,21 +121,23 @@ Further supporting information is available in the form of source code at \url{g
 \end{sidewaysfigure}
 
 \begin{figure}
+	\includegraphics[width=\textwidth]{mjo_ts.pdf}
+	\caption{
+		Evolution of the MJO during NDJF 2015-16.
+		Points are plotted on RMM1 ($x$-axis) and RMM2 ($y$-axis), derived from leading EOFs of OLR fields \citep{Wheeler2004}.
+		Gray lines divide the plot into the eight phases used in the text.
+		Colors show the time evolution of the system from 01 November 2015 (blue) to 29 February 2016 (yellow).
+		Gray circle indicates the area of neutral MJO activity with amplitude $<0$.
+	}
+\end{figure}
+
+\begin{figure}
 	\noindent\includegraphics[width=6.4in]{sst_anomalies.pdf}
 	\caption{
 		Pearson correlation, at monthly time step, of  sea surface temperature (SST) anomalies \citep{Reynolds2002} with four leading EOFs of \SI{850}{\hecto\pascal} streamfunction over the weather typing region, shown with a black box.
 		Central Southern Atlantic Dipole is shown with a blue box.
 		(a): EOF 1; (b): EOF2; (c): EOF3; (d): EOF4.
 	}\label{fig:sst-anomalies}
-\end{figure}
-
-
-\begin{figure}
-	\includegraphics[width=\textwidth]{wt_classifiability.pdf}
-	\caption{
-		Classifiability index (see Methods) calculated for several chosen values of $K$, representing the number of weather types produced.
-		Results are produced with only 75 simulations for each $K$.
-	}
 \end{figure}
 
 \clearpage

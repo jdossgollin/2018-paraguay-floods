@@ -33,7 +33,7 @@ def main():
     wt = xr.open_dataarray(args.wt).to_dataframe(name='WT')
     wt = pd.get_dummies(wt['WT'],  prefix='WT')
 
-    dipole = xr.open_dataarray(args.dipole).to_dataframe(name='Dipole').resample('1D').ffill()
+    dipole = xr.open_dataarray(args.dipole).to_dataframe(name='SCAD').resample('1D').ffill()
 
     # Join everything together
     daily = mjo.join(nino_daily).join(dipole).join(wt).dropna()
@@ -41,7 +41,7 @@ def main():
 
     # Get the predictor, EOF, and WT columns
     predictors = mjo.columns.tolist()
-    predictors.append('Dipole')
+    predictors.append('SCAD')
     predictors.append('NINO 3.4')
     wts = wt.columns.tolist()
 
