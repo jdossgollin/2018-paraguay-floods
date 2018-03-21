@@ -2,7 +2,7 @@
 % Preamble
 %-------------------------------------------------------------------------------
 
-\documentclass[twocol]{ametsoc}
+\documentclass{ametsoc}
 \journal{jcli}
 
 %Citations should be of the form ``author year''  not ``author, year''
@@ -109,8 +109,10 @@ The intensity and precise extent of this anomaly is relevant for the precise imp
 The region also exhibits substantial variability between seasons of rainfall during El Ni\~no years, including a reversal of rainfall anomalies between November of that year and January of the following one, influenced by land-surface interactions \citep{Grimm2003,Grimm2009}.
 Even beyond El Ni\~no years, regional land-surface feedbacks can cause regions that exhibit wet anomalies in the spring to experience more summer precipitation on average \citep{Grimm2007}.
 Similarly, mid-latitude dynamics influence low-level wind anomalies on many time scales, though this relationship is complicated due to coupled tropical-extratropical interactions \citep{Jones2002,Carvalho2004}.
-To address these potential interactions, a cross-timescale approach based on synoptic circulation types is employed here to diagnose the causes of the rainfall events; this method has been used in previous work for southeastern South America \citep{Munoz2015,Munoz2016} and other regions \citep{Moron2015}.
+To address these potential interactions, a cross-timescale approach based on synoptic circulation types is employed here to diagnose the causes of the rainfall events.
+This method has been used in previous work for southeastern South America \citep{Munoz2015,Munoz2016} and other regions \citep{Moron2015}.
 
+The paper proceeds as follows.
 We begin by describing our data sources in \cref{sec:data} and our methods in \cref{sec:methods}.
 In \cref{sec:diagnostics} we start our diagnosis highlighting the observed flooding and contextualizing it within a long river stage time series; we then use composites and a weather typing analysis to diagnose the circulation patterns associated with the heavy rainfall during NDJF 2015-16.
 We turn in \cref{sec:fcsts} to the question of whether the observed rainfall was successfully predicted by available models.
@@ -156,10 +158,10 @@ Data on the \gls{mjo}   came from the Australian Bureau of Meteorology \citep{Wh
 
 \subsection{Model forecasts}
 
-This study analyzes probabilistic seasonal and sub-seasonal forecasts of heavy rainfall events, defined by exceedance of the \nth{90} percentile of modeled rainfall.
+This study analyzes probabilistic seasonal and sub-seasonal forecasts of heavy rainfall events, which we define as exceedance of the \nth{90} percentile of NDJF daily precipitation across all ensemble members and initializations.
 
 The seasonal predictions used  are known as ``flexible format'' forecasts, provided by the \gls{iri}.
-These forecasts use a multi-model ensemble approach, with bias-corrected retrospective probabilistic forecasts produced using a total of (a) 144 members forced by evolving sea-surface temperatures, and (b) 68 members forced by persisted sea-surface temperatures; for details see \citet{Barnston2010}.
+These forecasts use a multi-model ensemble approach, with bias-corrected retrospective probabilistic forecasts produced using a total of 144 members forced by evolving sea-surface temperatures and 68 members forced by persisted sea-surface temperatures; for details see \citet{Barnston2010}.
 Flexible format means that the user of these forecasts can arbitrarily choose  particular thresholds (percentiles) to compute the  probability of exceedance (or non-exceedance) from the complete  probability density function of the climatological distribution,  rather than using the more common tercile categories.
 The DJF 2015-2016 forecasts analyzed were produced in  November 2015.
 Due to the short sample of flexible format forecasts available (only for 2012-2016 at the time of writing this paper), no verification was performed for these seasonal predictions.
@@ -222,10 +224,11 @@ The algorithm proceeds as follows:
 \end{enumerate}
 The cluster centroids $\mu_k$ produced by the $K$-means algorithm can then be interpreted as a Voronoi decomposition of the phase space into $K$ regions, and specifically as the Voronoi diagram which minimizes within-cluster variance.
 
-The $K$-means algorithm is guaranteed to converge to a local minimum of inter-cluster variance; to select the best partition, 500 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa2012} and then the classifiability index of \citet{Michelangeli1995} was computed between each partition and the 499 others.
+The $K$-means algorithm is guaranteed to converge to a local minimum of inter-cluster variance; to select the best partition, 500 simulations were created using the implementation in Python's \texttt{scikit-learn} package \citep{Pedregosa2012}.
+Next, the classifiability index of \citet{Michelangeli1995} was computed between each partition and the 499 others.
 The partition whose classifiability index, averaged for all 499 pairwise comparisons, was the highest was selected.
 Calculation of the classifiability index for several values of $K$ (supplemental figure S2) suggests that states with $K=5,6,\ldots,8$ are all reasonable.
-We chose the solution $K=6$ because the clusters identified are qualitatively similar to those determined over southeastern South America \citep{Munoz2015,Munoz2016} and have an intuitive physical meaning, discussed further in the following sections.
+We chose the solution $K=6$ because the clusters identified are qualitatively similar to those determined over southeastern South America \citep{Munoz2015,Munoz2016} and have an intuitive physical meaning, which we discuss further in the following sections.
 We refer to the resulting clusters as \glspl{wt}.
 From a physical point of view, the $K$-means algorithm helps identify typical atmospheric circulation patterns in the \gls{eof}-filtered field via clustering of days with similar streamfunction configurations.
 These clusters can also be understood as proxies  of the available states of the system, or the most frequently visited trajectories in the phase space of the physical system \citep{Munoz2015,Munoz2016a,Munoz2017}.
@@ -236,7 +239,7 @@ A wide variety of methods, generically known as \gls{mos} \citep{Glahn1972}, hav
 In this work, we analyze how well the rainfall events could have been predicted, both using the raw sub-seasonal forecasts and  MOS-adjusted sub-seasonal forecasts.
 We use  four types of \gls{mos} techniques: the homoscedastic extended logistic regression \gls{xlr}; the \gls{hxlr}; \gls{pcr}; and \gls{cca}.
 
-Logistic regression models the conditional probability of binary events, and it has been widely used in \gls{mos} approaches for binary outcomes.
+Logistic regression models the conditional probability of binary events, given one or more predictors, and has been widely used in \gls{mos} approaches for binary outcomes.
 Nonetheless, when using logistic regression to address multiple thresholds via independent fits, the predicted probabilities are, in general, not mutually consistent \citep{Messner2014}.
 The \gls{xlr} was designed to address this shortcoming \citep{Wilks2009}, via the consideration of a transformation of the thresholds of interest as an additional predictor variable.
 The \gls{hxlr}, a generalization of the \gls{xlr}, was proposed to appropriately use the ensemble spread as predictor for the dispersion of the predictive distribution \citep{Messner2014}.
@@ -308,7 +311,7 @@ Further treatment of this question is beyond the scope of this paper.
 
 \subsection{Heavy Rainfall: Climatological Drivers} \label{sec:rainfall-circulation}
 
-To understand how circulation anomalies observed during NDJF 2015-2016 led to the observed floods it is helpful to first explore the atmospheric circulations which are typically associated with heavy rainfall in the lower Paraguay River.
+To understand how circulation anomalies observed during NDJF 2015-2016 led to the observed floods it is helpful to first explore the atmospheric circulations which are typically associated with heavy rainfall in the lower Paraguay River during the full observed record.
 
 \Cref{fig:lagged-rain} shows time-lagged anomalies up to and after heavy rainfall dates (when area-averaged daily rainfall in the \gls{lprb} exceeds its NDJF \nth{90} percentile) and is consistent with previous analysis of heavy rainfall and intense convection in this region \citep{Liebmann2004,Marengo2004,Salio2007,Marwan2015}.
 At $t=\SI{-2}{\day}$ a mid-latitude baroclinic system approaches the South American continent, intensifying and moving to the East from \SIrange{-1}{1}{\day}.
@@ -369,7 +372,7 @@ In this section we analyze the extent to which forecasts were able to predict th
 
 There are advantages in simultaneously considering useful climate information at multiple timescales, rather than just focusing on one of them.
 This multistage prediction system is known as the \gls{iri}'s ``Ready-Set-Go" approach \citep{Hellmuth2011,Goddard2014}.
-For the sake of concision, in this section we discuss only probabilistic seasonal (DJF 2015-2016) and sub-seasonal (Dec 1-7, 2015) forecasts.
+In this study we examine only probabilistic seasonal (DJF 2015-2016) and sub-seasonal (Dec 1-7, 2015) forecasts.
 
 \subsection{Seasonal Forecast}
 
@@ -384,7 +387,7 @@ Sub-seasonal predictions are still too new to be used as operational tools, and 
 Nonetheless, the international \gls{s2s} Prediction Project \citep{Vitart2016} has been providing since 2015 free access to almost-real-time sub-seasonal forecasts from multiple models, an opportunity to explore how well the heavy rainfall events of the first week of December 2015 could have been predicted.
 
 \Cref{fig:chiclet} uses a Chiclet diagram \citep{Carbin2016} to visualize, as a function of lead time, the time evolution of the uncorrected, ensemble-mean rainfall anomaly forecast, spatially averaged over the \gls{lprb}.
-At times greater than about two weeks, the ensemble-mean forecast is slightly wetter than climatology.
+At times greater than about two weeks, the ensemble-mean forecast is for slightly positive rainfall anomalies at nearly all initialization dates and lead times.
 At weather timescales (less than one week), the ensemble-mean successfully predicts the timing and amplitude of the area-averaged rainfall.
 At timescales of one to three weeks, the ensemble average successfully forecast the strongest breaks and pauses in the rainfall, such as the heavy rainfall during December 2015 and the dry period during mid-January 2016.
 
@@ -450,10 +453,11 @@ Examination of \glspl{sst} correlations with the leading \glspl{eof} of \SI{850}
 As supplemental table S1 shows, the centroid of \gls{wt} 4 in phase space is a strongly negative value of \glspl{eof} 2 and 4, and a weakly negative value of \gls{eof} 3; by contrast \gls{wt} 1 is defined by a strongly positive value of \gls{eof} 2, strongly negative value of \gls{eof} 3, and weakly positive value of \gls{eof} 4.
 This suggests that not only did \gls{enso}-\gls{mjo} conditions favor \gls{sallj} activity, but Atlantic-Pacific conditions specifically favored  \gls{wt} 4 occurrence, helping to explain why the most intense rainfall anomalies occurred specifically in the \gls{lprb}.
 
-This Atlantic-Pacific interaction may also be a source of dynamical model biases in the representation of rainfall events in the region.
-In order to adequately forecast rainfall in certain parts of southeastern South America during El Ni\~no years, models need to reproduce not one but two stationary wave trains, originating the Pacific and the Atlantic, and their interactions \citep{Barreiro2017}.
-The frontal activity is associated with the extension, shape and variability of the \gls{sacz}, and could be blocked by the presence of anomalous anti-cyclones off the coast of Brazil, like the ones described in reference to ``No-Chaco'' jet events.
+This Atlantic-Pacific interaction may also explain the skill of dynamical models for representing heavy rainfall in the region.
+In order to adequately forecast rainfall in certain parts of southeastern South America during El Ni\~no years, models need to reproduce stationary wave trains originating in the Pacific and the Atlantic and their interactions \citep{Barreiro2017}.
 Other mechanisms that have been known to modulate rainfall signals in this region include the \gls{sacz} \citep{Carvalho2004,Munoz2015,Munoz2016} and land-biosphere-atmosphere interactions \citep{Grimm2000,Grimm2007} which also tend to be poorly represented in models \citep{Koster2004,Green2017}.
+The stationary wavetrain interactions, land-atmosphere interactions, and topography may explain why simulating heavy rainfall in this region is so difficult  \cref{fig:chiclet,fig:subs-prob-fcst}.
+Improving understanding of these phenomena is important opportunity for \gls{s2s} prediction, and is left for future work.
 
 Finally it is of interest to consider the link between the observed rainfall events and the observed flooding.
 Although we motivated this work by describing the impacts of severe flooding in the \gls{lprb}, the analysis presented has focused on climate drivers of rainfall.
