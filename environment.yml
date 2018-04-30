@@ -1,4 +1,4 @@
-name: pyfloods
+name: PYfloods
 channels:
   - conda-forge
   - defaults
