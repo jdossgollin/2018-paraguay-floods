@@ -32,7 +32,7 @@ include config/*.mk
 
 ## Create all directories that the system expects
 dirs	:
-	mkdir -p figs data data/external data/processed
+	mkdir -p figs tables data data/external data/processed
 
 ## Create and activate a conda environment pyfloods
 environment	:
