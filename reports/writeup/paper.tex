@@ -83,13 +83,13 @@
 %-------------------------------------------------------------------------------
 \section{Introduction}
 
-During the austral summer of 2015-16, repeated heavy rainfall events led to severe flooding in the \gls{lprb}, displacing approximately \num{170000} people \citep{Brakenridge2016} and causing tremendous damage to property and infrastructure \citep{MinisteriodeObrasPublicasyComunicacion2016}.
+During the austral summer of 2015-16, repeated heavy rainfall events led to severe flooding in the \gls{lprb} (\cref{fig:study-area,fig:anomalies}), displacing approximately \num{170000} people \citep{Brakenridge2016} and causing tremendous damage to property and infrastructure \citep{MinisteriodeObrasPublicasyComunicacion2016}.
 Because population in South America tends to concentrate along coasts and rivers (supplemental figure S1), flooding in the \gls{lprb} directly affects not only much of the population of Paraguay, but also of populations in Argentina and Uruguay who lie along the Paran\'{a} and la Plata rivers, into which the Paraguay River drains.
 Heavy rainfall and flooding in the \gls{lprb} also has important implications for hydropower generation, for agriculture, and for regional water resource management.
 The aim of this paper is to diagnose the drivers of the November-February (NDJF) 2015-16 rainfall and flooding events, and to assess the skill of the associated subseasonal-to-seasonal predictions.
 
-The rainfall climatology of the \gls{lprb} varies strongly by season, with extratropical characteristics in the winter and monsoonal characteristics in the summer.
-In the warm season (NDJF), which is the focus of this study, circulation is dominated by the upper-tropospheric Bolivian High, the lower-level subtropical highs, the Chaco Low over northern Argentina, the \gls{sacz}, and the \gls{sallj} \citep{Grimm2009,Marengo2012}.
+The climatology of the \gls{lprb} varies strongly by season, with extratropical characteristics in the winter and monsoonal characteristics in the summer.
+The most notable circulation features during the warm season (NDJF), which is the focus of this study, are the upper-tropospheric Bolivian High, the lower-level subtropical highs, the Chaco Low over northern Argentina, the \gls{sacz}, and the \gls{sallj} \citep{Grimm2009,Marengo2012}.
 Rainfall peaks around \SI{5}{\milli\meter\per\day} during the warm months (October-May) and reaches a minimum near \SI{2}{\milli\meter\per\day} in July and August.
 However, the flat topography limits the river's ability to carry the summer runoff, causing seasonal inundation of the Pantanal and distributing the river discharge in time \citep{Bravo2011,Barros2004}.
 Thus, the streamflow maxima typically occurs in phase with precipitation upstream of the Pantanal, while downstream of the Pantanal - an area which we define in \cref{fig:study-area} as the \acrlong{lprb} - the annual peak typically occurs between April and July.
@@ -113,10 +113,10 @@ To address these potential interactions, a cross-timescale approach based on syn
 This method has been used in previous work for southeastern South America \citep{Munoz2015,Munoz2016} and other regions \citep{Moron2015}.
 
 The paper proceeds as follows.
-We begin by describing our data sources in \cref{sec:data} and our methods in \cref{sec:methods}.
-In \cref{sec:diagnostics} we start our diagnosis highlighting the observed flooding and contextualizing it within a long river stage time series; we then use composites and a weather typing analysis to diagnose the circulation patterns associated with the heavy rainfall during NDJF 2015-16.
+We first describe our data sources in \cref{sec:data} and our methods in \cref{sec:methods}.
+In \cref{sec:diagnostics} we start our diagnosis highlighting the observed flooding and contextualizing it within a long river stage time series; we then use composites and a weather typing analysis to diagnose the circulation patterns associated with the heavy rainfall during NDJF 201516.
 We turn in \cref{sec:fcsts} to the question of whether the observed rainfall was successfully predicted by available models.
-To carry out this analysis we study both forecasts targeting the entire series for a limited area, and also forecasts targeting a large spatial area for only the first week of December, when the most important flooding events started.
+To carry out this analysis we study both forecasts targeting the entire series for a limited area, and also forecasts targeting a large spatial area for only the first week of December, when the most important flooding events began.
 We also explore the impact on forecasts of several bias-correction schemes.
 In \cref{sec:discussion} we discuss limitations and potential implications of our findings and potential future work, and we present our concluding remarks in \cref{sec:summary}.
 
@@ -124,7 +124,7 @@ In \cref{sec:discussion} we discuss limitations and potential implications of ou
 % DATA
 %-------------------------------------------------------------------------------
 
-\section{Data} \label{sec:data}
+\section{Data}\label{sec:data}
 
 The analysis presented makes use of both observations and model forecasts.
 
@@ -140,7 +140,7 @@ We define ``heavy'' rainfall events to be exceedances of the \nth{90} percentile
 Atmospheric circulations are diagnosed using daily data from the NCAR-NCEP Reanalysis II dataset \citep{Kanamitsu2002}.
 Spatial resolution is \SI{2.5}{\degree}.
 Because the end-of-day time for the rainfall data is 12:00 GMT over most of South America \citep{Chen2008}, we use six-hour reanalysis data, and shift by twelve hours before re-sampling to the daily time step.
-This ensures that the time steps in the reanalysis and ƒrainfall data sets are the same, but means that a day is defined as beginning at 12:00 GMT.
+This ensures that the time steps in the reanalysis and rainfall data sets are the same, but means that a day is defined as beginning at 12:00 GMT.
 Since most summer rainfall in this region occurs overnight \citep{Vera2006,Salio2007}, this end-of-day time (which translates to approximately 8:00 AM locally depending on the exact time zone) tends to separate distinct events.
 The primary atmospheric variable  used was the \SI{850}{\hecto\pascal} streamfunction, calculated directly from the wind field as described in \cref{sec:methods}.
 The streamfunction is preferable to, for example, the geopotential height $\Phi$ because $\Phi$ has weak gradients near the equator, making it difficult to visualize circulations that span from the tropics to the extratropics.
@@ -161,7 +161,7 @@ Data on the \gls{mjo}   came from the Australian Bureau of Meteorology \citep{Wh
 This study analyzes probabilistic seasonal and sub-seasonal forecasts of heavy rainfall events, which we define as exceedance of the \nth{90} percentile of NDJF daily precipitation across all ensemble members and initializations.
 
 The seasonal predictions used  are known as ``flexible format'' forecasts, provided by the \gls{iri}.
-These forecasts use a multi-model ensemble approach, with bias-corrected retrospective probabilistic forecasts produced using a total of 144 members forced by evolving sea-surface temperatures and 68 members forced by persisted sea-surface temperatures; for details see \citet{Barnston2010}.
+These forecasts use a multi-model ensemble approach, with bias-corrected retrospective probabilistic forecasts produced using a total of 144 members forced by evolving \glspl{sst} and 68 members forced by persisted sea-surface temperatures; for details see \citet{Barnston2010}.
 Flexible format means that the user of these forecasts can arbitrarily choose  particular thresholds (percentiles) to compute the  probability of exceedance (or non-exceedance) from the complete  probability density function of the climatological distribution,  rather than using the more common tercile categories.
 The DJF 2015-2016 forecasts analyzed were produced in  November 2015.
 Due to the short sample of flexible format forecasts available (only for 2012-2016 at the time of writing this paper), no verification was performed for these seasonal predictions.
@@ -182,7 +182,7 @@ Anomalies were calculated relative to the seasonal mean from November 1979 to Fe
 % METHODS
 %-------------------------------------------------------------------------------
 
-\section{Methods} \label{sec:methods}
+\section{Methods}\label{sec:methods}
 
 Several types of analyses are used to diagnose the causes of the heavy rainfall events, and to bias-correct and verify the forecasts.
 Computation was performed in the python environment using stable open source packages \citep{Hunter2007,McKinney2010,vanderWalt2011,Hoyer2017}.
@@ -191,7 +191,7 @@ All codes to reproduce or modify this analysis are available at \url{https://git
 Given the behavior of the Paraguay River discussed above, we define the \acrlong{lprb} as the region bounded by \SIrange{-59.75}{-55.75}{\degree W} and \SIrange{26.75}{22.75}{\degree S}, as shown in \cref{fig:study-area}.
 In this region, given topography and previous studies \citep{Barros2004,Bravo2011}, one might hypothesize rainfall inputs to most closely correspond to river levels at the stream gauges in \cref{fig:study-area}.
 
-\subsection{Weather Typing} \label{sec:weather-typing}
+\subsection{Weather Typing}\label{sec:weather-typing}
 
 A cluster algorithm is used on daily data to diagnose mechanisms associated with the rainfall events of interest in this research.
 
@@ -289,13 +289,13 @@ To conduct the verification in a consistent manner, we use the Climate Predictab
 % DIAGNOSTICS
 %-------------------------------------------------------------------------------
 
-\section{Diagnostics} \label{sec:diagnostics}
+\section{Diagnostics}\label{sec:diagnostics}
 
 %-------------------------------------------------------------------------------
 % OBSERVED FLOODS
 %-------------------------------------------------------------------------------
 
-\subsection{Observed Flooding} \label{sec:flood}
+\subsection{Observed Flooding}\label{sec:flood}
 
 \Cref{fig:streamflow} shows the streamflow time series at several gauges on the Paraguay River during NDJF 2015-16 in the context of their seasonality and decadal variability.
 During November and December 2015, the river rose rapidly at Concepci\'on, Asunci\'on, and Pilar, though not at Bah\'ia Negra.
@@ -309,7 +309,7 @@ This is in agreement with previous studies \citep{Collischonn2001,Carvalho2011} 
 Because only river stage data (and not discharge) are available, it is not possible to discern whether the observed changes in river stage are driven by sediment loading and local measurement characteristics or by large-scale climate fluctuations.
 Further treatment of this question is beyond the scope of this paper.
 
-\subsection{Heavy Rainfall: Climatological Drivers} \label{sec:rainfall-circulation}
+\subsection{Heavy Rainfall: Climatological Drivers}\label{sec:rainfall-circulation}
 
 To understand how circulation anomalies observed during NDJF 2015-2016 led to the observed floods it is helpful to first explore the atmospheric circulations which are typically associated with heavy rainfall in the lower Paraguay River during the full observed record.
 
@@ -321,7 +321,7 @@ As the system progresses, the jet below \SI{20}{\degree S} transitions from pred
 The pattern resembles composites identified using one standard deviation exceedances of rainfall at \SI{60}{\degree W}, \SI{30}{\degree S} \citep{Liebmann2004} and analysis for the \nth{95} or 99th percentiles of daily rainfall (not shown) yield similar results, implying that the synoptic mechanism for the most heavy events is not fundamentally distinct from the mechanism for moderate-intensity events.
 This mean field, like all composites, masks between-event variation but exploration of individual events (not shown) indicates that the core features identified are generally present.
 
-\subsection{Weather Type Analysis: Daily Circulation Patterns} \label{sec:weather-types}
+\subsection{Weather Type Analysis: Daily Circulation Patterns}\label{sec:weather-types}
 
 We next use the weather typing algorithm outlined in \cref{sec:methods}\ref{sec:weather-typing} to understand particular circulations and sequences of circulations associated with heavy rainfall in the \gls{lprb}.
 
@@ -366,13 +366,11 @@ The observed rainfall and circulation anomalies are consistent with the aggregat
 % FORECASTS
 %-------------------------------------------------------------------------------
 
-\section{Forecasts} \label{sec:fcsts}
+\section{Forecasts}\label{sec:fcsts}
 
 In this section we analyze the extent to which forecasts were able to predict the persistent rainfall during summer of 2015-16.
-
-There are advantages in simultaneously considering useful climate information at multiple timescales, rather than just focusing on one of them.
-This multistage prediction system is known as the \gls{iri}'s ``Ready-Set-Go" approach \citep{Hellmuth2011,Goddard2014}.
-In this study we examine only probabilistic seasonal (DJF 2015-2016) and sub-seasonal (Dec 1-7, 2015) forecasts.
+There are advantages in simultaneously considering useful climate information at multiple timescales, rather than just focusing on one of them \citep{Hellmuth2011,Goddard2014}.
+In this study we analyze probabilistic seasonal (DJF 2015-2016) and sub-seasonal (Dec 1-7, 2015) forecasts.
 
 \subsection{Seasonal Forecast}
 
@@ -397,12 +395,12 @@ Overall, the 20-year skill of probabilistic forecasts for the first week of Dece
 These skill scores indicate that the model is capturing a signal, and suggest the use of \gls{mos} methods to explore the extent to which corrections in the magnitudes and spatial patterns may improve the forecast.
 
 In general, the use of extended logistic regression models does not improve the forecast for the week.
-For example, with respect to the raw prediction, \gls{xlr} tends to amplify the relative odds, and to cluster and shift the forecast location of the heavy rainfall events (\cref{fig:subs-prob-fcst}, top row, first two columns); the forecast tends to be better for Uruguay, but suggests heavy rainfall in the Paraguayan Chaco, which was not present in the raw prediction.
-On the other hand, the use of the ensemble spread in the \gls{hxlr} model does not help; this forecast tends to be over-confident on the events occurring in almost all the region of interest (\cref{fig:subs-prob-fcst}, top row, third column).
+For example, with respect to the raw prediction, \gls{xlr} tends to amplify the relative odds, and to cluster and shift the forecast location of the heavy rainfall events (\cref{fig:subs-prob-fcst} a,b); the forecast tends to be better for Uruguay, but suggests heavy rainfall in the Paraguayan Chaco, which was not present in the raw prediction.
+On the other hand, the use of the ensemble spread in the \gls{hxlr} model does not help; this forecast tends to be over-confident on the events occurring in almost all the region of interest (\cref{fig:subs-prob-fcst} c).
 
 Comparison of long-term skill between the uncorrected \gls{s2s} model forecast output and both extended logistic regression models shows similar results.
-Reliability, resolution and uncertainty, as measured by the Ignorance Score (\cref{fig:subs-prob-fcst} middle row, first three columns), suggests slight skill improvement in southern Brazil, deterioration in Argentina and Uruguay, and basically the same as the uncorrected \gls{s2s} model forecast for Paraguay and southeastern Bolivia.
-Changes in forecast discrimination exhibited by the extended logistic models, as measured via the 2AFC score (\cref{fig:subs-prob-fcst}(k-m)), are  null.
+Reliability, resolution and uncertainty, as measured by the Ignorance Score (\cref{fig:subs-prob-fcst}f-h), suggests slight skill improvement in southern Brazil, deterioration in Argentina and Uruguay, and basically the same as the uncorrected \gls{s2s} model forecast for Paraguay and southeastern Bolivia.
+Changes in forecast discrimination exhibited by the extended logistic models, as measured via the 2AFC score (\cref{fig:subs-prob-fcst}k-m), are  null.
 The extended logistic models operate on a gridbox-by-gridbox basis to recalibrate the probabilities, and so this recalibration happens monotonically.
 Since the 2AFC score is insensitive to monotonic transformations of forecasts, the forecast discrimination is unchanged.
 
@@ -411,7 +409,7 @@ The \gls{pcr} model correctly shows high relative odds in most of the places whe
 The main problem with the \gls{cca} model is its lack of discrimination between occurrence or non-occurrence of heavy rainfall in the region: the spatial distribution of odds is too homogeneous (\cref{fig:subs-prob-fcst} e).
 
 The 20-year based skill maps of probabilistic forecasts computed with these two \gls{eof}-based models are very similar to each other, both in terms of the reliability, resolution and uncertainty measured by the Ignorance Score, and discrimination measured by the 2AFC score (\cref{fig:subs-prob-fcst} i,j,n,o).
-In terms of long-term skill for the regions of interest over Paraguay, outputs from the \gls{pcr}- and \gls{cca}-based \gls{mos} tend to outperform the raw forecasts and the extended logistic regression models, especially regarding discrimination (\cref{fig:subs-prob-fcst} 10k-o).
+In terms of long-term skill for the regions of interest over Paraguay, outputs from the \gls{pcr}- and \gls{cca}-based \gls{mos} tend to outperform the raw forecasts and the extended logistic regression models, especially regarding discrimination (\cref{fig:subs-prob-fcst} k-o).
 The enhanced skill is achieved through the spatial corrections via the \gls{eof}-based regressions, which - in contrast with the extended logistic models - use information from multiple grid-boxes, and thus the original forecasts are not in general calibrated monotonically.
 
 Despite the particular errors in the Dec 1-7 2015 forecasts, on the long term both \gls{pcr} and \gls{cca} verify considerably better than the raw, \gls{xlr}, and \gls{hxlr} predictions.
@@ -421,15 +419,19 @@ Yet despite the generally high skill score for these forecasts, there are still 
 % DISCUSSION
 %-------------------------------------------------------------------------------
 
-\section{Discussion}
-\label{sec:discussion}
+\section{Discussion}\label{sec:discussion}
 
 Co-occurrence of \glspl{wt} 1 and 4, particularly in late November through late December 2015, favored advection of moisture and moist static energy into the \glspl{lprb}, and low-level wind shear favored mesoscale convective activity, consistent with previous analyses in this region \citep{Velasco1987,Marengo2004,Saulo2007,Salio2007}.
 Although many of the individual rainfall events of NDJF 2015-16 were intense, they were nonetheless driven by the climatological mechanism for heavy rainfall and intense convection shown in \cref{fig:lagged-rain} rather than by some other extreme mechanism.
 Consequently, the most striking hydrometeorlogical feature of this season, likely a key driver of the observed flooding, was the persistence of the heavy rainfall and the manner in which it switched ``on'' and ``off'' over the study region (\cref{fig:rain-wt}).
 In fact, this apparent ``on'' and ``off'' switching was manifest principally as a spatial shift in the rainfall occurrence (\cref{fig:anomalies}) consistent with the increased occurrence of \gls{wt} 3 during mid-late January 2016 (\cref{fig:rain-wt,fig:wt-composite}); this pattern has been previously described as the South American ``seesaw'' pattern \citep{Nogues-Paegle1997}.
-Although many news reports blamed the flooding on El Ni\~{n}o \citep{BBC2015}, NDJF 2015-16 featured more intense rainfall than previous major El Ni\~no events, and this intense rainfall persisted for a longer time .
+
+Although many news reports blamed the flooding on El Ni\~{n}o \citep{BBC2015}, NDJF 2015-16 featured more intense rainfall than previous major El Ni\~no events, and this intense rainfall persisted for a longer time.
 While the link between El Ni\~{n}o and flooding in the \gls{lprb} is consistent with previous studies of ENSO and summertime rainfall in this region \citep{Velasco1987,Grimm2000,Salio2002,Grimm2003,Carvalho2004,Grimm2009a,Bravo2011}, both the ``on''-``off'' switching and the differences from previous major El Ni\~{n}o events suggest that other physical mechanisms, and their cross-timescale interactions, are relevant for understanding and predicting future events.
+
+\Cref{fig:wt-mjo-enso} shows that \gls{wt} 1 occurs more frequently during El Ni\~{n}o years for most \gls{mjo} phases, particularly during phase 2.
+During El Ni\~no years, \gls{wt} 3 - associated with dryness over the \gls{lprb} - occurs less frequently during \gls{mjo} phases 4, 6, and 7, and more often during \gls{mjo} phase 8; this is consistent with the lack of \gls{wt} 3 during December 2015 and the frequent \gls{wt} 3 occurrence in mid-January 2016 (\cref{fig:rain-wt}).
+Detailed consideration of the role of \gls{mjo}-\gls{enso} interaction with circulation patterns over the study region is beyond the scope of this paper, but these two patterns provided background conditions favorable for the weather type sequences observed during NDJF 2015-16.
 
 By analyzing how the joint behavior physical mechanisms modulate the probability of occurrence of certain weather types, it may be possible to better understand the drivers of this and future extreme event(s).
 As a starting point, we consider the joint role of \gls{enso}, discussed above, and the \gls{mjo}.
@@ -439,27 +441,22 @@ It stayed neutral until early December where it strengthened from a weak phase 4
 Maintaining a high amplitude, it transitioned through phases 4-8 and reached phase 1 in mid January 2016.
 The \gls{mjo} then weakened slightly before emerging as a mid-strength phase 4 event in late January 2016 and moving through phases 5-7.
 
-\Cref{fig:wt-mjo-enso} shows that \gls{wt} 1 occurs more frequently during El Ni\~{n}o years for most \gls{mjo} phases, particularly during phase 2.
-During El Ni\~no years, \gls{wt} 3 - associated with dryness over the \gls{lprb} - occurs less frequently during \gls{mjo} phases 4, 6, and 7, and more often during \gls{mjo} phase 8; this is consistent with the lack of \gls{wt} 3 during December 2015 and the frequent \gls{wt} 3 occurrence in mid-January 2016 (\cref{fig:rain-wt}).
-Detailed consideration of the role of \gls{mjo}-\gls{enso} interaction with circulation patterns over the study region is beyond the scope of this paper, but these two patterns provided background conditions favorable for the weather type sequences observed during NDJF 2015-16.
-
 Of course, since a large fraction of the signal in \cref{fig:wt-mjo-enso} seems to come from the \gls{enso} signal, a logical question is why NDJF 2015-16 featured more persistent and intense rainfall in the \gls{lprb} than during other major El Ni\~no events (Supplemental Figure S4).
 Previous studies of the \gls{sallj} \citep[e.g.,][]{Vera2006} and the modulation of rainfall in southeastern South America by extratropical transient wave trains during El Ni\~no years emphasize the importance of Pacific-Atlantic interaction for forecasting climate events in this (and other) region(s) \citep{Barreiro2017}.
+
 In particular, a persistent dipolar \gls{sst} anomaly in the central southern Atlantic Ocean may favor the occurrence of \gls{wt} 4 by blocking transient extratropical wave activity from the Pacific, facilitating transitions from ``Chaco'' jet events (\gls{wt} 1) to ``No-Chaco'' jet events (\gls{wt} 4) via enhanced low-level wind circulation from southern Brazil towards the Atlantic, and back to north-east Brazil and the Amazon (see \cref{fig:chaco-nochaco}) due to land-sea temperature contrasts.
 We illustrate a schematic of this mechanism in \cref{fig:chaco-nochaco} and note that it is consistent with the mechanism found to produce heavy rainfall in the \gls{lprb} (\cref{fig:lagged-rain}) and with previous studies \citep[e.g.,][]{Salio2002,Liebmann2004,Vera2006}.
 We refer to his mechanism as the \gls{scad} and measure it as the mean meridional \gls{sst} gradient over the box shown in \cref{fig:chaco-nochaco}.
-Supplemental figure S4 shows the \gls{sst} anomalies observed during NDJF 2015-16, and indeed the mechanism illustrated in \cref{fig:chaco-nochaco} was present - particularly in December 2015 when the most intense rainfall occurred.
-Examination of \glspl{sst} correlations with the leading \glspl{eof} of \SI{850}{\hecto\pascal} streamfunction (Supplemental Figure S6) show that this dipole pattern is negatively correlated with \glspl{eof} 2, 3, and 4.
-As supplemental table S1 shows, the centroid of \gls{wt} 4 in phase space is a strongly negative value of \glspl{eof} 2 and 4, and a weakly negative value of \gls{eof} 3; by contrast \gls{wt} 1 is defined by a strongly positive value of \gls{eof} 2, strongly negative value of \gls{eof} 3, and weakly positive value of \gls{eof} 4.
-This suggests that not only did \gls{enso}-\gls{mjo} conditions favor \gls{sallj} activity, but Atlantic-Pacific conditions specifically favored  \gls{wt} 4 occurrence, helping to explain why the most intense rainfall anomalies occurred specifically in the \gls{lprb}.
+Examination of the \gls{sst} anomalies observed during NDJF 2015-16 (supplemental figure S4) indicates that the mechanism illustrated in \cref{fig:chaco-nochaco} was active - particularly in December 2015 when the most intense rainfall occurred.
+This suggests that not only did \gls{enso}-\gls{mjo} conditions favor \gls{sallj} activity, but Atlantic-Pacific interactions specifically favored  \gls{wt} 4 occurrence, helping to explain why the most intense rainfall anomalies occurred specifically in the \gls{lprb}.
 
-This Atlantic-Pacific interaction may also explain the skill of dynamical models for representing heavy rainfall in the region.
+This Atlantic-Pacific interaction may also help to explain spatial uncertainty in model-based estimates of heavy rainfall in the region.
 In order to adequately forecast rainfall in certain parts of southeastern South America during El Ni\~no years, models need to reproduce stationary wave trains originating in the Pacific and the Atlantic and their interactions \citep{Barreiro2017}.
 Other mechanisms that have been known to modulate rainfall signals in this region include the \gls{sacz} \citep{Carvalho2004,Munoz2015,Munoz2016} and land-biosphere-atmosphere interactions \citep{Grimm2000,Grimm2007} which also tend to be poorly represented in models \citep{Koster2004,Green2017}.
-The stationary wavetrain interactions, land-atmosphere interactions, and topography may explain why simulating heavy rainfall in this region is so difficult  \cref{fig:chiclet,fig:subs-prob-fcst}.
+The stationary wavetrain interactions, land-atmosphere interactions, and topography may explain why simulating heavy rainfall in this region is so difficult (\cref{fig:chiclet,fig:subs-prob-fcst}).
 Improving understanding of these phenomena is important opportunity for \gls{s2s} prediction, and is left for future work.
 
-Finally it is of interest to consider the link between the observed rainfall events and the observed flooding.
+Finally, it is of interest to consider the link between the observed rainfall events and the observed flooding.
 Although we motivated this work by describing the impacts of severe flooding in the \gls{lprb}, the analysis presented has focused on climate drivers of rainfall.
 As explained in \cref{sec:diagnostics}\ref{sec:flood}, in this region the flat topography (\cref{fig:study-area}) means that the Lower Paraguay River reacts slowly to rainfall \citep{Bravo2011,Barros2004}, explaining the slow but steady rise in river levels from mid November 2015 to early January 2016, as shown in \cref{fig:streamflow}.
 The observed flood peaks during 2015-16 also seem to occur in the context of an active phase of a multi-decadal oscillation, possibly associated with low-frequency Pacific activity \citep{Collischonn2001,Huang2005}; groundwater dynamics are also important in explaining this behavior \citep{Santos2016}.
@@ -473,23 +470,25 @@ This study also suggests that proposed dredging of the upper Paraguay River Basi
 % Summary
 %-------------------------------------------------------------------------------
 
-\section{Summary} \label{sec:summary}
+\section{Summary}\label{sec:summary}
 
 In this study we examined the regional climate drivers of the persistent and heavy NDJF 2015-16 rainfall over the Lower Paraguay River Basin which was associated with severe flood events.
 
-The heavy rainfall observed was driven by enhanced moisture inflow from the low-level jet and convergence associated with baroclinic systems.
+Both enhanced moisture inflow from the low-level jet and convergence associated with baroclinic systems drove the observed heavy rainfall.
 Repeated \gls{sallj} events, particularly No-Chaco jet events, led to favorable conditions for mesoscale convective activity in this region.
-This activity was modulated by cross-timescale dynamics including a strong El Ni\~{n}o and an active \gls{mjo}  in phases 4-5, which favored \gls{sallj} occurrence, and the presence of a dipolar SST anomaly in the central southern Atlantic Ocean, which enhanced the probability of occurrence of No-Chaco jet events.
+Large-scale climate patterns at both seaonal and sub-seaonal scales favored the synoptic weather patterns observed.
+Notably, a strong El Ni\~{n}o and an active \gls{mjo} in phases 4-5 favored \gls{sallj} occurrence.
+The presence of a dipolar \gls{sst} anomaly in the central southern Atlantic Ocean also favored the occurrence of No-Chaco jet events.
 
-Numerical forecasts skillfully predicted enhanced risk of heavy rainfall at the seasonal scale, consistent with the observed \gls{enso} signal, but biases in the spatial patterns suggest that models are imperfectly capturing the physical interactions between the Pacific and the Atlantic basins.
-At sub-seasonal time scales, uncorrected model forecasts of rainfall had limited skill beyond 10-15 days, though use of Model Output Statistics - particularly the \gls{pcr} and \gls{cca} methods that correct both spatial patterns and magnitudes - substantially improved forecast skill.
+Numerical forecasts skillfully predicted enhanced risk of heavy rainfall at the seasonal scale, consistent with the observed \gls{enso} signal, but biases in the spatial patterns of forecast rainfall suggest that models imperfectly capture the physical interactions between the Pacific and the Atlantic basins.
+At sub-seasonal time scales, uncorrected model forecasts of rainfall had limited skill beyond 15 days, though use of \acrlong{mos} -- particularly the \gls{pcr} and \gls{cca} methods that correct both spatial patterns and magnitudes -- substantially improved forecast skill.
 
 %-------------------------------------------------------------------------------
 % Acknowledgments
 %-------------------------------------------------------------------------------
 
 \acknowledgments
-The authors thank David Farnham, Upmanu Lall, and Andrew Robertson for insightful conversations and guidance.
+The authors thank David Farnham, Upmanu Lall, Laureline Josset, and Andrew Robertson for insightful conversations and guidance.
 JDG thanks the NSF GRFP program for support (grant DGE 16-44869).
 AGM was supported by the Atmospheric and Oceanic Sciences (AOS) Program at Princeton University.
 Streamflow data shown in \cref{fig:streamflow} was collected by the Paraguayan Navy and National Administration of Navigation and Ports of Paraguay, and was processed and distributed by the Paraguayan Directorate of Meteorology and Hydrology (DINAC-DMH).
@@ -502,9 +501,9 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 \bibliographystyle{ametsoc2014}
 \bibliography{../library}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------------
 % TABLES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------------
 \begin{table}
 %
 \caption{
@@ -535,10 +534,9 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 \end{center}
 \end{table}
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------------
 % FIGURES
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%-------------------------------------------------------------------------------
 
 \begin{figure*}
 	\noindent\includegraphics[width=6.5in]{study_area.jpg}
@@ -599,10 +597,9 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 		Composite anomalies associated with each weather type.
 		Top row (a-f) shows streamfunction anomalies at \SIlist{850}{\hecto\pascal}.
 		Strongest 20\% of wind anomaly vectors over the plot area are also shown.
-		Bottom row (g-l) shows rainfall anomalies, in units of \si{\milli\meter\per\day}. 
+		Bottom row (g-l) shows rainfall anomalies, in units of \si{\milli\meter\per\day}.
 		The relative frequency of occurrence of each weather type (in days) is presented on the top of each column.
-	}
-	\label{fig:wt-composite}
+	}\label{fig:wt-composite}
 \end{figure*}
 
 \begin{figure*}
@@ -639,11 +636,21 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 		Raw and \gls{mos}-adjusted \gls{s2s} model forecasts and skill scores for the methods indicated in \cref{tab:mos-methods}.
 		Top row (a-e) shows the heavy rainfall forecast for 1-7 December 2015 as the odds ratio defined in \cref{eq:odds-ratio} over the target domain.
 		A value greater than 1 indicates that the model forecast greater-than-average odds of rainfall exceeding the \nth{90} percentile.
-        Second row (f-j) shows the Ignorance Score defined in \cref{eq:ignorance}, with zero indicating a perfect forecast.
+		Second row (f-j) shows the Ignorance Score defined in \cref{eq:ignorance}, with zero indicating a perfect forecast.
 		Bottom row (k-o) shows the 2AFC skill score for each grid cell; a value greater than 50 indicates that the model outperforms climatology.
 		Columns separate different \gls{mos} models except for ``Raw'' (a,f,k), which indicates the uncorrected \gls{s2s} model output.
 		For all rows the grid cells which observed a \nth{90} percentile exceedance for 1-7 December 2015 are outlined in black.
 	}\label{fig:subs-prob-fcst}
+\end{figure*}
+
+\begin{figure*}
+	\includegraphics[width=\textwidth]{wt_mjo_enso.pdf}
+	\caption{
+		Anomalous probability of occurrence of each weather type concurrent with observance of each \gls{mjo} phase.
+		When \gls{mjo} amplitude is less than 1, it is defined as neutral phase (0).
+		Plots are shown separately for El Ni\~no (NINO 3.4 $>1$), La Ni\~na (NINO 3.4 $< -1$), and Neutral \gls{enso} phases.
+		Only values which are significant at $\alpha=0.10$, calculated with a bootstrap of 5000 samples, are shown.
+	}\label{fig:wt-mjo-enso}
 \end{figure*}
 
 \begin{figure*}
@@ -657,27 +664,6 @@ The authors also are thankful to the WWRP/WCRP Subseasonal-to-Seasonal Predictio
 		Reference wind vector in \si{\meter\per\second}.
 		Green box shows location of \gls{scad}.
 	}\label{fig:chaco-nochaco}
-\end{figure*}
-
-\begin{figure*}
-	\includegraphics[width=\textwidth]{predictors_eofs.pdf}
-	\caption{
-		Spearman (rank) correlation coefficient between several \gls{s2s} climate indices and weather type occurrence at monthly time step.
-		These, correlations are computed between the proportion of occurrence of each weather type and the monthly-mean time series of the climate index.
-		For the \gls{mjo} phases the monthly-mean time series is the proportion of occurrence of that phase for the given month.
-		The NINO 3.4 time series was up-sampled from monthly to daily values by persisting the most recent monthly value (no interpolation).
-		The \acrfull{scad} predictor, labeled Dipole, is the mean meridional gradient of \gls{sst} anomalies over the region \SIrange{30}{10}{\degree W} and \SIrange{40}{15}{\degree S}, up-sampled to daily values using the same method as the NINO 3.4 time series.
-	}\label{fig:predictor-eof}
-\end{figure*}
-
-\begin{figure*}
-	\includegraphics[width=\textwidth]{wt_mjo_enso.pdf}
-	\caption{
-		Anomalous probability of occurrence of each weather type concurrent with observance of each \gls{mjo} phase. 
-		When \gls{mjo} amplitude is less than zero, it is defined as neutral phase (0).
-		Plots are shown separately for El Ni\~no (NINO 3.4 $>1$), La Ni\~na (NINO 3.4 $< -1$), and Neutral \gls{enso} phases.
-		Only values which are significant at $\alpha=0.10$, calculated with a bootstrap of 5000 samples, are shown.
-	}\label{fig:wt-mjo-enso}
 \end{figure*}
 
 \end{document}

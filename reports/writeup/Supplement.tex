@@ -57,7 +57,7 @@ Further supporting information is available in the form of source code at \url{g
 		\bottomrule
 		\end{tabular}
 	\caption{
-		Centroids of each weather type in 4-dimensional phase space, where each dimension is an EOF of \SI{850}{\hecto\pascal} streamfunction over the weather typing region. 
+		Centroids of each weather type in 4-dimensional phase space, where each dimension is an EOF of \SI{850}{\hecto\pascal} streamfunction over the weather typing region.
 		These centroids are chosen by choosing the $K$-means partition which maximizes the Classifiability Index; see Methods.
 		The weather type for each day is computed by projecting the \SI{850}{\hecto\pascal} onto its leading four EOFs, re-scaling the EOFs as discussed in Methods, and identifying the nearest (Euclidean distance) centroid.
 	}
@@ -138,6 +138,17 @@ Further supporting information is available in the form of source code at \url{g
 		Central Southern Atlantic Dipole is shown with a blue box.
 		(a): EOF 1; (b): EOF2; (c): EOF3; (d): EOF4.
 	}\label{fig:sst-anomalies}
+\end{figure}
+
+\begin{figure}
+	\includegraphics[width=\textwidth]{predictors_eofs.pdf}
+	\caption{
+		Spearman (rank) correlation coefficient between several \gls{s2s} climate indices and weather type occurrence at monthly time step.
+		These correlations are computed between the proportion of occurrence of each weather type and the monthly-mean time series of the climate index.
+		For the \gls{mjo} phases the monthly-mean time series is the proportion of occurrence of that phase for the given month.
+		The NINO 3.4 time series was up-sampled from monthly to daily values by persisting the most recent monthly value (no interpolation).
+		The \acrfull{scad} predictor, labeled Dipole, is the mean meridional gradient of \gls{sst} anomalies over the region \SIrange{30}{10}{\degree W} and \SIrange{40}{15}{\degree S}, up-sampled to daily values using the same method as the NINO 3.4 time series.
+	}\label{fig:predictor-eof}
 \end{figure}
 
 \clearpage
