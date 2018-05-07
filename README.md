@@ -6,6 +6,10 @@ This paper has been submitted to Journal of Climate.
 The code in this document will enable you to reproduce our analysis and reproduce it for your own benefit.
 Code by James Doss-Gollin (2016-2018).
 
+A DOI-archived version of this code is also available:
+
+[![DOI](https://zenodo.org/badge/103452588.svg)](https://zenodo.org/badge/latestdoi/103452588)
+
 ## Goals
 
 The key research questions that this analysis addresses are:
