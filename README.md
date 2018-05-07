@@ -21,7 +21,7 @@ If you can't access our paper, please contact us!
 
 ## Code Organization
 
-Code is written in python, using freely available packages:
+Code is written in python, using well-documented and open-source packages:
 
 - `numpy` and `scipy` for numerical computation
 - `pandas` for tabular data
