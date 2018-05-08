@@ -1,4 +1,4 @@
-# Paraguay Floods
+# Heavy rainfall in Paraguay during the 2015-2016 austral summer: causes and subseasonal-to-seasonal predictive skill
 
 Welcome to the code repository for "Heavy rainfall in Paraguay during the 2015-2016 austral summer: causes and subseasonal-to-seasonal predictive skill", by James Doss-Gollin, Angel Munoz, Simon Mason, and Max Pasten.
 This paper has been submitted to Journal of Climate.
