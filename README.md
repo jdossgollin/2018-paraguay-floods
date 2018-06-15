@@ -1,10 +1,12 @@
 # Heavy rainfall in Paraguay during the 2015-2016 austral summer: causes and subseasonal-to-seasonal predictive skill
 
 Welcome to the code repository for "Heavy rainfall in Paraguay during the 2015-2016 austral summer: causes and subseasonal-to-seasonal predictive skill", by James Doss-Gollin, Angel Munoz, Simon Mason, and Max Pasten.
-This paper has been accepted to the Journal of Climate.
+All code was written by James Doss-Gollin (2016-2018).
+This paper has been published in the Journal of Climate and may be accessed (via open access!) at https://journals.ametsoc.org/doi/abs/10.1175/JCLI-D-17-0805.1.
+If you are unable to access this paper and would like to, please [contact me](http://jamesdossgollin.me/#contact).
 
-The code in this document will enable you to repeat our analysis and reproduce it for your own benefit.
-Code by James Doss-Gollin (2016-2018). A permanent archive of the codes used to generate the submission to Journal of Climate is also available at: [![DOI](https://zenodo.org/badge/103452588.svg)](https://zenodo.org/badge/latestdoi/103452588)
+This repository will enable you to repeat our analysis and reproduce it for your own benefit.
+A permanent archive of the codes used to generate the submission to Journal of Climate is also available at: [![DOI](https://zenodo.org/badge/103452588.svg)](https://zenodo.org/badge/latestdoi/103452588)
 
 ## Goals
 
