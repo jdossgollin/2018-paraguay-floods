@@ -43,7 +43,7 @@ Using `make` helps us organize our code into several distinct steps:
 - Process the raw data into useful "chunks" that are easy to analyze. Calculate streamfunction from the wind vectors. Aggregate the stream function and rainfall over regions relevant for plotting and calculate anomalies. Sub-set the stream function over the weather typing region and the rainfall over the Lower Paraguay River Basin. Run the weather typing algorithm. All of this is done using `make process`.
 - Create plots and tables with `make analyze`.
 
-In fact, `make` knows that the analysis steps depend on the processed data and so on, so once you have your environment installed you can run `source activate pyfloods` and then `make analyze` and everything will run.
+In fact, `make` knows that the analysis steps depend on the processed data and so on, so once you have your environment installed you can run `conda activate pyfloods` and then `make analyze` and everything will run.
 
 ## Using these Codes
 
