@@ -1,23 +1,20 @@
-name: PYfloods
+name: PYFloods
 channels:
   - conda-forge
-  - defaults
 dependencies:
   - python=3.6
   - bottleneck
   - cartopy
+  - colorcet
   - ipython
-  - matplotlib
+  - jupyter
+  - matplotlib=2.2
   - netCDF4
   - numba
   - numpy
   - pandas
-  - pylint
   - scipy
   - scikit-learn
   - seaborn
-  - seaborn
   - xarray
   - windspharm
-  - pip:
-    - colorcet
