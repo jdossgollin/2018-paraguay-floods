@@ -16,6 +16,7 @@ dependencies:
   - scipy
   - scikit-learn
   - seaborn
+  - seaborn
   - xarray
   - windspharm
   - pip:

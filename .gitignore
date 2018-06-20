@@ -1,6 +1,6 @@
 *.nc
 *.csv
-*/.ipynb_checkpoints/*
+notebooks/.ipynb_checkpoints/*
 *.html
 *.aux
 *.bbl
@@ -15,5 +15,4 @@
 *.txt
 *.pyc
 */.mypy_cache/*
-.ipynb_checkpoints/Untitled-checkpoint.ipynb
 *.ipynb

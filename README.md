@@ -43,14 +43,20 @@ Using `make` helps us organize our code into several distinct steps:
 - Configure parameters of the analysis. These files are stored in `config/` and control what years are studied and the regions of the analysis
 - Download raw data from source (climate indices, gridded rainfall data, gridded wind data, model forecasts, etc). To do this run `make get`. As a general rule for gridded data, we download year by year and subset by pressure level (for reanalysis) but not by space. This means that what we download reall is "raw" data
 - Process the raw data into useful "chunks" that are easy to analyze. Calculate streamfunction from the wind vectors. Aggregate the stream function and rainfall over regions relevant for plotting and calculate anomalies. Sub-set the stream function over the weather typing region and the rainfall over the Lower Paraguay River Basin. Run the weather typing algorithm. All of this is done using `make process`.
-- Create plots and tables with `make analyze`.
+- Finally, analysis is done on Jupyter notebooks in the `notebooks` folder and figures are saved in `figs`.
 
 In fact, `make` knows that the analysis steps depend on the processed data and so on, so once you have your environment installed you can run `conda activate pyfloods` and then `make analyze` and everything will run.
+
+## Writeup
+
+A draft of our paper is available in the `writeup` folder.
+It is **not** a final version of our paper, and our paper is available [here via open access](https://journals.ametsoc.org/doi/abs/10.1175/JCLI-D-17-0805.1) so you shouldn't need to use it.
+We left it on the repository in order to share our full workflow with anyone interested.
 
 ## Using these Codes
 
 Please use this code under the terms of the MIT License (see `LICENSE` file).
-If you use it, please cite our paper.
+If you use it, please cite [our paper](https://journals.ametsoc.org/doi/abs/10.1175/JCLI-D-17-0805.1).
 
 If you find any errors with this code, please use the `Issues` tab.
 However, the aim of this repository is _not_ to provide an active software library and we do not intend to modify it from this final version except to correct errors.
