@@ -15,4 +15,3 @@ notebooks/.ipynb_checkpoints/*
 *.txt
 *.pyc
 */.mypy_cache/*
-*.ipynb
