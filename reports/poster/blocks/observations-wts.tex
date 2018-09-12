@@ -1,0 +1,33 @@
+\begin{block}{Observations and Weather Types}
+    Observations come from:
+    \begin{itemize}
+        \item Rainfall:  CPC Global Unified~\cite{Xie:1996ga}
+        \item Atmosphere:  NCAR-NCEP Reanalysis II~\cite{Kanamitsu:2002ig}
+    \end{itemize}
+    We use weather typing~\cite{Munoz:2015dc} to represent daily circulation patterns:
+    \begin{enumerate}
+        \item Calculate streamfunction $\Psi$ from meridional and zonal wind~\cite{Dawson:2016cu}
+        \item Project \SI{850}{\hecto\pascal} streamfunction onto leading 4 EOFs
+        \item $K$-means clustering using classifiability index~\cite{Michelangeli:1995es} to generate a single weather type for each day.\\
+    \end{enumerate}
+    Weather typing simplifies dynamics of daily rainfall but \emph{facilitates analysis of sequences of daily weather patterns}.
+    They are associated with patterns that have been well described in the literature; particularly relevant are:
+    \begin{enumerate}
+        \item \gls{wt}1 represents ``Chaco'' jet event~\cite{Salio:2002ev}
+        \item \gls{wt}4 represents ``No-Chaco'' jet events~\cite{Vera:2006ib}
+    \end{enumerate}
+    \begin{framed}
+        \begin{figure}
+            \centering
+            \noindent\includegraphics[width=\textwidth]{wt_composite.pdf}
+            \caption{
+                Composite anomalies associated with each weather type.
+                Top row (a-f) shows streamfunction anomalies at \SIlist{850}{\hecto\pascal}.
+                Strongest 20\% of wind anomaly vectors over the plot area are also shown.
+                Bottom row (g-l) shows rainfall anomalies, in units of \si{\milli\meter\per\day}.
+                The relative frequency of occurrence of each weather type (in days) is presented on the top of each column.
+            }
+            \label{fig:weather-type-composite}
+        \end{figure}
+    \end{framed}
+\end{block}
