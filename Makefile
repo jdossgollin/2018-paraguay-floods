@@ -72,7 +72,8 @@ $(SST)	:	src/get/download_ssta.py
 	$(PY_INTERP) $< --outfile $@
 
 $(MJO)	: src/get/download_mjo.py
-	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
+	wget -O data/external/mjo_raw_unedited.txt http://www.bom.gov.au/climate/mjo/graphics/rmm.74toRealtime.txt
+	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $(MJO) --infile data/external/mjo_raw_unedited.txt
 
 $(NINO34)	: src/get/download_nino34.py
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --outfile $@
