@@ -2,7 +2,7 @@
 
 % Page setup
 \usepackage[
-    margin=1in
+    margin=0.9in
 ]{geometry}
 
 %Packages
@@ -28,7 +28,7 @@
   textfont={it,footnotesize}
 ]{caption}
 
-\usepackage[acronym]{glossaries}
+\usepackage[acronym,toc,nopostdot,nonumberlist]{glossaries}
 \makeglossaries
 \newacronym{cca}{CCA}{canonical correlation analysis}
 \newacronym{ecmwf}{ECMWF}{European Centre for Medium-Range Weather Forecasts}
@@ -48,13 +48,17 @@
 \newacronym{xlr}{XLR}{homoscedastic extended logistic regression}
 \newacronym{wt}{WT}{weather type}
 
+% These go last!
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
 %-------------------------------------------------------------------------------
 % Title and Authors
 %-------------------------------------------------------------------------------
 
 \date{}
 \title{Heavy rainfall in Paraguay during the 2015-2016 austral summer: causes and sub-seasonal-to-seasonal predictive skill}
-\author[1,2]{James Doss-Gollin}
+\author[1,2]{James Doss-Gollin\thanks{\href{mailto:james.doss-gollin@columbia.edu}{james.doss-gollin@columbia.edu}}}
 \author[3,4]{\'{A}ngel G. Mu\~{n}oz}
 \author[4]{Simon J. Mason}
 \author[5,6]{Max Past\'{e}n}
@@ -65,16 +69,13 @@
 \affil[5]{Direcci\'{o}n de Meteorolog\'{i}a e Hidrolog\'{i}a, Paraguay}
 \affil[6]{Facultad Polit\'ecnica, Universidad Nacional de Asunci\'{o}n, Paraguay}
 
-% These go last!
-\usepackage[hidelinks]{hyperref}
-\usepackage{cleveref}
-
 \begin{document}
 
-This is a pre-print of the paper ``Heavy rainfall in Paraguay during the 2015-16 austral summer: causes and sub-seasonal-to-seasonal predictive skill'', by James Doss-Gollin, \'{A}ngel G. Mu\~{n}oz, Simon J. Mason, and Max Past\'{e}n, published in Journal of Climate.
+This is a post-print of the paper ``Heavy rainfall in Paraguay during the 2015-16 austral summer: causes and sub-seasonal-to-seasonal predictive skill'', by James Doss-Gollin, \'{A}ngel G. Mu\~{n}oz, Simon J. Mason, and Max Past\'{e}n, published in Journal of Climate.
 You can find the final, type-set version at \url{https://journals.ametsoc.org/doi/abs/10.1175/JCLI-D-17-0805.1} or see the full citation reference in the bibliography under \citet{DossGollin:2018bn}.
 
 Codes used to build this paper are available at \url{https://github.com/jdossgollin/2018-paraguay-floods}.
+Comments to the authors may be directed to James Doss-Gollin: \href{mailto:james.doss-gollin@columbia.edu}{james.doss-gollin@columbia.edu}
 
 \clearpage
 
@@ -104,7 +105,7 @@ The aim of this paper is to diagnose the drivers of the November-February (NDJF)
 
 \begin{figure}
 	\centering
-	\includegraphics[width=6.5in]{study_area.jpg}
+	\includegraphics[width=5in]{study_area.jpg}
 	\caption{
 		Topographical map of the study area.
 		Colors indicate $\log_{10}$ of elevation, in \si{\meter}, from the Global Land One-Km Base Elevation project available at \texttt{http://iridl.ldeo.columbia.edu/SOURCES/.NOAA/.NGDC/.GLOBE/.topo/}.
