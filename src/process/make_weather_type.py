@@ -15,13 +15,18 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.decomposition import PCA
 from numba import jit
 
-parser = argparse.ArgumentParser() #pylint: disable=C0103
+parser = argparse.ArgumentParser()  # pylint: disable=C0103
 parser.add_argument("--outfile", help="the filename of the data to save")
-parser.add_argument("--table", help="the filename of the latex table to write", default=None)
+parser.add_argument(
+    "--table", help="the filename of the latex table to write", default=None
+)
 parser.add_argument("--infile", help="the input data")
-parser.add_argument("--var_xpl", type=float, help="Min amount of variance that must be retained")
+parser.add_argument(
+    "--var_xpl", type=float, help="Min amount of variance that must be retained"
+)
 parser.add_argument("--n_cluster", type=int, help="Number of clusters to create")
 parser.add_argument("--n_sim", type=int, help="Number of simulations to create")
+
 
 @jit
 def loop_kmeans(X, pc_ts, n_cluster, n_sim, n_components_keep):
@@ -32,6 +37,7 @@ def loop_kmeans(X, pc_ts, n_cluster, n_sim, n_components_keep):
         centroids[i, :, :] = km.cluster_centers_
         w_types[i, :] = km.labels_
     return centroids, w_types
+
 
 @jit
 def calc_classifiability(P, Q):
@@ -54,6 +60,7 @@ def calc_classifiability(P, Q):
     ci = Aprime.min()
     return ci
 
+
 @jit
 def matrix_classifiability(centroids):
     nsim = centroids.shape[0]
@@ -63,10 +70,13 @@ def matrix_classifiability(centroids):
             if i == j:
                 c_pq[i, j] = np.nan
             else:
-                c_pq[i, j] = calc_classifiability(P=centroids[i, :, :], Q=centroids[j, :, :])
+                c_pq[i, j] = calc_classifiability(
+                    P=centroids[i, :, :], Q=centroids[j, :, :]
+                )
     classifiability = np.nanmean(c_pq)
     best_part = np.where(c_pq == np.nanmax(c_pq))[0][0]
     return classifiability, best_part
+
 
 def resort_labels(old_labels):
     """Re-sort cluster labels
@@ -87,18 +97,21 @@ def resort_labels(old_labels):
     new_labels = orders[labels_from[old_labels]] + 1
     return new_labels
 
+
 def main():
     """Parse the command line arguments and run download_data().
     """
-    np.random.seed(1085) # set seed from
+    np.random.seed(1085)  # set seed from
     args = parser.parse_args()
-    psi = xr.open_dataset(args.infile)['anomaly']
+    psi = xr.open_dataset(args.infile)["anomaly"]
 
     # carry out PCA
-    psi_stacked = psi.stack(grid=['lon', 'lat'])
+    psi_stacked = psi.stack(grid=["lon", "lat"])
     pca = PCA().fit(psi_stacked)
     cum_var = pca.explained_variance_ratio_.cumsum()
-    n_components_keep = np.where(cum_var > args.var_xpl)[0].min() + 1 #compensate for zero indexing
+    n_components_keep = (
+        np.where(cum_var > args.var_xpl)[0].min() + 1
+    )  # compensate for zero indexing
     pca = PCA(n_components=n_components_keep).fit(psi_stacked)
     pc_ts = pca.transform(psi_stacked)
     loadings = pca.components_
@@ -106,26 +119,33 @@ def main():
     # Re-Scale the PC Time series to standard normal -- this is not always good
     pc_ts = StandardScaler().fit_transform(pc_ts)
 
-    centroids, wtypes = loop_kmeans(X=psi_stacked, pc_ts=pc_ts, n_cluster=args.n_cluster, n_sim=args.n_sim, n_components_keep=n_components_keep)
+    centroids, wtypes = loop_kmeans(
+        X=psi_stacked,
+        pc_ts=pc_ts,
+        n_cluster=args.n_cluster,
+        n_sim=args.n_sim,
+        n_components_keep=n_components_keep,
+    )
     class_idx, best_part = matrix_classifiability(centroids)
 
     if args.table is not None:
         best_centroid = centroids[best_part, :, :]
         best_centroid = pd.DataFrame(best_centroid)
-        best_centroid.columns = ['EOF {}'.format(i) for i in np.arange(1, n_components_keep + 1)]
-        best_centroid['WT'] = np.arange(1, args.n_cluster + 1)
-        best_centroid.set_index('WT', inplace=True)
+        best_centroid.columns = [
+            "EOF {}".format(i) for i in np.arange(1, n_components_keep + 1)
+        ]
+        best_centroid["WT"] = np.arange(1, args.n_cluster + 1)
+        best_centroid.set_index("WT", inplace=True)
         best_centroid.round(decimals=3).to_latex(args.table)
 
     best_wt = wtypes[best_part, :]
-    best_wt = pd.Series(resort_labels(best_wt), index=psi['time']).to_xarray()
-    best_wt.name = 'wtype'
-    best_wt.attrs = OrderedDict(class_idx = class_idx)
+    best_wt = pd.Series(resort_labels(best_wt), index=psi["time"]).to_xarray()
+    best_wt.name = "wtype"
+    best_wt.attrs = OrderedDict(class_idx=class_idx)
 
     if os.path.isfile(args.outfile):
         os.remove(args.outfile)
-    best_wt.to_netcdf(args.outfile, format='NETCDF4')
-
+    best_wt.to_netcdf(args.outfile, format="NETCDF4")
 
 
 if __name__ == "__main__":
