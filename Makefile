@@ -18,7 +18,7 @@ viewfigs:
 	open -a $(PDF_VIEWER) figs/*
 
 ## create everything in the analysis
-all: dirs get process analyze
+all: dirs get process
 
 ################################################################################
 # MAKE SETUP
@@ -104,7 +104,7 @@ PSI_WT = data/processed/psi_wtype.nc # streamfunction over WT region
 WT = data/processed/weather_type.nc # weather type sequence
 DIPOLE = data/processed/scad.nc # south central atlantic dipole
 
-$(RAIN)	:	src/process/make_anomaly.py data/external/cpc_rain_*.nc config/time.mk config/rain_region.mk
+$(RAIN)	:	src/process/make_anomaly.py $(CPC_RAW) config/time.mk config/rain_region.mk
 	$(PY_INTERP) $< --syear $(SYEAR) --eyear $(EYEAR) --path "data/external/cpc_rain_*.nc" --X0 $(RAINX0) --X1 $(RAINX1) --Y0 $(RAINY0) --Y1 $(RAINY1) --to_daily 0 --outfile $(RAIN)
 
 $(PSI)	:	src/process/make_anomaly.py data/processed/reanalysisv2_psi_850_*.nc config/time.mk config/reanalysis_region.mk

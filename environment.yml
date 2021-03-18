@@ -12,9 +12,9 @@ dependencies:
   - netCDF4
   - numba
   - numpy
-  - pandas
+  - pandas=0.23.0
   - scipy
   - scikit-learn
   - seaborn
-  - xarray
+  - xarray=0.10.7
   - windspharm
